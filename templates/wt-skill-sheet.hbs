@@ -1,0 +1,25 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header>
+    <h1 class="hbox">
+      <img class="nogrow profile-img vgap8" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="50" width="50"/>
+      <input class="grow hgap16 vgap8" type="text" name="name" value="{{data.name}}" placeholder="Name" />
+    </h1>
+  </header>
+  
+  <div class="hbox vgap8">
+    <label class="grow">Primary stat: </label>
+    <select class="grow2x" name="system.primaryStat">
+      {{#select system.primaryStat}}
+        {{#each STATS as |stat i|}}
+          <option value="{{i}}" {{#if (eq system.primaryStat i)}}selected{{/if}}>{{stat.name}}</option>
+        {{/each}}
+      {{/select}}
+    </select>
+  </div>
+  <div class="hbox vgap8">
+    <label class="grow">Points per die: </label>
+    <input class="grow2x" type="number" name="system.pointsPerDie" value="{{system.pointsPerDie}}">
+  </div>
+  <h2>Notes</h2>
+  {{editor (enrich system.notes) target="system.notes" button=true owner=owner editable=editable}}
+</form>

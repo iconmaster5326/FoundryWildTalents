@@ -1,0 +1,13 @@
+{
+  "Actor": {
+    "types": ["character"],
+    "htmlFields": ["appearence", "notes"],
+    "character": {}
+  },
+  "Item": {
+    "types": ["skill", "other"],
+    "htmlFields": ["notes"],
+    "skill": {},
+    "other": {}
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "wildtalents",
+  "version": "0.1.0",
+  "description": "Foundry support for Wild Talents",
+  "scripts": {},
+  "author": "iconmaster5326",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}

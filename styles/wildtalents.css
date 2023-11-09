@@ -1,0 +1,66 @@
+.wildtalents .hbox {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+}
+.wildtalents .vbox {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+}
+
+.wildtalents .grow {
+  flex: 1 0 0;
+}
+.wildtalents .growhalf {
+  flex: 0.5 0 0;
+}
+.wildtalents .grow2x {
+  flex: 2 0 0;
+}
+
+.wildtalents .nogrow {
+  flex: 0 0 auto;
+  width: min-content;
+}
+.wildtalents .nowrap {
+  white-space: pre;
+}
+
+.wildtalents .vgap4 {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+.wildtalents .vgap8 {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.wildtalents .vgap16 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.wildtalents .hgap4 {
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+  .wildtalents .hgap8 {
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+  .wildtalents .hgap16 {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
+.wildtalents .sheet-tabs {
+  flex: 0;
+}
+.wildtalents .sheet-body,
+.wildtalents .sheet-body .tab {
+  height: 100%;
+}
+
+.wildtalents .editor {
+  min-height: 20%;
+}

@@ -1,0 +1,26 @@
+{
+  "id": "wildtalents",
+  "title": "Wild Talents",
+  "description": "Wild Talents (or other ORE game) support for Foundry.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  },
+  "authors": [
+    {
+      "name": "iconmaster5326",
+      "url": "https://iconmaster.info"
+    }
+  ],
+  "esmodules": ["system.mjs"],
+  "styles": ["styles/wildtalents.css"],
+  "packs": [],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ]
+}
