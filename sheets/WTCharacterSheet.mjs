@@ -32,7 +32,9 @@ export class WTCharacterSheet extends ActorSheet {
     context.rollData = context.actor.getRollData();
     context.skilldocs = {};
     for (const skill of context.system.skills) {
-      const skillDoc = Item.get(skill.skill);
+      const skillDoc =
+        Item.get(skill.skill) ||
+        this.actor.getEmbeddedDocument("Item", skill.skill);
       context.skilldocs[skill.skill] = skillDoc;
     }
     return context;
@@ -94,6 +96,60 @@ export class WTCharacterSheet extends ActorSheet {
         "system.skills": newArray,
       });
     });
+
+    html.find(".skillslot").dblclick(async (event) => {
+      event.preventDefault();
+      const index = Number(event.currentTarget.getAttribute("skillindex"));
+      const skillInstance = this.actor.system.skills[index];
+      if (skillInstance.skill) {
+        // open up existing skill
+        var skill =
+          Item.get(skillInstance.skill) ||
+          this.actor.getEmbeddedDocument("Item", skillInstance.skill);
+        skill.sheet.render(true);
+      } else {
+        // create new embedded skill
+        const skill = await getDocumentClass("Item").create(
+          { name: "New Skill", type: "skill" },
+          { parent: this.actor }
+        );
+        skill.sheet.render(true);
+        const newArray = this.actor.system.skills.slice();
+        newArray[index] = {
+          ...newArray[index],
+          skill: skill.id,
+        };
+        this.actor.update({
+          "system.skills": newArray,
+        });
+      }
+    });
+    ContextMenu.create(this, html, ".skillslot", [
+      {
+        name: "Remove Skill",
+        icon: "",
+        condition: (skillslot) => {
+          var index = Number(skillslot.attr("skillindex"));
+          return this.actor.system.skills[index].skill;
+        },
+        callback: async (skillslot) => {
+          var index = Number(skillslot.attr("skillindex"));
+          const skillID = this.actor.system.skills[index].skill;
+          const newArray = this.actor.system.skills.slice();
+          newArray[index] = {
+            ...newArray[index],
+            skill: undefined,
+          };
+          const embeddedSkill = this.actor.getEmbeddedDocument("Item", skillID);
+          if (embeddedSkill) {
+            await embeddedSkill.delete();
+          }
+          this.actor.update({
+            "system.skills": newArray,
+          });
+        },
+      },
+    ]);
   }
 
   /** @override */

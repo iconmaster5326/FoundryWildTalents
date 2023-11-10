@@ -8,8 +8,8 @@
 
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="general">General</a>
-    <a class="item" data-tab="stats">Stats &amp; Skills</a>
-    <a class="item" data-tab="archetype">Archetype &amp; Intrinsics</a>
+    <a class="item" data-tab="stats">Stats/Skills</a>
+    <a class="item" data-tab="archetype">Archetype</a>
     <a class="item" data-tab="powers">Powers</a>
     <a class="item" data-tab="silhouette">Silhouette</a>
     <a class="item" data-tab="notes_">Notes</a>
@@ -114,16 +114,15 @@
         </h2>
         <ul>
           {{#each system.skills as |skill i|}}
-          {{log skill}}
           <li class="hbox vgap8">
-            <div class="grow skillslot hbox" skillindex="{{i}}">
+            <div class="grow2x skillslot hbox" skillindex="{{i}}">
               <input class="dummy" type="text" name="system.skills.{{i}}.skill" value="{{skill.skill}}">
               {{#with (lookup @root.skilldocs skill.skill) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
                 <div class="grow">{{item.name}}</div>
               {{else}}
                 <img class="nogrow" width="24" height="24">
-                <div class="grow placeholder">Drag skill here...</div>
+                <div class="grow placeholder">Drag skill here, or doubleclick...</div>
               {{/with}}
             </div>
             <div class="nowrap">: </div>
@@ -148,6 +147,8 @@
     </div>
     <div class="tab archetype" data-group="primary" data-tab="archetype">
       <h2>Archetype</h2>
+      <h2>Sources</h2>
+      <h2>Permissions</h2>
       <h2>Intrinsics</h2>
     </div>
     <div class="tab powers" data-group="primary" data-tab="powers">
