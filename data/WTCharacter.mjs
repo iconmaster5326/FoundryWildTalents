@@ -56,12 +56,13 @@ export class WTCharacterData extends foundry.abstract.DataModel {
       stats: new fields.SchemaField(statsFields, { required: true }),
       skills: new fields.ArrayField(
         new fields.SchemaField({
-          skill: new fields.StringField(Item),
+          skill: new fields.StringField(),
           value: new fields.StringField({
             required: true,
             initial: "1d",
             validate: validateORERoll,
           }),
+          specialty: new fields.StringField(),
         })
       ),
       silhouette: new fields.ArrayField(

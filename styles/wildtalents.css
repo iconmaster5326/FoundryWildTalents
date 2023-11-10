@@ -26,6 +26,10 @@
 .wildtalents .nowrap {
   white-space: pre;
 }
+.wildtalents .dummy {
+  flex: 0 0 0;
+  display: none;
+}
 
 .wildtalents .vgap4 {
   margin-top: 2px;

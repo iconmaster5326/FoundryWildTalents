@@ -114,13 +114,10 @@
         </h2>
         <ul>
           {{#each system.skills as |skill i|}}
+          {{log skill}}
           <li class="hbox vgap8">
-            {{!-- <input class="grow"
-              type="text"
-              name="system.skills.{{i}}.skill"
-              value="{{skill.skill}}"
-            /> --}}
             <div class="grow skillslot hbox" skillindex="{{i}}">
+              <input class="dummy" type="text" name="system.skills.{{i}}.skill" value="{{skill.skill}}">
               {{#with (lookup @root.skilldocs skill.skill) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
                 <div class="grow">{{item.name}}</div>
@@ -135,6 +132,14 @@
               name="system.skills.{{i}}.value"
               value="{{skill.value}}"
             />
+            <div class="nowrap"> (</div>
+            <input class="grow"
+              type="text"
+              name="system.skills.{{i}}.specialty"
+              value="{{skill.specialty}}"
+              placeholder="specialty, etc..."
+            />
+            <div class="nowrap">)</div>
             <button class="remove-skill nogrow" index="{{i}}">-</button>
           </li>
           {{/each}}
