@@ -7,6 +7,7 @@ import { WTExtraData } from "./data/WTExtra.mjs";
 import { WTFocusData } from "./data/WTFocus.mjs";
 import { WTMetaQualityData } from "./data/WTMetaQuality.mjs";
 import { WTPowerData } from "./data/WTPower.mjs";
+import { WTArchetypeSheet } from "./sheets/WTArchetypeSheet.mjs";
 
 Hooks.once("init", function () {
   CONFIG.Actor.dataModels.character = WTCharacterData;
@@ -29,6 +30,11 @@ Hooks.once("init", function () {
     types: ["skill"],
     makeDefault: true,
     label: game.i18n.localize("WT.Sheet.Skill"),
+  });
+  Items.registerSheet("wildtalents-archetype", WTArchetypeSheet, {
+    types: ["archetype"],
+    makeDefault: true,
+    label: game.i18n.localize("WT.Sheet.Archetype"),
   });
 
   Handlebars.registerHelper("eq", function (a, b) {

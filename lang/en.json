@@ -38,6 +38,9 @@
   "WT.Tab.Powers": "Powers",
   "WT.Tab.Silhouette": "Silhouette",
   "WT.Tab.Notes": "Notes",
+  "WT.Tab.MetaQualities": "Meta-Qualities",
+  "WT.Tab.MandatoryPowers": "Mandatory Powers",
+  "WT.Tab.Other": "Other Settings",
 
   "WT.Label.Name": "Name",
   "WT.Label.General": "General",
@@ -63,6 +66,7 @@
   "WT.Label.Notes": "Notes",
   "WT.Label.PrimaryStat": "Primary stat",
   "WT.Label.PointsPerDie": "Points per die",
+  "WT.Label.CustomSilhouette": "Custom default silhouette?",
 
   "WT.Dialog.EmptySkillSlot": "Drag skill here, or doubleclick...",
   "WT.Dialog.EmptySkillSpecialty": "specialty, etc...",

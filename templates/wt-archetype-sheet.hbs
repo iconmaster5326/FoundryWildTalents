@@ -1,0 +1,59 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header>
+    <h1 class="hbox">
+      <img
+        class="nogrow profile-img vgap8"
+        src="{{item.img}}"
+        data-edit="img"
+        title="{{item.name}}"
+        height="50"
+        width="50"
+      />
+      <input
+        class="grow hgap16 vgap8"
+        type="text"
+        name="name"
+        value="{{data.name}}"
+        placeholder="{{localize 'WT.Label.Name'}}"
+      />
+    </h1>
+  </header>
+
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="general">{{localize "WT.Tab.General"}}</a>
+    <a class="item" data-tab="metaqualities">{{localize "WT.Tab.MetaQualities"}}</a>
+    <a class="item" data-tab="powers">{{localize "WT.Tab.MandatoryPowers"}}</a>
+    <a class="item" data-tab="other">{{localize "WT.Tab.Other"}}</a>
+  </nav>
+
+  <section class="sheet-body">
+    <div class="tab general" data-group="primary" data-tab="general">
+      <h2>{{localize "WT.Label.Notes"}}</h2>
+      {{editor (enrich system.notes) target="system.notes" button=true owner=owner editable=editable}}
+    </div>
+    <div class="tab metaqualities" data-group="primary" data-tab="metaqualities">
+      <h2>{{localize "WT.Label.Sources"}}</h2>
+      <h2>{{localize "WT.Label.Permissions"}}</h2>
+      <h2>{{localize "WT.Label.Intrinsics"}}</h2>
+    </div>
+    <div class="tab powers" data-group="primary" data-tab="powers">
+      <h2>{{localize "WT.Label.Hyperstats"}}</h2>
+      <h2>{{localize "WT.Label.Hyperskills"}}</h2>
+      <h2>{{localize "WT.Label.Miracles"}}</h2>
+    </div>
+    <div class="tab other" data-group="primary" data-tab="other">
+      <div class="hbox">
+        <div class="nowrap">{{localize "WT.Label.CustomSilhouette"}} </div>
+        <input type="checkbox"
+          name="system.customSilhouette"
+          {{#if system.customSilhouette}}checked{{/if}}
+        />
+      </div>
+      {{#if system.customSilhouette}}
+        <h2>{{localize "WT.Label.Silhouette"}}</h2>
+      {{else}}
+
+      {{/if}}
+    </div>
+  </section>
+</form>
