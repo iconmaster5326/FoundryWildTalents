@@ -28,3 +28,5 @@ Hooks.once("init", function () {
     return TextEditor.enrichHTML(t, { async: false });
   });
 });
+
+// CONFIG.debug.hooks = true;

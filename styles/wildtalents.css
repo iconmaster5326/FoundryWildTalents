@@ -64,3 +64,18 @@
 .wildtalents .editor {
   min-height: 20%;
 }
+
+.wildtalents .skillslot {
+  border: 1px solid black;
+  border-radius: 4px;
+}
+.wildtalents .skillslot:hover {
+  background-color: #ffffff77;
+}
+.wildtalents .skillslot > img {
+  border: 0px;
+  margin: 2px;
+}
+.wildtalents .skillslot .placeholder {
+  color: gray;
+}

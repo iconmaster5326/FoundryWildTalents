@@ -56,7 +56,7 @@ export class WTCharacterData extends foundry.abstract.DataModel {
       stats: new fields.SchemaField(statsFields, { required: true }),
       skills: new fields.ArrayField(
         new fields.SchemaField({
-          skill: new fields.ForeignDocumentField(Item),
+          skill: new fields.StringField(Item),
           value: new fields.StringField({
             required: true,
             initial: "1d",
