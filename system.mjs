@@ -54,4 +54,20 @@ Hooks.once("init", function () {
   });
 });
 
+const ASSETS = "systems/wildtalents/assets/";
+const DEFAULT_ICON_EXT = ".png";
+const ITEM_TYPES = [
+  "skill",
+  "archetype",
+  "metaquality",
+  "power",
+  "focus",
+  "extra",
+];
+
+Hooks.on("preCreateItem", function (item, data, options, itemID) {
+  if (data.img || ITEM_TYPES.indexOf(data.type) == -1) return;
+  item.updateSource({ img: ASSETS + data.type + DEFAULT_ICON_EXT });
+});
+
 // CONFIG.debug.hooks = true;
