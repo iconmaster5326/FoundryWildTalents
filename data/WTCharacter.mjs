@@ -1,8 +1,5 @@
-import { validateORERoll, STATS } from "../util.mjs";
-
-function validateHitLocations(s) {
-  return true;
-}
+import { STATS } from "../util.mjs";
+import { bodyPartField, rollField } from "./data.mjs";
 
 export class WTCharacterData extends foundry.abstract.DataModel {
   /** @override */
@@ -11,11 +8,7 @@ export class WTCharacterData extends foundry.abstract.DataModel {
     const statsFields = {};
     for (var i = 0; i < STATS.length; i++) {
       const stat = STATS[i];
-      statsFields[stat.field] = new fields.StringField({
-        required: true,
-        initial: "1d",
-        validate: validateORERoll,
-      });
+      statsFields[stat.field] = rollField();
     }
     return {
       appearence: new fields.HTMLField(),
@@ -56,72 +49,77 @@ export class WTCharacterData extends foundry.abstract.DataModel {
       stats: new fields.SchemaField(statsFields, { required: true }),
       skills: new fields.ArrayField(
         new fields.SchemaField({
-          skill: new fields.StringField(), // the ID of the skill item
-          value: new fields.StringField({
-            required: true,
-            initial: "1d",
-            validate: validateORERoll,
-          }),
+          id: new fields.StringField(), // ID of skill
+          dice: rollField(),
           specialty: new fields.StringField(),
         })
       ),
-      silhouette: new fields.ArrayField(
+      silhouette: new fields.ArrayField(bodyPartField(), {
+        required: true,
+        initial: [
+          { hitLocations: "1", name: "Left Leg", boxes: 5 },
+          { hitLocations: "2", name: "Right Leg", boxes: 5 },
+          { hitLocations: "3,4", name: "Left Arm", boxes: 5 },
+          { hitLocations: "5,6", name: "Right Arm", boxes: 5 },
+          {
+            hitLocations: "7-9",
+            name: "Torso",
+            boxes: 10,
+            important: true,
+          },
+          { hitLocations: "10", name: "Head", boxes: 4, brainBoxes: 4 },
+        ],
+      }),
+      archetypes: new fields.ArrayField(new fields.StringField()), // IDs of archetypes
+      sources: new fields.ArrayField(
         new fields.SchemaField({
-          hitLocations: new fields.StringField({
-            required: true,
-            initial: "",
-            validate: validateHitLocations,
-          }),
-          name: new fields.StringField({
-            required: true,
-            initial: "",
-          }),
-          boxes: new fields.NumberField({
+          id: new fields.StringField(), // ID of metaquality
+          notes: new fields.StringField(),
+          providedBy: new fields.StringField(), // ID of archetype; optional
+        })
+      ),
+      permissions: new fields.ArrayField(
+        new fields.SchemaField({
+          id: new fields.StringField(), // ID of metaquality
+          notes: new fields.StringField(),
+          providedBy: new fields.StringField(), // ID of archetype; optional
+        })
+      ),
+      intrinsics: new fields.ArrayField(
+        new fields.SchemaField({
+          id: new fields.StringField(), // ID of metaquality
+          notes: new fields.StringField(),
+          providedBy: new fields.StringField(), // ID of archetype; optional
+          multibuyAmount: new fields.NumberField({
             required: true,
             initial: 1,
             integer: true,
             min: 1,
           }),
-          important: new fields.BooleanField({
-            required: true,
-            initial: false,
-          }),
-          brainBoxes: new fields.NumberField({
-            required: true,
-            initial: 0,
-            integer: true,
-            min: 0,
-          }),
-          shockDamage: new fields.NumberField({
-            required: true,
-            initial: 0,
-            integer: true,
-            min: 0,
-          }),
-          killingDamage: new fields.NumberField({
-            required: true,
-            initial: 0,
-            integer: true,
-            min: 0,
-          }),
-        }),
-        {
-          required: true,
-          initial: [
-            { hitLocations: "1", name: "Left Leg", boxes: 5 },
-            { hitLocations: "2", name: "Right Leg", boxes: 5 },
-            { hitLocations: "3,4", name: "Left Arm", boxes: 5 },
-            { hitLocations: "5,6", name: "Right Arm", boxes: 5 },
-            {
-              hitLocations: "7-9",
-              name: "Torso",
-              boxes: 10,
-              important: true,
-            },
-            { hitLocations: "10", name: "Head", boxes: 4, brainBoxes: 4 },
-          ],
-        }
+        })
       ),
+      hyperstats: new fields.ArrayField(
+        new fields.SchemaField({
+          id: new fields.StringField(), // ID of power
+          dice: rollField(),
+          providedBy: new fields.StringField(), // ID of focus/archetype; optional
+        })
+      ),
+      hyperskills: new fields.ArrayField(
+        new fields.SchemaField({
+          id: new fields.StringField(), // ID of power
+          dice: rollField(),
+          providedBy: new fields.StringField(), // ID of focus/archetype; optional
+        })
+      ),
+      miracles: new fields.ArrayField(
+        new fields.SchemaField({
+          id: new fields.StringField(), // ID of power
+          dice: rollField(),
+          providedBy: new fields.StringField(), // ID of focus/archetype; optional
+        })
+      ),
+      foci: new fields.ArrayField(new fields.StringField()), // ID of focus
     };
   }
 }

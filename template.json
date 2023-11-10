@@ -5,9 +5,20 @@
     "character": {}
   },
   "Item": {
-    "types": ["skill", "other"],
+    "types": [
+      "skill",
+      "archetype",
+      "metaquality",
+      "power",
+      "focus",
+      "extra"
+    ],
     "htmlFields": ["notes"],
     "skill": {},
-    "other": {}
+    "archetype": {},
+    "metaquality": {},
+    "power": {},
+    "focus": {},
+    "extra": {}
   }
 }

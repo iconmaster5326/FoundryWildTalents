@@ -116,8 +116,8 @@
           {{#each system.skills as |skill i|}}
           <li class="hbox vgap8">
             <div class="grow2x skillslot hbox" skillindex="{{i}}">
-              <input class="dummy" type="text" name="system.skills.{{i}}.skill" value="{{skill.skill}}">
-              {{#with (lookup @root.skilldocs skill.skill) as |item|}}
+              <input class="dummy" type="text" name="system.skills.{{i}}.id" value="{{skill.id}}">
+              {{#with (lookup @root.skilldocs skill.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
                 <div class="grow">{{item.name}}</div>
               {{else}}
@@ -128,8 +128,8 @@
             <div class="nowrap">: </div>
             <input class="grow"
               type="text"
-              name="system.skills.{{i}}.value"
-              value="{{skill.value}}"
+              name="system.skills.{{i}}.dice"
+              value="{{skill.dice}}"
             />
             <div class="nowrap"> (</div>
             <input class="grow"

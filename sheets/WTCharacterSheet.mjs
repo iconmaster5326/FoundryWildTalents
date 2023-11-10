@@ -33,9 +33,8 @@ export class WTCharacterSheet extends ActorSheet {
     context.skilldocs = {};
     for (const skill of context.system.skills) {
       const skillDoc =
-        Item.get(skill.skill) ||
-        this.actor.getEmbeddedDocument("Item", skill.skill);
-      context.skilldocs[skill.skill] = skillDoc;
+        Item.get(skill.id) || this.actor.getEmbeddedDocument("Item", skill.id);
+      context.skilldocs[skill.id] = skillDoc;
     }
     return context;
   }
@@ -101,11 +100,11 @@ export class WTCharacterSheet extends ActorSheet {
       event.preventDefault();
       const index = Number(event.currentTarget.getAttribute("skillindex"));
       const skillInstance = this.actor.system.skills[index];
-      if (skillInstance.skill) {
+      if (skillInstance.id) {
         // open up existing skill
         var skill =
-          Item.get(skillInstance.skill) ||
-          this.actor.getEmbeddedDocument("Item", skillInstance.skill);
+          Item.get(skillInstance.id) ||
+          this.actor.getEmbeddedDocument("Item", skillInstance.id);
         skill.sheet.render(true);
       } else {
         // create new embedded skill
@@ -117,7 +116,7 @@ export class WTCharacterSheet extends ActorSheet {
         const newArray = this.actor.system.skills.slice();
         newArray[index] = {
           ...newArray[index],
-          skill: skill.id,
+          id: skill.id,
         };
         this.actor.update({
           "system.skills": newArray,
@@ -130,15 +129,15 @@ export class WTCharacterSheet extends ActorSheet {
         icon: "",
         condition: (skillslot) => {
           var index = Number(skillslot.attr("skillindex"));
-          return this.actor.system.skills[index].skill;
+          return this.actor.system.skills[index].id;
         },
         callback: async (skillslot) => {
           var index = Number(skillslot.attr("skillindex"));
-          const skillID = this.actor.system.skills[index].skill;
+          const skillID = this.actor.system.skills[index].id;
           const newArray = this.actor.system.skills.slice();
           newArray[index] = {
             ...newArray[index],
-            skill: undefined,
+            id: undefined,
           };
           const embeddedSkill = this.actor.getEmbeddedDocument("Item", skillID);
           if (embeddedSkill) {
@@ -174,7 +173,7 @@ export class WTCharacterSheet extends ActorSheet {
           const newArray = this.actor.system.skills.slice();
           newArray[skillslot] = {
             ...newArray[skillslot],
-            skill: itemID,
+            id: itemID,
           };
           this.actor.update({
             "system.skills": newArray,
@@ -186,7 +185,7 @@ export class WTCharacterSheet extends ActorSheet {
             console.log("We're in the stats tab!");
             this.actor.update({
               "system.skills": this.actor.system.skills.concat([
-                { skill: itemID },
+                { id: itemID },
               ]),
             });
           }
