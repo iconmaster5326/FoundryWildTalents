@@ -21,14 +21,14 @@ Hooks.once("init", function () {
   Actors.registerSheet("wildtalents-character", WTCharacterSheet, {
     types: ["character"],
     makeDefault: true,
-    label: "Wild Talents character",
+    label: game.i18n.localize("WT.Sheet.Character"),
   });
 
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("wildtalents-skill", WTSkillSheet, {
     types: ["skill"],
     makeDefault: true,
-    label: "Wild Talents skill",
+    label: game.i18n.localize("WT.Sheet.Skill"),
   });
 
   Handlebars.registerHelper("eq", function (a, b) {

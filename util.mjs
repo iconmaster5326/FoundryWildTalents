@@ -1,34 +1,34 @@
 export const STATS = [
-  { name: "Body", field: "body" },
-  { name: "Coordination", field: "coordination" },
-  { name: "Sense", field: "sense" },
-  { name: "Mind", field: "mind" },
-  { name: "Charm", field: "charm" },
-  { name: "Command", field: "command" },
+  { name: "WT.Stat.Body", field: "body" },
+  { name: "WT.Stat.Coordination", field: "coordination" },
+  { name: "WT.Stat.Sense", field: "sense" },
+  { name: "WT.Stat.Mind", field: "mind" },
+  { name: "WT.Stat.Charm", field: "charm" },
+  { name: "WT.Stat.Command", field: "command" },
 ];
 
 export const META_QUALITY_TYPES = [
-  { name: "Source", field: "sources" },
-  { name: "Permission", field: "permissions" },
-  { name: "Intrinsic", field: "intrinsics" },
+  { name: "WT.MetaQualityType.Source", field: "sources" },
+  { name: "WT.MetaQualityType.Permission", field: "permissions" },
+  { name: "WT.MetaQualityType.Intrinsic", field: "intrinsics" },
 ];
 
 export const POWER_TYPES = [
-  { name: "Hyperstat", field: "hyperstats" },
-  { name: "Hyperskill", field: "hyperskills" },
-  { name: "Miracle", field: "miracles" },
+  { name: "WT.PowerType.Hyperstat", field: "hyperstats" },
+  { name: "WT.PowerType.Hyperskill", field: "hyperskills" },
+  { name: "WT.PowerType.Miracle", field: "miracles" },
 ];
 
 export const QUALITY_TYPES = [
-  { name: "Attacks" },
-  { name: "Defends" },
-  { name: "Useful" },
+  { name: "WT.PowerQuality.Attacks" },
+  { name: "WT.PowerQuality.Defends" },
+  { name: "WT.PowerQuality.Useful" },
 ];
 
 export const CAPACITY_TYPES = [
-  { name: "Mass", field: "mass" },
-  { name: "Range", field: "range" },
-  { name: "Speed", field: "speed" },
-  { name: "Touch", field: "touch" },
-  { name: "Self", field: "self" },
+  { name: "WT.PowerCapacity.Mass", field: "mass" },
+  { name: "WT.PowerCapacity.Range", field: "range" },
+  { name: "WT.PowerCapacity.Speed", field: "speed" },
+  { name: "WT.PowerCapacity.Touch", field: "touch" },
+  { name: "WT.PowerCapacity.Self", field: "self" },
 ];

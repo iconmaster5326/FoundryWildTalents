@@ -2,36 +2,36 @@
   <header>
     <h1 class="hbox">
       <img class="nogrow profile-img vgap8" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="50" width="50"/>
-      <input class="grow hgap16 vgap8" type="text" name="name" value="{{data.name}}" placeholder="Name" />
+      <input class="grow hgap16 vgap8" type="text" name="name" value="{{data.name}}" placeholder="{{localize "WT.Label.Name"}}" />
     </h1>
   </header>
 
   <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="general">General</a>
-    <a class="item" data-tab="stats">Stats/Skills</a>
-    <a class="item" data-tab="archetype">Archetype</a>
-    <a class="item" data-tab="powers">Powers</a>
-    <a class="item" data-tab="silhouette">Silhouette</a>
-    <a class="item" data-tab="notes_">Notes</a>
+    <a class="item" data-tab="general">{{localize "WT.Tab.General"}}</a>
+    <a class="item" data-tab="stats">{{localize "WT.Tab.Stats"}}</a>
+    <a class="item" data-tab="archetype">{{localize "WT.Tab.Archetype"}}</a>
+    <a class="item" data-tab="powers">{{localize "WT.Tab.Powers"}}</a>
+    <a class="item" data-tab="silhouette">{{localize "WT.Tab.Silhouette"}}</a>
+    <a class="item" data-tab="notes_">{{localize "WT.Tab.Notes"}}</a>
   </nav>
   <section class="sheet-body">
     <div class="tab general" data-group="primary" data-tab="general">
-      <h2>General</h2>
+      <h2>{{localize "WT.Label.General"}}</h2>
       <div class="hbox vgap8">
-        <label class="nowrap grow">Points Spent: </label>
+        <label class="nowrap grow">{{localize "WT.Label.PointTotal"}}: </label>
         <input class="grow" type="number" name="system.pointTotal" value="{{system.pointTotal}}" />
-        <label class="nowrap grow"> Points to Spend: </label>
+        <label class="nowrap grow"> {{localize "WT.Label.XP"}}: </label>
         <input class="grow" type="number" name="system.xp" value="{{system.xp}}" />
       </div>
       <div class="hbox vgap8">
-        <label class="nowrap grow">Willpower: </label>
+        <label class="nowrap grow">{{localize "WT.Label.Willpower"}}: </label>
         <input class="grow" type="number" name="system.willpower" value="{{system.willpower}}" />
-        <label class="nowrap grow"> Base Will: </label>
+        <label class="nowrap grow"> {{localize "WT.Label.BaseWill"}}: </label>
         <input class="grow" type="number" name="system.baseWill" value="{{system.baseWill}}" />
       </div>
       <div>
         <h2 class="hbox">
-          <div class="grow">Convictions</div>
+          <div class="grow">{{localize "WT.Label.Convictions"}}</div>
           <button class="add-conviction nogrow">+</button>
         </h2>
         <ul>
@@ -57,59 +57,21 @@
     </div>
     <div class="tab stats" data-group="primary" data-tab="stats">
       <div>
-        <h2>Stats</h2>
-        <div class="hbox vgap8">
-          <label class="grow">Body</label>
-          <input class="grow2x"
-            type="text"
-            name="system.stats.body"
-            value="{{system.stats.body}}"
-          />
-        </div>
-        <div class="hbox vgap8">
-          <label class="grow">Coordination</label>
-          <input class="grow2x"
-            type="text"
-            name="system.stats.coordination"
-            value="{{system.stats.coordination}}"
-          />
-        </div>
-        <div class="hbox vgap8">
-          <label class="grow">Sense</label>
-          <input class="grow2x"
-            type="text"
-            name="system.stats.sense"
-            value="{{system.stats.sense}}"
-          />
-        </div>
-        <div class="hbox vgap8">
-          <label class="grow">Mind</label>
-          <input class="grow2x"
-            type="text"
-            name="system.stats.mind"
-            value="{{system.stats.mind}}"
-          />
-        </div>
-        <div class="hbox vgap8">
-          <label class="grow">Charm</label>
-          <input class="grow2x"
-            type="text"
-            name="system.stats.charm"
-            value="{{system.stats.charm}}"
-          />
-        </div>
-        <div class="hbox vgap8">
-          <label class="grow">Command</label>
-          <input class="grow2x"
-            type="text"
-            name="system.stats.command"
-            value="{{system.stats.command}}"
-          />
-        </div>
+        <h2>{{localize "WT.Label.Stats"}}</h2>
+        {{#each STATS as |stat i|}}
+          <div class="hbox vgap8">
+            <label class="grow">{{localize stat.name}}</label>
+            <input class="grow2x"
+              type="text"
+              name="system.stats.{{stat.field}}"
+              value="{{lookup @root.system.stats stat.field}}"
+            />
+          </div>
+        {{/each}}
       </div>
       <div>
         <h2 class="hbox">
-          <div class="grow">Skills</div>
+          <div class="grow">{{localize "WT.Label.Skills"}}</div>
           <button class="add-skill nogrow">+</button>
         </h2>
         <ul>
@@ -122,7 +84,7 @@
                 <div class="grow">{{item.name}}</div>
               {{else}}
                 <img class="nogrow" width="24" height="24">
-                <div class="grow placeholder">Drag skill here, or doubleclick...</div>
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptySkillSlot"}}</div>
               {{/with}}
             </div>
             <div class="nowrap">: </div>
@@ -136,7 +98,7 @@
               type="text"
               name="system.skills.{{i}}.specialty"
               value="{{skill.specialty}}"
-              placeholder="specialty, etc..."
+              placeholder="{{localize "WT.Dialog.EmptySkillSpecialty"}}"
             />
             <div class="nowrap">)</div>
             <button class="remove-skill nogrow" index="{{i}}">-</button>
@@ -146,20 +108,20 @@
       </div>
     </div>
     <div class="tab archetype" data-group="primary" data-tab="archetype">
-      <h2>Archetype</h2>
-      <h2>Sources</h2>
-      <h2>Permissions</h2>
-      <h2>Intrinsics</h2>
+      <h2>{{localize "WT.Label.Archetypes"}}</h2>
+      <h2>{{localize "WT.Label.Sources"}}</h2>
+      <h2>{{localize "WT.Label.Permissions"}}</h2>
+      <h2>{{localize "WT.Label.Intrinsics"}}</h2>
     </div>
     <div class="tab powers" data-group="primary" data-tab="powers">
-      <h2>Hyperstats</h2>
-      <h2>Hyperskills</h2>
-      <h2>Miracles</h2>
+      <h2>{{localize "WT.Label.Hyperstats"}}</h2>
+      <h2>{{localize "WT.Label.Hyperskills"}}</h2>
+      <h2>{{localize "WT.Label.Miracles"}}</h2>
     </div>
     <div class="tab silhouette" data-group="primary" data-tab="silhouette">
       <div>
         <h2 class="hbox">
-          <div class="grow">Silhouette</div>
+          <div class="grow">{{localize "WT.Label.Silhouette"}}</div>
           <button class="add-body-part nogrow">+</button>
         </h2>
         <ul>
@@ -185,26 +147,26 @@
                   name="system.silhouette.{{i}}.boxes"
                   value="{{bodyPart.boxes}}"
                 />
-                <div class="nowrap"> boxes (</div>
+                <div class="nowrap"> {{localize "WT.Dialog.BodyPartBoxes"}} (</div>
                 <input class="growhalf"
                   type="number"
                   name="system.silhouette.{{i}}.brainBoxes"
                   value="{{bodyPart.brainBoxes}}"
                 />
-                <div class="nowrap"> brain; important?</div>
+                <div class="nowrap"> {{localize "WT.Dialog.BodyPartIsBrain"}}; {{localize "WT.Dialog.BodyPartImportant"}}</div>
                 <input type="checkbox"
                   name="system.silhouette.{{i}}.important" {{#if bodyPart.important}}checked{{/if}}
                 />
                 <div class="nowrap">)</div>
               </div>
               <div class="hbox vgap4">
-                <div class="nowrap">Shock damage: </div>
+                <div class="nowrap">{{localize "WT.Label.ShockDamage"}}: </div>
                 <input class="grow"
                   type="number"
                   name="system.silhouette.{{i}}.shockDamage"
                   value="{{bodyPart.shockDamage}}"
                 />
-                <div class="nowrap"> Killing damage: </div>
+                <div class="nowrap"> {{localize "WT.Label.KillingDamage"}}: </div>
                 <input class="grow"
                   type="number"
                   name="system.silhouette.{{i}}.killingDamage"
@@ -219,9 +181,9 @@
       </div>
     </div>
     <div class="tab notes_" data-group="primary" data-tab="notes_">
-      <h2>Public Notes</h2>
+      <h2>{{localize "WT.Label.PublicNotes"}}</h2>
       {{editor (enrich system.appearence) target="system.appearence" button=true owner=owner editable=editable}}
-      <h2>Private Notes</h2>
+      <h2>{{localize "WT.Label.PrivateNotes"}}</h2>
       {{editor (enrich system.notes) target="system.notes" button=true owner=owner editable=editable}}
     </div>
   </section>

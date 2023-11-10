@@ -1,3 +1,5 @@
+import { STATS } from "../util.mjs";
+
 const SHEET_HTML = "systems/wildtalents/templates/wt-character-sheet.hbs";
 
 export class WTCharacterSheet extends ActorSheet {
@@ -36,6 +38,7 @@ export class WTCharacterSheet extends ActorSheet {
         Item.get(skill.id) || this.actor.getEmbeddedDocument("Item", skill.id);
       context.skilldocs[skill.id] = skillDoc;
     }
+    context.STATS = STATS;
     return context;
   }
 
@@ -109,7 +112,7 @@ export class WTCharacterSheet extends ActorSheet {
       } else {
         // create new embedded skill
         const skill = await getDocumentClass("Item").create(
-          { name: "New Skill", type: "skill" },
+          { name: game.i18n.localize("WT.Dialog.NewSkill"), type: "skill" },
           { parent: this.actor }
         );
         skill.sheet.render(true);
@@ -125,7 +128,7 @@ export class WTCharacterSheet extends ActorSheet {
     });
     ContextMenu.create(this, html, ".skillslot", [
       {
-        name: "Remove Skill",
+        name: game.i18n.localize("WT.Dialog.RemoveSkill"),
         icon: "",
         condition: (skillslot) => {
           var index = Number(skillslot.attr("skillindex"));
