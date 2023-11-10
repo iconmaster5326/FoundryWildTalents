@@ -8,6 +8,7 @@ import { WTFocusData } from "./data/WTFocus.mjs";
 import { WTMetaQualityData } from "./data/WTMetaQuality.mjs";
 import { WTPowerData } from "./data/WTPower.mjs";
 import { WTArchetypeSheet } from "./sheets/WTArchetypeSheet.mjs";
+import { WTMetaQualitySheet } from "./sheets/WTMetaQualitySheet.mjs";
 
 Hooks.once("init", function () {
   CONFIG.Actor.dataModels.character = WTCharacterData;
@@ -36,9 +37,17 @@ Hooks.once("init", function () {
     makeDefault: true,
     label: game.i18n.localize("WT.Sheet.Archetype"),
   });
+  Items.registerSheet("wildtalents-metaquality", WTMetaQualitySheet, {
+    types: ["metaquality"],
+    makeDefault: true,
+    label: game.i18n.localize("WT.Sheet.MetaQuality"),
+  });
 
   Handlebars.registerHelper("eq", function (a, b) {
     return a == b;
+  });
+  Handlebars.registerHelper("ne", function (a, b) {
+    return a != b;
   });
   Handlebars.registerHelper("enrich", function (t) {
     return TextEditor.enrichHTML(t, { async: false });

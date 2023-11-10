@@ -1,0 +1,60 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header>
+    <h1 class="hbox">
+      <img
+        class="nogrow profile-img vgap8"
+        src="{{item.img}}"
+        data-edit="img"
+        title="{{item.name}}"
+        height="50"
+        width="50"
+      />
+      <input
+        class="grow hgap16 vgap8"
+        type="text"
+        name="name"
+        value="{{data.name}}"
+        placeholder="{{localize 'WT.Label.Name'}}"
+      />
+    </h1>
+  </header>
+
+  <div class="hbox vgap8">
+    <label class="grow">{{localize "WT.Label.MetaQualityType"}}: </label>
+    <select class="grow2x" name="system.metaQualityType">
+      {{#select system.metaQualityType}}
+        {{#each META_QUALITY_TYPES as |mqt i|}}
+          <option value="{{i}}" {{#if (eq system.metaQualityType i)}}selected{{/if}}>{{localize mqt.name}}</option>
+        {{/each}}
+      {{/select}}
+    </select>
+  </div>
+  <div class="hbox vgap8">
+    <label class="grow">{{localize "WT.Label.PointCost"}}: </label>
+    <input class="grow2x" type="number" name="system.pointCost" value="{{system.pointCost}}">
+  </div>
+  {{#if (eq system.metaQualityType 2)}}
+    <div class="hbox">
+      <div class="nowrap">{{localize "WT.Label.Multibuy"}} </div>
+      <input type="checkbox"
+        name="system.multibuy"
+        {{#if system.multibuy}}checked{{/if}}
+      />
+    </div>
+  {{else}}
+    <input class="dummy" type="checkbox" name="system.multibuy" {{#if system.multibuy}}checked{{/if}} />
+  {{/if}}
+  {{#if (ne system.metaQualityType 0)}}
+    <div class="hbox">
+      <div class="nowrap">{{localize "WT.Label.RequiresCondition"}} </div>
+      <input type="checkbox"
+        name="system.requiresCondition"
+        {{#if system.requiresCondition}}checked{{/if}}
+      />
+    </div>
+  {{else}}
+    <input class="dummy" type="checkbox" name="system.requiresCondition" {{#if system.requiresCondition}}checked{{/if}} />
+  {{/if}}
+  <h2>{{localize "WT.Label.Notes"}}</h2>
+  {{editor (enrich system.notes) target="system.notes" button=true owner=owner editable=editable}}
+</form>
