@@ -39,6 +39,7 @@ export class WTCharacterSheet extends ActorSheet {
     context.system = actorData.system;
     context.flags = actorData.flags;
     context.rollData = context.actor.getRollData();
+
     context.documents = {};
     for (const skill of context.system.skills) {
       context.documents[skill.id] = lookup(skill.id);
@@ -67,6 +68,7 @@ export class WTCharacterSheet extends ActorSheet {
     for (const focus of context.system.foci) {
       context.documents[focus] = lookup(focus);
     }
+
     context.STATS = STATS;
     return context;
   }
@@ -157,10 +159,15 @@ export class WTCharacterSheet extends ActorSheet {
 
     html.find(".add-archetype").click((event) => {
       event.preventDefault();
+      const newArray = this.actor.system.archetypes.concat([""]);
       this.actor.update({
-        "system.archetypes": this.actor.system.archetypes.concat([""]),
+        "system.archetypes": newArray,
       });
-      this.actor.system.updateProvidedAbilities(this.actor);
+      this.actor.system.updateProvidedAbilities(
+        this.actor,
+        newArray,
+        this.actor.system.foci
+      );
     });
     html.find(".remove-archetype").click((event) => {
       event.preventDefault();
@@ -171,7 +178,11 @@ export class WTCharacterSheet extends ActorSheet {
       this.actor.update({
         "system.archetypes": newArray,
       });
-      this.actor.system.updateProvidedAbilities(this.actor);
+      this.actor.system.updateProvidedAbilities(
+        this.actor,
+        newArray,
+        this.actor.system.foci
+      );
     });
     html.find(".archetypeslot").dblclick(async (event) => {
       event.preventDefault();
@@ -197,7 +208,11 @@ export class WTCharacterSheet extends ActorSheet {
           this.actor.update({
             "system.archetypes": newArray,
           });
-          this.actor.system.updateProvidedAbilities(this.actor);
+          this.actor.system.updateProvidedAbilities(
+            this.actor,
+            newArray,
+            this.actor.system.foci
+          );
         },
       },
     ]);
@@ -205,6 +220,8 @@ export class WTCharacterSheet extends ActorSheet {
 
   /** @override */
   _onDropItem(event, itemInfo) {
+    if (!this.isEditable) return;
+
     if (itemInfo.type == "Item") {
       const itemID = itemInfo.uuid.slice("Item.".length);
       const item = Item.get(itemID);
@@ -255,16 +272,23 @@ export class WTCharacterSheet extends ActorSheet {
           this.actor.update({
             "system.archetypes": newArray,
           });
-          this.actor.system.updateProvidedAbilities(this.actor);
+          this.actor.system.updateProvidedAbilities(
+            this.actor,
+            newArray,
+            this.actor.system.foci
+          );
         } else {
           const tab = this._tabs[0].active;
           if (tab == "archetype") {
+            const newArray = this.actor.system.archetypes.concat([itemID]);
             this.actor.update({
-              "system.archetypes": this.actor.system.archetypes.concat([
-                itemID,
-              ]),
+              "system.archetypes": newArray,
             });
-            this.actor.system.updateProvidedAbilities(this.actor);
+            this.actor.system.updateProvidedAbilities(
+              this.actor,
+              newArray,
+              this.actor.system.foci
+            );
           }
         }
       }

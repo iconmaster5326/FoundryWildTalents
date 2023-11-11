@@ -151,7 +151,7 @@
             <div class="grow"></div>
             <div class="grow">
               {{#with (lookup @root.documents mq.providedBy) as |providedBy|}}
-                <span class="nowrap placeholder">provided by {{providedBy.name}}</span>
+                <span class="nowrap placeholder"> {{localize "WT.Dialog.ProvidedBy"}} {{providedBy.name}} </span>
               {{/with}}
             </div>
             <button class="remove-source nogrow" index="{{i}}" {{#if (lookup @root.documents mq.providedBy)}}disabled{{/if}}>-</button>
@@ -180,14 +180,14 @@
             <div class="grow hbox">
               {{#with (lookup @root.documents mq.id) as |item|}}
                 {{#if item.system.requiresCondition}}
-                  <div class="nowrap">(</div>
                   {{#with (lookup @root.documents mq.providedBy) as |providedBy|}}
-                    <div class="grow nowrap">{{mq.condition}}</div>
+                    <div class="grow nowrap"> ({{mq.condition}})</div>
                     <input class="dummy" type="text" name="system.permissions.{{i}}.condition" value="{{mq.condition}}">
                   {{else}}
+                    <div class="nowrap"> (</div>
                     <input class="grow" type="text" name="system.permissions.{{i}}.condition" value="{{mq.condition}}">
+                    <div class="nowrap">)</div>
                   {{/with}}
-                  <div class="nowrap">)</div>
                 {{else}}
                   <input class="dummy" type="text" name="system.permissions.{{i}}.condition" value="{{mq.condition}}">
                 {{/if}}
@@ -197,7 +197,7 @@
             </div>
             <div class="grow">
               {{#with (lookup @root.documents mq.providedBy) as |providedBy|}}
-                <span class="nowrap placeholder">provided by {{providedBy.name}}</span>
+                <span class="nowrap placeholder"> {{localize "WT.Dialog.ProvidedBy"}} {{providedBy.name}} </span>
               {{/with}}
             </div>
             <button class="remove-permission nogrow" index="{{i}}" {{#if (lookup @root.documents mq.providedBy)}}disabled{{/if}}>-</button>
@@ -242,14 +242,14 @@
             <div class="grow hbox">
               {{#with (lookup @root.documents mq.id) as |item|}}
                 {{#if item.system.requiresCondition}}
-                  <div class="nowrap">(</div>
                   {{#with (lookup @root.documents mq.providedBy) as |providedBy|}}
-                    <div class="grow nowrap">{{mq.condition}}</div>
+                    <div class="grow nowrap"> ({{mq.condition}})</div>
                     <input class="dummy" type="text" name="system.intrinsics.{{i}}.condition" value="{{mq.condition}}">
                   {{else}}
+                    <div class="nowrap"> (</div>
                     <input class="grow" type="text" name="system.intrinsics.{{i}}.condition" value="{{mq.condition}}">
+                    <div class="nowrap">)</div>
                   {{/with}}
-                  <div class="nowrap">)</div>
                 {{else}}
                   <input class="dummy" type="text" name="system.intrinsics.{{i}}.condition" value="{{mq.condition}}">
                 {{/if}}
@@ -259,7 +259,7 @@
             </div>
             <div class="grow">
               {{#with (lookup @root.documents mq.providedBy) as |providedBy|}}
-                <span class="nowrap placeholder">provided by {{providedBy.name}}</span>
+                <span class="nowrap placeholder"> {{localize "WT.Dialog.ProvidedBy"}} {{providedBy.name}} </span>
               {{/with}}
             </div>
             <button class="remove-intrinsic nogrow" index="{{i}}" {{#if (lookup @root.documents mq.providedBy)}}disabled{{/if}}>-</button>

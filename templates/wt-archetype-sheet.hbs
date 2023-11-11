@@ -32,9 +32,112 @@
       {{editor (enrich system.notes) target="system.notes" button=true owner=owner editable=editable}}
     </div>
     <div class="tab metaqualities" data-group="primary" data-tab="metaqualities">
-      <h2>{{localize "WT.Label.Sources"}}</h2>
-      <h2>{{localize "WT.Label.Permissions"}}</h2>
-      <h2>{{localize "WT.Label.Intrinsics"}}</h2>
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Sources"}}</div>
+        <button class="add-source nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.sources as |mq i|}}
+          <li class="hbox">
+            <div class="growhalf"></div>
+            <div class="hbox grow2x slot sourceslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.sources.{{i}}.id" value="{{mq.id}}">
+              {{#with (lookup @root.documents mq.id) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptySourceSlot"}}</div>
+              {{/with}}
+            </div>
+            <div class="grow"></div>
+            <button class="remove-source nogrow" index="{{i}}">-</button>
+          </li>
+        {{/each}}
+      </ul>
+
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Permissions"}}</div>
+        <button class="add-permission nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.permissions as |mq i|}}
+          <li class="hbox">
+            <div class="growhalf"></div>
+            <div class="hbox grow2x slot permissionslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.permissions.{{i}}.id" value="{{mq.id}}">
+              {{#with (lookup @root.documents mq.id) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptyPermissionSlot"}}</div>
+              {{/with}}
+            </div>
+            <div class="grow hbox">
+              {{#with (lookup @root.documents mq.id) as |item|}}
+                {{#if item.system.requiresCondition}}
+                  <div class="nowrap">(</div>
+                  <input class="grow" type="text" name="system.permissions.{{i}}.condition" value="{{mq.condition}}">
+                  <div class="nowrap">)</div>
+                {{else}}
+                  <input class="dummy" type="text" name="system.permissions.{{i}}.condition" value="{{mq.condition}}">
+                {{/if}}
+              {{else}}
+                <input class="dummy" type="text" name="system.permissions.{{i}}.condition" value="{{mq.condition}}">
+              {{/with}}
+            </div>
+            <button class="remove-permission nogrow" index="{{i}}">-</button>
+          </li>
+        {{/each}}
+      </ul>
+
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Intrinsics"}}</div>
+        <button class="add-intrinsic nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.intrinsics as |mq i|}}
+          <li class="hbox">
+            <div class="growhalf hbox">
+              {{#with (lookup @root.documents mq.id) as |item|}}
+                {{#if item.system.multibuy}}
+                  <input class="grow" type="number" name="system.intrinsics.{{i}}.minMultibuyAmount" value="{{mq.minMultibuyAmount}}">
+                  <div class="nowrap">x </div>
+                {{else}}
+                  <input class="dummy" type="number" name="system.intrinsics.{{i}}.minMultibuyAmount" value="{{mq.minMultibuyAmount}}">
+                {{/if}}
+              {{else}}
+                <input class="dummy" type="number" name="system.intrinsics.{{i}}.minMultibuyAmount" value="{{mq.minMultibuyAmount}}">
+              {{/with}}
+            </div>
+            <div class="hbox grow2x slot intrinsicslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.intrinsics.{{i}}.id" value="{{mq.id}}">
+              {{#with (lookup @root.documents mq.id) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptyIntrinsicSlot"}}</div>
+              {{/with}}
+            </div>
+            <div class="grow hbox">
+              {{#with (lookup @root.documents mq.id) as |item|}}
+                {{#if item.system.requiresCondition}}
+                  <div class="nowrap">(</div>
+                  <input class="grow" type="text" name="system.intrinsics.{{i}}.condition" value="{{mq.condition}}">
+                  <div class="nowrap">)</div>
+                {{else}}
+                  <input class="dummy" type="text" name="system.intrinsics.{{i}}.condition" value="{{mq.condition}}">
+                {{/if}}
+              {{else}}
+                <input class="dummy" type="text" name="system.intrinsics.{{i}}.condition" value="{{mq.condition}}">
+              {{/with}}
+            </div>
+            <button class="remove-intrinsic nogrow" index="{{i}}">-</button>
+          </li>
+        {{/each}}
+      </ul>
     </div>
     <div class="tab powers" data-group="primary" data-tab="powers">
       <h2>{{localize "WT.Label.Hyperstats"}}</h2>

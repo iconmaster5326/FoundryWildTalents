@@ -80,6 +80,11 @@
   border: 0px;
   margin: 2px;
 }
-.wildtalents .slot .placeholder {
+
+.wildtalents .placeholder {
+  color: gray;
+  font-style: italic;
+}
+.wildtalents button:disabled {
   color: gray;
 }

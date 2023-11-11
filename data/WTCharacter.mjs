@@ -122,12 +122,12 @@ export class WTCharacterData extends foundry.abstract.DataModel {
     };
   }
 
-  updateProvidedAbilities(actor) {
-    console.log("Updating provided abilities for "+actor.id);
-    const archetypes = this.archetypes
+  updateProvidedAbilities(actor, systemArchetypes, systemFoci) {
+    console.log("Updating provided abilities for " + actor.id);
+    const archetypes = systemArchetypes
       .filter((id) => id)
       .map((id) => Item.get(id));
-    const foci = this.foci.filter((id) => id).map((id) => Item.get(id));
+    const foci = systemFoci.filter((id) => id).map((id) => Item.get(id));
     // gather data for provided abilities
     const existingData = {};
     for (const x of this.sources
@@ -165,7 +165,7 @@ export class WTCharacterData extends foundry.abstract.DataModel {
         if (existingData[key]) {
           const existing = existingData[key][0];
           existingData[key] = existing.slice(1);
-          result.condition = existing.condition;
+          result.condition = existing.condition ?? result.condition;
         }
         newPermissions.push(result);
       }
@@ -183,8 +183,8 @@ export class WTCharacterData extends foundry.abstract.DataModel {
         if (existingData[key]) {
           const existing = existingData[key][0];
           existingData[key] = existing.slice(1);
-          result.condition = existing.condition;
-          result.multibuyAmount = existing.multibuyAmount;
+          result.condition = existing.condition ?? result.condition;
+          result.multibuyAmount = existing.multibuyAmount ?? result.multibuyAmount;
         }
         newIntrinsics.push(result);
       }
@@ -201,7 +201,7 @@ export class WTCharacterData extends foundry.abstract.DataModel {
         if (existingData[key]) {
           const existing = existingData[key][0];
           existingData[key] = existing.slice(1);
-          result.dice = existing.dice;
+          result.dice = existing.dice ?? result.dice;
         }
         newHyperstats.push(result);
       }
@@ -218,7 +218,7 @@ export class WTCharacterData extends foundry.abstract.DataModel {
         if (existingData[key]) {
           const existing = existingData[key][0];
           existingData[key] = existing.slice(1);
-          result.dice = existing.dice;
+          result.dice = existing.dice ?? result.dice;
         }
         newHyperskills.push(result);
       }
@@ -235,7 +235,7 @@ export class WTCharacterData extends foundry.abstract.DataModel {
         if (existingData[key]) {
           const existing = existingData[key][0];
           existingData[key] = existing.slice(1);
-          result.dice = existing.dice;
+          result.dice = existing.dice ?? result.dice;
         }
         newMiracles.push(result);
       }

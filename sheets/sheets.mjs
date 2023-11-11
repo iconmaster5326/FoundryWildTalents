@@ -1,8 +1,13 @@
 export function generateAddRefSheetListener(sheet, html) {
+  const actorOrItem = sheet.actor ?? sheet.item;
+
+  const lookupItem = (id) =>
+    Item.get(id) || actorOrItem.getEmbeddedDocument("Item", id);
+
   return function (name, itemTypeName, propertyName, getProp, options = {}) {
     html.find(".add-" + name).click((event) => {
       event.preventDefault();
-      sheet.actor.update({
+      actorOrItem.update({
         [propertyName]: getProp().concat([{}]),
       });
     });
@@ -12,7 +17,7 @@ export function generateAddRefSheetListener(sheet, html) {
       const newArray = getProp()
         .slice(0, i)
         .concat(getProp().slice(i + 1));
-      sheet.actor.update({
+      actorOrItem.update({
         [propertyName]: newArray,
       });
     });
@@ -22,7 +27,7 @@ export function generateAddRefSheetListener(sheet, html) {
       const instance = getProp()[index];
       if (instance.id) {
         // open up existing
-        lookup(instance.id).sheet.render(true);
+        lookupItem(instance.id).sheet.render(true);
       } else if (options.creatable) {
         // create new embedded
         const newItem = await getDocumentClass("Item").create(
@@ -31,8 +36,9 @@ export function generateAddRefSheetListener(sheet, html) {
               options.newInstanceName ?? "WT.Dialog.New"
             ),
             type: itemTypeName,
+            ...(options.createWith ?? {}),
           },
-          { parent: sheet.actor }
+          { parent: actorOrItem }
         );
         newItem.sheet.render(true);
         const newArray = getProp().slice();
@@ -40,7 +46,7 @@ export function generateAddRefSheetListener(sheet, html) {
           ...newArray[index],
           id: newItem.id,
         };
-        sheet.actor.update({
+        actorOrItem.update({
           [propertyName]: newArray,
         });
       }
@@ -63,11 +69,11 @@ export function generateAddRefSheetListener(sheet, html) {
             ...newArray[index],
             id: undefined,
           };
-          const embedded = sheet.actor.getEmbeddedDocument("Item", id);
+          const embedded = actorOrItem.getEmbeddedDocument("Item", id);
           if (embedded) {
             await embedded.delete();
           }
-          sheet.actor.update({
+          actorOrItem.update({
             [propertyName]: newArray,
           });
         },
@@ -85,6 +91,8 @@ export function generateAddRefListDropHandler(sheet, item) {
     getProp,
     options = {}
   ) {
+    const actorOrItem = sheet.actor ?? sheet.item;
+
     if (item.type == itemTypeName && (options.filter ?? ((_) => true))(item)) {
       const slots = document
         .elementsFromPoint(event.pageX, event.pageY)
@@ -96,16 +104,58 @@ export function generateAddRefListDropHandler(sheet, item) {
           ...newArray[index],
           id: item.id,
         };
-        sheet.actor.update({
+        actorOrItem.update({
           [propertyName]: newArray,
         });
       } else {
         if (sheet._tabs[0].active == tab) {
-          sheet.actor.update({
+          actorOrItem.update({
             [propertyName]: getProp().concat([{ id: item.id }]),
           });
         }
       }
     }
   };
+}
+
+export class WTItemSheet extends ItemSheet {
+  /** @override */
+  static get defaultOptions() {
+    return mergeObject(super.defaultOptions, {
+      width: 600,
+      height: 600,
+      dragDrop: [{ dropSelector: null }],
+    });
+  }
+
+  /** @override */
+  getData() {
+    const context = super.getData();
+    const actorData = this.item.toObject(false);
+    context.system = actorData.system;
+    context.flags = actorData.flags;
+    context.rollData = context.item.getRollData();
+    return context;
+  }
+
+  /** @inheritdoc */
+  _canDragDrop(selector) {
+    return this.isEditable;
+  }
+
+  /** @override */
+  async _onDrop(event) {
+    const data = TextEditor.getDragEventData(event);
+    const allowed = Hooks.call("dropItemSheetData", this.item, this, data);
+    if (allowed === false) return;
+
+    // Handle different data types
+    switch (data.type) {
+      case "Item":
+        return this._onDropItem(event, data);
+    }
+  }
+
+  /** @protected */
+  _onDropItem(event, itemInfo) {}
 }
