@@ -79,6 +79,8 @@
   "WT.Label.FociOnly": "Only applicable to foci?",
   "WT.Label.FocusExtras": "Foci Extras/Foci Flaws",
   "WT.Label.Foci": "Foci",
+  "WT.Label.Capacities": "Capacities",
+  "WT.Label.Extras": "Extras/Flaws",
 
   "WT.Dialog.EmptySkillSpecialty": "specialty, etc...",
   "WT.Dialog.BodyPartBoxes": "boxes",

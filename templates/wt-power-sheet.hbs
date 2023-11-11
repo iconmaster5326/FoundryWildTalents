@@ -48,16 +48,84 @@
   {{#if (eq system.powerType 1)}}
     <div class="hbox vgap8">
       <label class="grow">{{localize "WT.Label.Skill"}}: </label>
-      <input class="grow2x" type="text" name="system.skill" value="{{system.skill}}">
+      <div class="grow2x hbox">
+        <div class="grow2x slot skillslot hbox">
+          <input class="dummy" type="text" name="system.skill.id" value="{{system.skill.id}}">
+          {{#with (lookup @root.documents system.skill.id) as |item|}}
+            <img class="nogrow" src="{{item.img}}" width="24" height="24">
+            <div class="grow">{{item.name}}</div>
+          {{else}}
+            <img class="nogrow" width="24" height="24">
+            <div class="grow placeholder">{{localize "WT.Dialog.EmptySkillSlot"}}</div>
+          {{/with}}
+        </div>
+        <div class="nowrap"> (</div>
+        <input class="grow"
+          type="text"
+          name="system.skill.specialty"
+          value="{{system.skill.specialty}}"
+          placeholder="{{localize "WT.Dialog.EmptySkillSpecialty"}}"
+        />
+        <div class="nowrap">)</div>
+      </div>
     </div>
   {{else}}
-    <input class="dummy" type="text" name="system.skill" value="{{system.skill}}">
+    <input class="dummy" type="text" name="system.skill.id" value="{{system.skill.id}}">
+    <input class="dummy" type="text" name="system.skill.specialty" value="{{system.skill.specialty}}">
   {{/if}}
 
-  <h2>{{localize "WT.Label.Qualities"}}</h2>
-  {{#each system.qualities as |quality i|}}
-
-  {{/each}}
+  <h2 class="hbox">
+    <div class="grow">{{localize "WT.Label.Qualities"}}</div>
+    <button class="add-quality nogrow">+</button>
+  </h2>
+  <ul>
+    {{#each system.qualities as |quality i|}}
+      <li class="hboxstretch vgap16">
+        <div class="vboxstretch grow">
+          <div class="hbox vgap4">
+            <input class="grow2x" type="text" name="system.qualities.{{i}}.name" value="{{quality.name}}" placeholder="{{localize "WT.Label.Name"}}">
+            <div class="nowrap">: </div>
+            <select class="grow" name="system.qualities.{{i}}.qualityType">
+              {{#select quality.qualityType}}
+                {{#each @root.QUALITY_TYPES as |qt j|}}
+                  <option value="{{j}}" {{#if (eq quality.qualityType j)}}selected{{/if}}>{{localize qt.name}}</option>
+                {{/each}}
+              {{/select}}
+            </select>
+            <div class="nowrap">+</div>
+            <input class="grow" type="number" name="system.qualities.{{i}}.level" value="{{quality.level}}">
+          </div>
+          <div class="hbox vgap4">
+            <div class="nowrap">{{localize "WT.Label.Capacities"}}: </div>
+            {{#each @root.CAPACITY_TYPES as |ct j|}}
+              <div class="grow hbox">
+                <div class="nowrap">{{localize (lookup ct "name")}}</div>
+                <input class="nogrow" type="checkbox" name="system.qualities.{{i}}.capacities.{{lookup ct "field"}}"
+                  {{#if (lookup quality.capacities (lookup ct "field"))}}checked{{/if}}
+                />
+              </div>
+            {{/each}}
+          </div>
+          <div class="hboxstart vgap4">
+            <div class="nowrap">{{localize "WT.Label.Extras"}}: </div>
+            <div class="grow vboxstretch">
+              {{#each quality.extras as |extra j|}}
+                <div class="grow hbox vgap4">
+                  <div class="grow nowrap">extra {{j}}</div> <!-- TODO -->
+                  <button class="remove-extra nogrow" index1="{{i}}" index2="{{j}}">-</button>
+                </div>
+              {{/each}}
+            </div>
+            <button class="add-extra nogrow" index="{{i}}">+</button>
+          </div>
+          <div class="hbox vgap4">
+            <input class="grow" type="text" name="system.qualities.{{i}}.notes" value="{{quality.notes}}" placeholder="{{localize "WT.Label.Notes"}}">
+          </div>
+        </div>
+        <button class="remove-quality nogrow" index="{{i}}">-</button>
+      </div>
+    {{/each}}
+  </ul>
 
   <h2>{{localize "WT.Label.Notes"}}</h2>
   {{editor (enrich system.notes) target="system.notes" button=true owner=owner editable=editable}}

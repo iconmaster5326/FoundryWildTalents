@@ -3,10 +3,30 @@
   display: flex;
   align-items: center;
 }
+.wildtalents .hboxstretch {
+  flex-direction: row;
+  display: flex;
+  align-items: stretch;
+}
+.wildtalents .hboxstart {
+  flex-direction: row;
+  display: flex;
+  align-items: start;
+}
 .wildtalents .vbox {
   flex-direction: column;
   display: flex;
   align-items: center;
+}
+.wildtalents .vboxstretch {
+  flex-direction: column;
+  display: flex;
+  align-items: stretch;
+}
+.wildtalents .vboxstart {
+  flex-direction: column;
+  display: flex;
+  align-items: start;
 }
 
 .wildtalents .grow {

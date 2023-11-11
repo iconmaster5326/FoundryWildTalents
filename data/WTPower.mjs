@@ -1,4 +1,4 @@
-import { CAPACITY_TYPES, POWER_TYPES } from "../util.mjs";
+import { CAPACITY_TYPES, POWER_TYPES, QUALITY_TYPES } from "../util.mjs";
 import { extraInstanceField, statField } from "./data.mjs";
 
 export class WTPowerData extends foundry.abstract.DataModel {
@@ -10,6 +10,12 @@ export class WTPowerData extends foundry.abstract.DataModel {
     for (var i = 0; i < POWER_TYPES.length; i++) {
       const pt = POWER_TYPES[i];
       ptChoices[i] = pt.name;
+    }
+
+    const qtChoices = {};
+    for (var i = 0; i < QUALITY_TYPES.length; i++) {
+      const pt = QUALITY_TYPES[i];
+      qtChoices[i] = pt.name;
     }
 
     const capacities = {};
@@ -26,9 +32,17 @@ export class WTPowerData extends foundry.abstract.DataModel {
         choices: ptChoices,
       }),
       stat: statField(), // only used if hyperstat
-      skill: new fields.StringField(), // ID of skill; only used if hyperskill
+      skill: new fields.SchemaField({ // only used if hyperskill
+        id: new fields.StringField(), // ID of skill
+        specialty: new fields.StringField(),
+      }),
       qualities: new fields.ArrayField(
         new fields.SchemaField({
+          qualityType: new fields.NumberField({
+            required: true,
+            initial: 0, // attacks
+            choices: qtChoices,
+          }),
           name: new fields.StringField({ required: true, initial: "" }),
           level: new fields.NumberField({
             required: true,
