@@ -1,3 +1,5 @@
+import { extraInstanceField } from "./data.mjs";
+
 export class WTFocusData extends foundry.abstract.DataModel {
   /** @override */
   static defineSchema() {
@@ -5,6 +7,7 @@ export class WTFocusData extends foundry.abstract.DataModel {
 
     return {
       notes: new fields.HTMLField(),
+      extras: new fields.ArrayField(extraInstanceField()),
       hyperstats: new fields.ArrayField(
         new fields.SchemaField({
           id: new fields.StringField(), // ID of power

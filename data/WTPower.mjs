@@ -1,19 +1,15 @@
 import { CAPACITY_TYPES, POWER_TYPES } from "../util.mjs";
-import { statField } from "./data.mjs";
+import { extraInstanceField, statField } from "./data.mjs";
 
 export class WTPowerData extends foundry.abstract.DataModel {
   /** @override */
   static defineSchema() {
     const fields = foundry.data.fields;
+    
     const ptChoices = {};
     for (var i = 0; i < POWER_TYPES.length; i++) {
       const pt = POWER_TYPES[i];
       ptChoices[i] = pt.name;
-    }
-    const pcChoices = {};
-    for (var i = 0; i < CAPACITY_TYPES.length; i++) {
-      const pc = CAPACITY_TYPES[i];
-      pcChoices[i] = pc.name;
     }
 
     const capacities = {};
@@ -41,23 +37,7 @@ export class WTPowerData extends foundry.abstract.DataModel {
             min: 0,
           }),
           capacities: new fields.SchemaField(capacities),
-          extras: new fields.ArrayField(
-            new fields.SchemaField({
-              id: new fields.StringField(), // ID of extra
-              multibuyAmount: new fields.NumberField({
-                required: true,
-                initial: 1,
-                integer: true,
-                min: 1,
-              }),
-              capacity: new fields.NumberField({
-                required: true,
-                initial: 0, // mass
-                choices: pcChoices,
-              }),
-              condition: new fields.StringField(),
-            })
-          ),
+          extras: new fields.ArrayField(extraInstanceField()),
           notes: new fields.StringField(),
         })
       ),

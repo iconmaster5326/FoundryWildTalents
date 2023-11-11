@@ -1,0 +1,44 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header>
+    <h1 class="hbox">
+      <img
+        class="nogrow profile-img vgap8"
+        src="{{item.img}}"
+        data-edit="img"
+        title="{{item.name}}"
+        height="50"
+        width="50"
+      />
+      <input
+        class="grow hgap16 vgap8"
+        type="text"
+        name="name"
+        value="{{data.name}}"
+        placeholder="{{localize 'WT.Label.Name'}}"
+      />
+    </h1>
+  </header>
+
+  <h2>{{localize "WT.Label.FocusExtras"}}</h2>
+  {{#each system.extras as |extra i|}}
+    
+  {{/each}}
+
+  <h2>{{localize "WT.Label.Hyperstats"}}</h2>
+  {{#each system.hyperstats as |power i|}}
+    
+  {{/each}}
+
+  <h2>{{localize "WT.Label.Hyperskills"}}</h2>
+  {{#each system.hyperskills as |power i|}}
+    
+  {{/each}}
+
+  <h2>{{localize "WT.Label.Miracles"}}</h2>
+  {{#each system.miracles as |power i|}}
+    
+  {{/each}}
+
+  <h2>{{localize "WT.Label.Notes"}}</h2>
+  {{editor (enrich system.notes) target="system.notes" button=true owner=owner editable=editable}}
+</form>

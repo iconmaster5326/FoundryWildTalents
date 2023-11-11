@@ -77,3 +77,33 @@ export function statField(options = {}) {
     ...options,
   });
 }
+
+const pcChoices = {};
+for (var i = 0; i < CAPACITY_TYPES.length; i++) {
+  const pc = CAPACITY_TYPES[i];
+  pcChoices[i] = pc.name;
+}
+
+export function powerCapacityField(options = {}) {
+  return new fields.NumberField({
+    required: true,
+    initial: 0, // mass
+    choices: pcChoices,
+    ...options,
+  });
+}
+
+export function extraInstanceField(options = {}) {
+  return new fields.SchemaField({
+    id: new fields.StringField(), // ID of extra
+    multibuyAmount: new fields.NumberField({
+      required: true,
+      initial: 1,
+      integer: true,
+      min: 1,
+    }),
+    capacity: powerCapacityField(),
+    condition: new fields.StringField(),
+    ...options,
+  });
+}

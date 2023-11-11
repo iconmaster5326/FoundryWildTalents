@@ -77,6 +77,7 @@
   "WT.Label.Skill": "Skill",
   "WT.Label.RequiresCapacity": "Requires a power capacity be specified?",
   "WT.Label.FociOnly": "Only applicable to foci?",
+  "WT.Label.FocusExtras": "Foci Extras/Foci Flaws",
 
   "WT.Dialog.EmptySkillSlot": "Drag skill here, or doubleclick...",
   "WT.Dialog.EmptySkillSpecialty": "specialty, etc...",

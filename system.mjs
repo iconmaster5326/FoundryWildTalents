@@ -11,6 +11,7 @@ import { WTArchetypeSheet } from "./sheets/WTArchetypeSheet.mjs";
 import { WTMetaQualitySheet } from "./sheets/WTMetaQualitySheet.mjs";
 import { WTPowerSheet } from "./sheets/WTPowerSheet.mjs";
 import { WTExtraSheet } from "./sheets/WTExtraSheet.mjs";
+import { WTFocusSheet } from "./sheets/WTFocusSheet.mjs";
 
 Hooks.once("init", function () {
   CONFIG.Actor.dataModels.character = WTCharacterData;
@@ -53,6 +54,11 @@ Hooks.once("init", function () {
     types: ["extra"],
     makeDefault: true,
     label: game.i18n.localize("WT.Sheet.Extra"),
+  });
+  Items.registerSheet("wildtalents-focus", WTFocusSheet, {
+    types: ["focus"],
+    makeDefault: true,
+    label: game.i18n.localize("WT.Sheet.Focus"),
   });
 
   Handlebars.registerHelper("eq", function (a, b) {
