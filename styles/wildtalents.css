@@ -69,17 +69,17 @@
   min-height: 20%;
 }
 
-.wildtalents .skillslot {
+.wildtalents .slot {
   border: 1px solid black;
   border-radius: 4px;
 }
-.wildtalents .skillslot:hover {
+.wildtalents .slot:hover {
   background-color: #ffffff77;
 }
-.wildtalents .skillslot > img {
+.wildtalents .slot > img {
   border: 0px;
   margin: 2px;
 }
-.wildtalents .skillslot .placeholder {
+.wildtalents .slot .placeholder {
   color: gray;
 }

@@ -77,9 +77,9 @@
         <ul>
           {{#each system.skills as |skill i|}}
           <li class="hbox vgap8">
-            <div class="grow2x skillslot hbox" skillindex="{{i}}">
+            <div class="grow2x slot skillslot hbox" index="{{i}}">
               <input class="dummy" type="text" name="system.skills.{{i}}.id" value="{{skill.id}}">
-              {{#with (lookup @root.skilldocs skill.id) as |item|}}
+              {{#with (lookup @root.documents skill.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
                 <div class="grow">{{item.name}}</div>
               {{else}}
@@ -108,7 +108,27 @@
       </div>
     </div>
     <div class="tab archetype" data-group="primary" data-tab="archetype">
-      <h2>{{localize "WT.Label.Archetypes"}}</h2>
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Archetypes"}}</div>
+        <button class="add-archetype nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.archetypes as |archetype i|}}
+          <li class="hbox">
+            <div class="hbox grow slot archetypeslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.archetypes.{{i}}" value="{{archetype}}">
+              {{#with (lookup @root.documents archetype) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptyArchetypeSlot"}}</div>
+              {{/with}}
+            </div>
+            <button class="remove-archetype nogrow" index="{{i}}">-</button>
+          </li>
+        {{/each}}
+      </ul>
       <h2>{{localize "WT.Label.Sources"}}</h2>
       <h2>{{localize "WT.Label.Permissions"}}</h2>
       <h2>{{localize "WT.Label.Intrinsics"}}</h2>
@@ -117,6 +137,7 @@
       <h2>{{localize "WT.Label.Hyperstats"}}</h2>
       <h2>{{localize "WT.Label.Hyperskills"}}</h2>
       <h2>{{localize "WT.Label.Miracles"}}</h2>
+      <h2>{{localize "WT.Label.Foci"}}</h2>
     </div>
     <div class="tab silhouette" data-group="primary" data-tab="silhouette">
       <div>

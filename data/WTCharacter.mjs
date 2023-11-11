@@ -74,21 +74,20 @@ export class WTCharacterData extends foundry.abstract.DataModel {
       sources: new fields.ArrayField(
         new fields.SchemaField({
           id: new fields.StringField(), // ID of metaquality
-          notes: new fields.StringField(),
           providedBy: new fields.StringField(), // ID of archetype; optional
         })
       ),
       permissions: new fields.ArrayField(
         new fields.SchemaField({
           id: new fields.StringField(), // ID of metaquality
-          notes: new fields.StringField(),
+          condition: new fields.StringField(),
           providedBy: new fields.StringField(), // ID of archetype; optional
         })
       ),
       intrinsics: new fields.ArrayField(
         new fields.SchemaField({
           id: new fields.StringField(), // ID of metaquality
-          notes: new fields.StringField(),
+          condition: new fields.StringField(),
           providedBy: new fields.StringField(), // ID of archetype; optional
           multibuyAmount: new fields.NumberField({
             required: true,

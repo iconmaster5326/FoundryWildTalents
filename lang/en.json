@@ -78,6 +78,7 @@
   "WT.Label.RequiresCapacity": "Requires a power capacity be specified?",
   "WT.Label.FociOnly": "Only applicable to foci?",
   "WT.Label.FocusExtras": "Foci Extras/Foci Flaws",
+  "WT.Label.Foci": "Foci",
 
   "WT.Dialog.EmptySkillSlot": "Drag skill here, or doubleclick...",
   "WT.Dialog.EmptySkillSpecialty": "specialty, etc...",
@@ -85,5 +86,7 @@
   "WT.Dialog.BodyPartIsBrain": "brain",
   "WT.Dialog.BodyPartImportant": "important?",
   "WT.Dialog.NewSkill": "New Skill",
-  "WT.Dialog.RemoveSkill": "Remove Skill"
+  "WT.Dialog.RemoveSkill": "Remove Skill",
+  "WT.Dialog.EmptyArchetypeSlot": "Drag archetype here...",
+  "WT.Dialog.RemoveArchetype": "Remove Archetype"
 }
