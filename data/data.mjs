@@ -1,4 +1,4 @@
-import { STATS } from "../util.mjs";
+import { CAPACITY_TYPES, STATS } from "../util.mjs";
 
 const fields = foundry.data.fields;
 

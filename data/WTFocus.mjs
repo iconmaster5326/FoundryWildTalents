@@ -1,4 +1,4 @@
-import { extraInstanceField } from "./data.mjs";
+import { extraInstanceField, rollField } from "./data.mjs";
 
 export class WTFocusData extends foundry.abstract.DataModel {
   /** @override */
