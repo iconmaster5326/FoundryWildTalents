@@ -268,10 +268,31 @@
       </ul>
     </div>
     <div class="tab powers" data-group="primary" data-tab="powers">
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Foci"}}</div>
+        <button class="add-focus nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.foci as |focus i|}}
+          <li class="hbox">
+            <div class="hbox grow slot focusslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.foci.{{i}}" value="{{focus}}">
+              {{#with (lookup @root.documents focus) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptyFocusSlot"}}</div>
+              {{/with}}
+            </div>
+            <button class="remove-focus nogrow" index="{{i}}">-</button>
+          </li>
+        {{/each}}
+      </ul>
+
       <h2>{{localize "WT.Label.Hyperstats"}}</h2>
       <h2>{{localize "WT.Label.Hyperskills"}}</h2>
       <h2>{{localize "WT.Label.Miracles"}}</h2>
-      <h2>{{localize "WT.Label.Foci"}}</h2>
     </div>
     <div class="tab silhouette" data-group="primary" data-tab="silhouette">
       <div>

@@ -11,9 +11,20 @@ export function generateAddRefSheetListener(sheet, html) {
         [propertyName]: getProp().concat([{}]),
       });
     });
-    html.find(".remove-" + name).click((event) => {
+    html.find(".remove-" + name).click(async (event) => {
       event.preventDefault();
       const i = Number(event.currentTarget.getAttribute("index"));
+      try {
+        const embedded = actorOrItem.getEmbeddedDocument(
+          "Item",
+          getProp()[i].id
+        );
+        if (embedded) {
+          await embedded.delete();
+        }
+      } catch (_) {
+        // we're in an item and lookup failed; Oh Well
+      }
       const newArray = getProp()
         .slice(0, i)
         .concat(getProp().slice(i + 1));
@@ -83,7 +94,7 @@ export function generateAddRefSheetListener(sheet, html) {
 }
 
 export function generateAddRefListDropHandler(sheet, item) {
-  return function (
+  return async function (
     tab,
     name,
     itemTypeName,
@@ -99,6 +110,17 @@ export function generateAddRefListDropHandler(sheet, item) {
         .filter((e) => e.classList.contains(name + "slot"));
       if (slots.length) {
         const index = Number(slots[0].getAttribute("index"));
+        try {
+          const embedded = actorOrItem.getEmbeddedDocument(
+            "Item",
+            getProp()[index].id
+          );
+          if (embedded) {
+            await embedded.delete();
+          }
+        } catch (_) {
+          // we're in an item and lookup failed; Oh Well
+        }
         const newArray = getProp().slice();
         newArray[index] = {
           ...newArray[index],
@@ -157,5 +179,5 @@ export class WTItemSheet extends ItemSheet {
   }
 
   /** @protected */
-  _onDropItem(event, itemInfo) {}
+  async _onDropItem(event, itemInfo) {}
 }

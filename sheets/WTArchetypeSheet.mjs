@@ -101,7 +101,7 @@ export class WTArchetypeSheet extends WTItemSheet {
   }
 
   /** @override */
-  _onDropItem(event, itemInfo) {
+  async _onDropItem(event, itemInfo) {
     if (!this.isEditable) return;
 
     if (itemInfo.type == "Item") {
@@ -111,7 +111,7 @@ export class WTArchetypeSheet extends WTItemSheet {
 
       const addRefListDropHandler = generateAddRefListDropHandler(this, item);
 
-      addRefListDropHandler(
+      await addRefListDropHandler(
         "metaqualities",
         "source",
         "metaquality",
@@ -119,7 +119,7 @@ export class WTArchetypeSheet extends WTItemSheet {
         () => this.item.system.sources,
         { filter: (item) => item.system.metaQualityType == 0 }
       );
-      addRefListDropHandler(
+      await addRefListDropHandler(
         "metaqualities",
         "permission",
         "metaquality",
@@ -127,7 +127,7 @@ export class WTArchetypeSheet extends WTItemSheet {
         () => this.item.system.permissions,
         { filter: (item) => item.system.metaQualityType == 1 }
       );
-      addRefListDropHandler(
+      await addRefListDropHandler(
         "metaqualities",
         "intrinsic",
         "metaquality",

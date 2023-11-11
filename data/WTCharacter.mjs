@@ -125,9 +125,9 @@ export class WTCharacterData extends foundry.abstract.DataModel {
   updateProvidedAbilities(actor, systemArchetypes, systemFoci) {
     console.log("Updating provided abilities for " + actor.id);
     const archetypes = systemArchetypes
-      .filter((id) => id)
-      .map((id) => Item.get(id));
-    const foci = systemFoci.filter((id) => id).map((id) => Item.get(id));
+      .map((id) => Item.get(id))
+      .filter((x) => x);
+    const foci = systemFoci.map((id) => Item.get(id)).filter((x) => x);
     // gather data for provided abilities
     const existingData = {};
     for (const x of this.sources
@@ -184,7 +184,8 @@ export class WTCharacterData extends foundry.abstract.DataModel {
           const existing = existingData[key][0];
           existingData[key] = existing.slice(1);
           result.condition = existing.condition ?? result.condition;
-          result.multibuyAmount = existing.multibuyAmount ?? result.multibuyAmount;
+          result.multibuyAmount =
+            existing.multibuyAmount ?? result.multibuyAmount;
         }
         newIntrinsics.push(result);
       }

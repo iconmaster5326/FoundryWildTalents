@@ -216,10 +216,95 @@ export class WTCharacterSheet extends ActorSheet {
         },
       },
     ]);
+
+    html.find(".add-focus").click((event) => {
+      event.preventDefault();
+      const newArray = this.actor.system.foci.concat([""]);
+      this.actor.update({
+        "system.foci": newArray,
+      });
+      this.actor.system.updateProvidedAbilities(
+        this.actor,
+        this.actor.system.archetypes,
+        newArray
+      );
+    });
+    html.find(".remove-focus").click((event) => {
+      event.preventDefault();
+      const i = Number(event.currentTarget.getAttribute("index"));
+      const newArray = this.actor.system.foci
+        .slice(0, i)
+        .concat(this.actor.system.foci.slice(i + 1));
+      this.actor.update({
+        "system.foci": newArray,
+      });
+      this.actor.system.updateProvidedAbilities(
+        this.actor,
+        this.actor.system.archetypes,
+        newArray
+      );
+    });
+    html.find(".focusslot").dblclick(async (event) => {
+      event.preventDefault();
+      const index = Number(event.currentTarget.getAttribute("index"));
+      const instance = this.actor.system.foci[index];
+      if (instance) {
+        // open existing
+        lookup(instance).sheet.render(true);
+      } else {
+        // create new
+        const newItem = await getDocumentClass("Item").create(
+          {
+            name: game.i18n.localize("WT.Dialog.NewFocus"),
+            type: "focus",
+          },
+          { parent: this.actor }
+        );
+        newItem.sheet.render(true);
+        const newArray = this.actor.system.foci.slice();
+        newArray[index] = [...newArray[index], newItem.id];
+        this.actor.update({
+          "system.foci": newArray,
+        });
+        this.actor.system.updateProvidedAbilities(
+          this.actor,
+          this.actor.system.archetypes,
+          newArray
+        );
+      }
+    });
+    ContextMenu.create(this, html, ".focusslot", [
+      {
+        name: game.i18n.localize("WT.Dialog.RemoveFocus"),
+        icon: "",
+        condition: (slot) => {
+          var index = Number(slot.attr("index"));
+          return this.actor.system.foci[index];
+        },
+        callback: async (slot) => {
+          var index = Number(slot.attr("index"));
+          const id = this.actor.system.foci[index];
+          const newArray = this.actor.system.foci.slice();
+          newArray[index] = undefined;
+          this.actor.update({
+            "system.foci": newArray,
+          });
+          const embedded = this.actor.getEmbeddedDocument("Item", id);
+          if (embedded) {
+            await embedded.delete();
+          }
+          this.actor.system.updateProvidedAbilities(
+            this.actor,
+            this.actor.system.archetypes,
+            newArray
+          );
+        },
+      },
+    ]);
   }
 
   /** @override */
-  _onDropItem(event, itemInfo) {
+  async _onDropItem(event, itemInfo) {
     if (!this.isEditable) return;
 
     if (itemInfo.type == "Item") {
@@ -229,14 +314,14 @@ export class WTCharacterSheet extends ActorSheet {
 
       const addRefListDropHandler = generateAddRefListDropHandler(this, item);
 
-      addRefListDropHandler(
+      await addRefListDropHandler(
         "stats",
         "skill",
         "skill",
         "system.skills",
         () => this.actor.system.skills
       );
-      addRefListDropHandler(
+      await addRefListDropHandler(
         "archetype",
         "source",
         "metaquality",
@@ -244,7 +329,7 @@ export class WTCharacterSheet extends ActorSheet {
         () => this.actor.system.sources,
         { filter: (item) => item.system.metaQualityType == 0 }
       );
-      addRefListDropHandler(
+      await addRefListDropHandler(
         "archetype",
         "permission",
         "metaquality",
@@ -252,7 +337,7 @@ export class WTCharacterSheet extends ActorSheet {
         () => this.actor.system.permissions,
         { filter: (item) => item.system.metaQualityType == 1 }
       );
-      addRefListDropHandler(
+      await addRefListDropHandler(
         "archetype",
         "intrinsic",
         "metaquality",
@@ -288,6 +373,45 @@ export class WTCharacterSheet extends ActorSheet {
               this.actor,
               newArray,
               this.actor.system.foci
+            );
+          }
+        }
+      }
+
+      if (item.type == "focus") {
+        const slots = document
+          .elementsFromPoint(event.pageX, event.pageY)
+          .filter((e) => e.classList.contains("focusslot"));
+        if (slots.length) {
+          const index = Number(slots[0].getAttribute("index"));
+          const embedded = this.actor.getEmbeddedDocument(
+            "Item",
+            this.actor.system.foci[index]
+          );
+          if (embedded) {
+            await embedded.delete();
+          }
+          const newArray = this.actor.system.foci.slice();
+          newArray[index] = itemID;
+          this.actor.update({
+            "system.foci": newArray,
+          });
+          this.actor.system.updateProvidedAbilities(
+            this.actor,
+            this.actor.system.archetypes,
+            newArray
+          );
+        } else {
+          const tab = this._tabs[0].active;
+          if (tab == "powers") {
+            const newArray = this.actor.system.foci.concat([itemID]);
+            this.actor.update({
+              "system.foci": newArray,
+            });
+            this.actor.system.updateProvidedAbilities(
+              this.actor,
+              this.actor.system.archetypes,
+              newArray
             );
           }
         }
