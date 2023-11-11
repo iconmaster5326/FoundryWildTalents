@@ -38,6 +38,12 @@
 .wildtalents .grow2x {
   flex: 2 0 0;
 }
+.wildtalents .grow3x {
+  flex: 3 0 0;
+}
+.wildtalents .grow4x {
+  flex: 3 0 0;
+}
 
 .wildtalents .nogrow {
   flex: 0 0 auto;

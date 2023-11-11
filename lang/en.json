@@ -118,5 +118,11 @@
   "WT.Dialog.RemoveExtra": "Unbind extra/flaw",
   "WT.Dialog.ProvidedBy": "provided by",
   "WT.Dialog.UseSilhouette": "Use this archetye's custom silhouette",
-  "WT.Dialog.RestoreSilhouette": "Restore default silhouette"
+  "WT.Dialog.RestoreSilhouette": "Restore default silhouette",
+
+  "WT.ORERollDialog.Title": "Configure Your Roll",
+  "WT.ORERollDialog.Dice": "Dice",
+  "WT.ORERollDialog.MinWidth": "Min. width",
+  "WT.ORERollDialog.MinHeight": "Min. height",
+  "WT.ORERollDialog.Confirm": "Roll"
 }

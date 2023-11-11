@@ -1,4 +1,5 @@
 import { DEFAULT_SILHOUETTE, STATS } from "../util.mjs";
+import { ORERollDialog } from "./ORERollDialog.mjs";
 import {
   generateAddRefListDropHandler,
   generateAddRefSheetListener,
@@ -370,6 +371,13 @@ export class WTCharacterSheet extends ActorSheet {
         },
       },
     ]);
+
+    html.find(".roll-stat").click(async (event) => {
+      event.preventDefault();
+      (await ORERollDialog.create(
+        this.actor.system.stats[event.currentTarget.getAttribute("stat")]
+      )).render(true);
+    });
   }
 
   /** @override */

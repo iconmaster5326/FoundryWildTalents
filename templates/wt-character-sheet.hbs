@@ -61,6 +61,7 @@
         {{#each STATS as |stat i|}}
           <div class="hbox vgap8">
             <label class="grow">{{localize stat.name}}</label>
+            <button class="nogrow roll-stat" stat="{{stat.field}}"><i class="fa-solid fa-dice"></i></button>
             <input class="grow2x"
               type="text"
               name="system.stats.{{stat.field}}"
