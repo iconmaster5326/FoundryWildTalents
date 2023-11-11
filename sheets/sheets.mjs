@@ -89,6 +89,7 @@ export function generateAddRefSheetListener(sheet, html) {
           });
         },
       },
+      ...(options.contextMenuActions ?? []),
     ]);
   };
 }

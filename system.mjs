@@ -13,7 +13,7 @@ import { WTPowerSheet } from "./sheets/WTPowerSheet.mjs";
 import { WTExtraSheet } from "./sheets/WTExtraSheet.mjs";
 import { WTFocusSheet } from "./sheets/WTFocusSheet.mjs";
 
-Hooks.once("init", function () {
+Hooks.once("init", async function () {
   CONFIG.Actor.dataModels.character = WTCharacterData;
   CONFIG.Item.dataModels.skill = WTSkillData;
   CONFIG.Item.dataModels.archetype = WTArchetypeData;
@@ -70,6 +70,8 @@ Hooks.once("init", function () {
   Handlebars.registerHelper("enrich", function (t) {
     return TextEditor.enrichHTML(t, { async: false });
   });
+
+  await loadTemplates(["systems/wildtalents/templates/parts/silhouette.hbs"]);
 });
 
 const ASSETS = "systems/wildtalents/assets/";

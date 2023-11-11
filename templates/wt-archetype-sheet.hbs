@@ -140,9 +140,77 @@
       </ul>
     </div>
     <div class="tab powers" data-group="primary" data-tab="powers">
-      <h2>{{localize "WT.Label.Hyperstats"}}</h2>
-      <h2>{{localize "WT.Label.Hyperskills"}}</h2>
-      <h2>{{localize "WT.Label.Miracles"}}</h2>
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Hyperstats"}}</div>
+        <button class="add-hyperstat nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.hyperstats as |power i|}}
+          <li class="hbox">
+            <div class="hbox grow2x slot hyperstatslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.hyperstats.{{i}}.id" value="{{power.id}}">
+              {{#with (lookup @root.documents power.id) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptyHyperstatSlot"}}</div>
+              {{/with}}
+            </div>
+            <div class="nowrap">: </div>
+            <input class="grow" type="text" name="system.hyperstats.{{i}}.minDice" value="{{power.minDice}}">
+            <button class="remove-hyperstat nogrow" index="{{i}}">-</button>
+          </li>
+        {{/each}}
+      </ul>
+
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Hyperskills"}}</div>
+        <button class="add-hyperskill nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.hyperskills as |power i|}}
+          <li class="hbox">
+            <div class="hbox grow2x slot hyperskillslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.hyperskills.{{i}}.id" value="{{power.id}}">
+              {{#with (lookup @root.documents power.id) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptyHyperskillSlot"}}</div>
+              {{/with}}
+            </div>
+            <div class="nowrap">: </div>
+            <input class="grow" type="text" name="system.hyperskills.{{i}}.minDice" value="{{power.minDice}}">
+            <button class="remove-hyperskill nogrow" index="{{i}}">-</button>
+          </li>
+        {{/each}}
+      </ul>
+
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Miracles"}}</div>
+        <button class="add-miracle nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.miracles as |power i|}}
+          <li class="hbox">
+            <div class="hbox grow2x slot miracleslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.miracles.{{i}}.id" value="{{power.id}}">
+              {{#with (lookup @root.documents power.id) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptyMiracleSlot"}}</div>
+              {{/with}}
+            </div>
+            <div class="nowrap">: </div>
+            <input class="grow" type="text" name="system.miracles.{{i}}.minDice" value="{{power.minDice}}">
+            <button class="remove-miracle nogrow" index="{{i}}">-</button>
+          </li>
+        {{/each}}
+      </ul>
     </div>
     <div class="tab other" data-group="primary" data-tab="other">
       <div class="hbox">
@@ -153,9 +221,19 @@
         />
       </div>
       {{#if system.customSilhouette}}
-        <h2>{{localize "WT.Label.Silhouette"}}</h2>
+        <h2 class="hbox silhouette-header">
+          <div class="grow">{{localize "WT.Label.Silhouette"}}</div>
+          <button class="add-body-part nogrow">+</button>
+        </h2>
+        {{> "systems/wildtalents/templates/parts/silhouette.hbs" }}
       {{else}}
-
+        {{#each system.silhouette as |bodyPart i|}}
+          <input class="dummy" type="text" name="system.silhouette.{{i}}.hitLocations" value="{{bodyPart.hitLocations}}">
+          <input class="dummy" type="text" name="system.silhouette.{{i}}.name" value="{{bodyPart.name}}">
+          <input class="dummy" type="number" name="system.silhouette.{{i}}.boxes" value="{{bodyPart.boxes}}">
+          <input class="dummy" type="checkbox" name="system.silhouette.{{i}}.important" {{#if bodyPart.important}}checked{{/if}}>
+          <input class="dummy" type="number" name="system.silhouette.{{i}}.brainBoxes" value="{{bodyPart.brainBoxes}}">
+        {{/each}}
       {{/if}}
     </div>
   </section>

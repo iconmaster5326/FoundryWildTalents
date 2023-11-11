@@ -48,7 +48,7 @@ export class WTArchetypeData extends foundry.abstract.DataModel {
         })
       ),
       customSilhouette: new fields.BooleanField({ initial: false }),
-      silhouette: new fields.ArrayField(bodyPartField()),
+      silhouette: new fields.ArrayField(bodyPartField(false)),
     };
   }
 }

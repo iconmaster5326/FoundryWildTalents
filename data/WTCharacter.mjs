@@ -1,4 +1,4 @@
-import { STATS } from "../util.mjs";
+import { DEFAULT_SILHOUETTE, STATS } from "../util.mjs";
 import { bodyPartField, rollField } from "./data.mjs";
 
 export class WTCharacterData extends foundry.abstract.DataModel {
@@ -54,21 +54,9 @@ export class WTCharacterData extends foundry.abstract.DataModel {
           specialty: new fields.StringField(),
         })
       ),
-      silhouette: new fields.ArrayField(bodyPartField(), {
+      silhouette: new fields.ArrayField(bodyPartField(true), {
         required: true,
-        initial: [
-          { hitLocations: "1", name: "Left Leg", boxes: 5 },
-          { hitLocations: "2", name: "Right Leg", boxes: 5 },
-          { hitLocations: "3,4", name: "Left Arm", boxes: 5 },
-          { hitLocations: "5,6", name: "Right Arm", boxes: 5 },
-          {
-            hitLocations: "7-9",
-            name: "Torso",
-            boxes: 10,
-            important: true,
-          },
-          { hitLocations: "10", name: "Head", boxes: 4, brainBoxes: 4 },
-        ],
+        initial: DEFAULT_SILHOUETTE,
       }),
       archetypes: new fields.ArrayField(new fields.StringField()), // IDs of archetypes
       sources: new fields.ArrayField(

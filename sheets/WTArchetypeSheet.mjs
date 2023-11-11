@@ -1,3 +1,4 @@
+import { DEFAULT_SILHOUETTE } from "../util.mjs";
 import {
   WTItemSheet,
   generateAddRefListDropHandler,
@@ -98,6 +99,72 @@ export class WTArchetypeSheet extends WTItemSheet {
         removeDialogText: "WT.Dialog.RemoveIntrinsic",
       }
     );
+    addRefListListener(
+      "hyperstat",
+      "power",
+      "system.hyperstats",
+      () => this.item.system.hyperstats,
+      {
+        creatable: true,
+        newInstanceName: "WT.Dialog.NewHyperstat",
+        createWith: { system: { powerType: 0 } },
+        removeDialogText: "WT.Dialog.RemoveHyperstat",
+      }
+    );
+    addRefListListener(
+      "hyperskill",
+      "power",
+      "system.hyperskills",
+      () => this.item.system.hyperskills,
+      {
+        creatable: true,
+        newInstanceName: "WT.Dialog.NewHyperskill",
+        createWith: { system: { powerType: 1 } },
+        removeDialogText: "WT.Dialog.RemoveHyperskill",
+      }
+    );
+    addRefListListener(
+      "miracle",
+      "power",
+      "system.miracles",
+      () => this.item.system.miracles,
+      {
+        creatable: true,
+        newInstanceName: "WT.Dialog.NewMiracle",
+        createWith: { system: { powerType: 2 } },
+        removeDialogText: "WT.Dialog.RemoveMiracle",
+      }
+    );
+
+    html.find(".add-body-part").click((event) => {
+      event.preventDefault();
+      this.item.update({
+        "system.silhouette": this.item.system.silhouette.concat([{}]),
+      });
+    });
+    html.find(".remove-body-part").click((event) => {
+      event.preventDefault();
+      const i = Number(event.currentTarget.getAttribute("index"));
+      const newArray = this.item.system.silhouette
+        .slice(0, i)
+        .concat(this.item.system.silhouette.slice(i + 1));
+      this.item.update({
+        "system.silhouette": newArray,
+      });
+    });
+
+    ContextMenu.create(this, html, ".silhouette-header", [
+      {
+        name: game.i18n.localize("WT.Dialog.RestoreSilhouette"),
+        icon: "",
+        condition: (_) => true,
+        callback: async (_) => {
+          this.actor.update({
+            "system.silhouette": DEFAULT_SILHOUETTE,
+          });
+        },
+      },
+    ]);
   }
 
   /** @override */
@@ -134,6 +201,30 @@ export class WTArchetypeSheet extends WTItemSheet {
         "system.intrinsics",
         () => this.item.system.intrinsics,
         { filter: (item) => item.system.metaQualityType == 2 }
+      );
+      await addRefListDropHandler(
+        undefined,
+        "hyperstat",
+        "power",
+        "system.hyperstats",
+        () => this.item.system.hyperstats,
+        { filter: (item) => item.system.powerType == 0 }
+      );
+      await addRefListDropHandler(
+        undefined,
+        "hyperskill",
+        "power",
+        "system.hyperskills",
+        () => this.item.system.hyperskills,
+        { filter: (item) => item.system.powerType == 1 }
+      );
+      await addRefListDropHandler(
+        undefined,
+        "miracle",
+        "power",
+        "system.miracles",
+        () => this.item.system.miracles,
+        { filter: (item) => item.system.powerType == 2 }
       );
     }
   }

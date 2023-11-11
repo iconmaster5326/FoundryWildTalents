@@ -1,4 +1,4 @@
-import { STATS } from "../util.mjs";
+import { DEFAULT_SILHOUETTE, STATS } from "../util.mjs";
 import {
   generateAddRefListDropHandler,
   generateAddRefSheetListener,
@@ -249,6 +249,39 @@ export class WTCharacterSheet extends ActorSheet {
             newArray,
             this.actor.system.foci
           );
+        },
+      },
+      {
+        name: game.i18n.localize("WT.Dialog.UseSilhouette"),
+        icon: "",
+        condition: (slot) => {
+          var index = Number(slot.attr("index"));
+          const id = this.actor.system.archetypes[index];
+          if (!id) return false;
+          const archetype = Item.get(id);
+          if (!archetype) return false;
+          return archetype.system.customSilhouette;
+        },
+        callback: async (slot) => {
+          var index = Number(slot.attr("index"));
+          const id = this.actor.system.archetypes[index];
+          const archetype = Item.get(id);
+          this.actor.update({
+            "system.silhouette": archetype.system.silhouette,
+          });
+        },
+      },
+    ]);
+
+    ContextMenu.create(this, html, ".silhouette-header", [
+      {
+        name: game.i18n.localize("WT.Dialog.RestoreSilhouette"),
+        icon: "",
+        condition: (_) => true,
+        callback: async (_) => {
+          this.actor.update({
+            "system.silhouette": DEFAULT_SILHOUETTE,
+          });
         },
       },
     ]);

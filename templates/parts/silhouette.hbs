@@ -1,0 +1,59 @@
+<ul>
+  {{#each system.silhouette as |bodyPart i|}}
+  <li class="hbox">
+    <div class="vbox vgap16">
+      <div class="hbox vgap4">
+        <div class="nowrap">(</div>
+        <input class="growhalf"
+          type="text"
+          name="system.silhouette.{{i}}.hitLocations"
+          value="{{bodyPart.hitLocations}}"
+        />
+        <div class="nowrap">) </div>
+        <input class="grow"
+          type="text"
+          name="system.silhouette.{{i}}.name"
+          value="{{bodyPart.name}}"
+        />
+        <div class="nowrap">: </div>
+        <input class="growhalf"
+          type="number"
+          name="system.silhouette.{{i}}.boxes"
+          value="{{bodyPart.boxes}}"
+        />
+        <div class="nowrap"> {{localize "WT.Dialog.BodyPartBoxes"}} (</div>
+        <input class="growhalf"
+          type="number"
+          name="system.silhouette.{{i}}.brainBoxes"
+          value="{{bodyPart.brainBoxes}}"
+        />
+        <div class="nowrap"> {{localize "WT.Dialog.BodyPartIsBrain"}}; {{localize "WT.Dialog.BodyPartImportant"}}</div>
+        <input type="checkbox"
+          name="system.silhouette.{{i}}.important"
+          {{#if bodyPart.important}}checked{{/if}}
+        />
+        <div class="nowrap">)</div>
+      </div>
+      <div class="hbox vgap4">
+        {{#if bodyPart.shockDamage includeZero=true}}
+        <div class="nowrap">{{localize "WT.Label.ShockDamage"}}: </div>
+        <input class="grow"
+          type="number"
+          name="system.silhouette.{{i}}.shockDamage"
+          value="{{bodyPart.shockDamage}}"
+        />
+        {{/if}}
+        {{#if bodyPart.killingDamage includeZero=true}}
+        <div class="nowrap"> {{localize "WT.Label.KillingDamage"}}: </div>
+        <input class="grow"
+          type="number"
+          name="system.silhouette.{{i}}.killingDamage"
+          value="{{bodyPart.killingDamage}}"
+        />
+        {{/if}}
+      </div>
+    </div>
+    <button class="remove-body-part nogrow" index="{{i}}">-</button>
+  </li>
+  {{/each}}
+</ul>

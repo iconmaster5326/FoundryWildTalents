@@ -19,47 +19,53 @@ export function rollField(options = {}) {
   });
 }
 
-export function bodyPartField(options = {}) {
-  return new fields.SchemaField({
-    hitLocations: new fields.StringField({
-      required: true,
-      initial: "",
-      validate: validateHitLocations,
-    }),
-    name: new fields.StringField({
-      required: true,
-      initial: "",
-    }),
-    boxes: new fields.NumberField({
-      required: true,
-      initial: 1,
-      integer: true,
-      min: 1,
-    }),
-    important: new fields.BooleanField({
-      required: true,
-      initial: false,
-    }),
-    brainBoxes: new fields.NumberField({
-      required: true,
-      initial: 0,
-      integer: true,
-      min: 0,
-    }),
-    shockDamage: new fields.NumberField({
-      required: true,
-      initial: 0,
-      integer: true,
-      min: 0,
-    }),
-    killingDamage: new fields.NumberField({
-      required: true,
-      initial: 0,
-      integer: true,
-      min: 0,
-    }),
-    ...options,
-  });
+export function bodyPartField(useDamage, options = {}) {
+  return new fields.SchemaField(
+    {
+      hitLocations: new fields.StringField({
+        required: true,
+        initial: "",
+        validate: validateHitLocations,
+      }),
+      name: new fields.StringField({
+        required: true,
+        initial: "",
+      }),
+      boxes: new fields.NumberField({
+        required: true,
+        initial: 1,
+        integer: true,
+        min: 1,
+      }),
+      important: new fields.BooleanField({
+        required: true,
+        initial: false,
+      }),
+      brainBoxes: new fields.NumberField({
+        required: true,
+        initial: 0,
+        integer: true,
+        min: 0,
+      }),
+      ...(useDamage
+        ? {
+            shockDamage: new fields.NumberField({
+              required: true,
+              initial: 0,
+              integer: true,
+              min: 0,
+            }),
+            killingDamage: new fields.NumberField({
+              required: true,
+              initial: 0,
+              integer: true,
+              min: 0,
+            }),
+          }
+        : {}),
+    },
+    options
+  );
 }
 
 const statChoices = {};
@@ -94,15 +100,18 @@ export function powerCapacityField(options = {}) {
 }
 
 export function extraInstanceField(options = {}) {
-  return new fields.SchemaField({
-    id: new fields.StringField(), // ID of extra
-    multibuyAmount: new fields.NumberField({
-      required: true,
-      initial: 1,
-      integer: true,
-      min: 1,
-    }),
-    capacity: powerCapacityField(),
-    condition: new fields.StringField(),
-  }, options);
+  return new fields.SchemaField(
+    {
+      id: new fields.StringField(), // ID of extra
+      multibuyAmount: new fields.NumberField({
+        required: true,
+        initial: 1,
+        integer: true,
+        min: 1,
+      }),
+      capacity: powerCapacityField(),
+      condition: new fields.StringField(),
+    },
+    options
+  );
 }
