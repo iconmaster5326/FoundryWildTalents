@@ -80,7 +80,7 @@
   </h2>
   <ul>
     {{#each system.qualities as |quality i|}}
-      <li class="hboxstretch vgap16">
+      <li class="hboxstretch vgap16 quality" index="{{i}}">
         <div class="vboxstretch grow">
           <div class="hbox vgap4">
             <input class="grow2x" type="text" name="system.qualities.{{i}}.name" value="{{quality.name}}" placeholder="{{localize "WT.Label.Name"}}">
@@ -108,10 +108,58 @@
           </div>
           <div class="hboxstart vgap4">
             <div class="nowrap">{{localize "WT.Label.Extras"}}: </div>
-            <div class="grow vboxstretch">
+            <div class="grow vboxstretch hgap16">
               {{#each quality.extras as |extra j|}}
                 <div class="grow hbox vgap4">
-                  <div class="grow nowrap">extra {{j}}</div> <!-- TODO -->
+                  <div class="growhalf hbox">
+                    {{#with (lookup @root.documents extra.id) as |item|}}
+                      {{#if item.system.multibuy}}
+                        <input class="grow" type="number" name="system.qualities.{{i}}.extras.{{j}}.multibuyAmount" value="{{extra.multibuyAmount}}">
+                        <div class="nowrap">x </div>
+                      {{else}}
+                        <input class="dummy" type="number" name="system.qualities.{{i}}.extras.{{j}}.multibuyAmount" value="{{extra.multibuyAmount}}">
+                      {{/if}}
+                    {{else}}
+                      <input class="dummy" type="number" name="system.qualities.{{i}}.extras.{{j}}.multibuyAmount" value="{{extra.multibuyAmount}}">
+                    {{/with}}
+                  </div>
+                  <div class="grow hbox slot extraslot" index1="{{i}}" index2="{{j}}">
+                    <input class="dummy" type="text" name="system.qualities.{{i}}.extras.{{j}}.id" value="{{extra.id}}">
+                    {{#with (lookup @root.documents extra.id) as |item|}}
+                      <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                      <div class="grow">{{item.name}}</div>
+                    {{else}}
+                      <img class="nogrow" width="24" height="24">
+                      <div class="grow placeholder">{{localize "WT.Dialog.EmptyExtraSlot"}}</div>
+                    {{/with}}
+                  </div>
+                  <div class="grow hbox">
+                    {{#with (lookup @root.documents extra.id) as |item|}}
+                      {{#if item.system.requiresCondition}}
+                        <div class="nowrap"> (</div>
+                        <input class="grow" type="text" name="system.qualities.{{i}}.extras.{{j}}.condition" value="{{extra.condition}}">
+                        <div class="nowrap">) </div>
+                      {{else}}
+                        <input class="dummy" type="text" name="system.qualities.{{i}}.extras.{{j}}.condition" value="{{extra.condition}}">
+                      {{/if}}
+                      {{#if item.system.requiresCapacity}}
+                        <div class="nowrap"> (</div>
+                        <select class="grow2x" name="system.qualities.{{i}}.extras.{{j}}.capacity">
+                          {{#select extra.capacity}}
+                            {{#each @root.CAPACITY_TYPES as |pc k|}}
+                              <option value="{{k}}" {{#if (eq extra.capacity k)}}selected{{/if}}>{{localize pc.name}}</option>
+                            {{/each}}
+                          {{/select}}
+                        </select>
+                        <div class="nowrap">) </div>
+                      {{else}}
+                        <input class="dummy" type="number" name="system.qualities.{{i}}.extras.{{j}}.capacity" value="{{extra.capacity}}">
+                      {{/if}}
+                    {{else}}
+                      <input class="dummy" type="text" name="system.qualities.{{i}}.extras.{{j}}.condition" value="{{extra.condition}}">
+                      <input class="dummy" type="number" name="system.qualities.{{i}}.extras.{{j}}.capacity" value="{{extra.capacity}}">
+                    {{/with}}
+                  </div>
                   <button class="remove-extra nogrow" index1="{{i}}" index2="{{j}}">-</button>
                 </div>
               {{/each}}
