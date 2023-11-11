@@ -9,6 +9,7 @@ export class WTExtraData extends foundry.abstract.DataModel {
       multibuy: new fields.BooleanField({initial: false}),
       requiresCapacity: new fields.BooleanField({initial: false}),
       requiresCondition: new fields.BooleanField({initial: false}),
+      fociOnly: new fields.BooleanField({initial: false}),
     };
   }
 }

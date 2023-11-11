@@ -10,6 +10,7 @@ import { WTPowerData } from "./data/WTPower.mjs";
 import { WTArchetypeSheet } from "./sheets/WTArchetypeSheet.mjs";
 import { WTMetaQualitySheet } from "./sheets/WTMetaQualitySheet.mjs";
 import { WTPowerSheet } from "./sheets/WTPowerSheet.mjs";
+import { WTExtraSheet } from "./sheets/WTExtraSheet.mjs";
 
 Hooks.once("init", function () {
   CONFIG.Actor.dataModels.character = WTCharacterData;
@@ -47,6 +48,11 @@ Hooks.once("init", function () {
     types: ["power"],
     makeDefault: true,
     label: game.i18n.localize("WT.Sheet.Power"),
+  });
+  Items.registerSheet("wildtalents-extra", WTExtraSheet, {
+    types: ["extra"],
+    makeDefault: true,
+    label: game.i18n.localize("WT.Sheet.Extra"),
   });
 
   Handlebars.registerHelper("eq", function (a, b) {
