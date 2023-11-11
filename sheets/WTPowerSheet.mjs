@@ -62,6 +62,10 @@ export class WTPowerSheet extends WTItemSheet {
         "system.qualities": newArray,
       });
     });
+    html.find(".skillslot").dblclick(async (event) => {
+      event.preventDefault();
+      Item.get(this.item.system.skill.id).sheet.render(true);
+    });
     ContextMenu.create(this, html, ".skillslot", [
       {
         name: game.i18n.localize("WT.Dialog.RemoveSkill"),
