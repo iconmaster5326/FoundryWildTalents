@@ -1,3 +1,5 @@
+import { STATS } from "../util.mjs";
+
 const fields = foundry.data.fields;
 
 function validateORERoll(s) {
@@ -56,6 +58,22 @@ export function bodyPartField(options = {}) {
       integer: true,
       min: 0,
     }),
+    ...options,
+  });
+}
+
+const statChoices = {};
+for (var i = 0; i < STATS.length; i++) {
+  const stat = STATS[i];
+  statChoices[i] = stat.name;
+}
+
+export function statField(options = {}) {
+  return new fields.NumberField({
+    required: true,
+    initial: 0,
+    integer: true,
+    choices: statChoices,
     ...options,
   });
 }

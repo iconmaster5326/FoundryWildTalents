@@ -9,6 +9,7 @@ import { WTMetaQualityData } from "./data/WTMetaQuality.mjs";
 import { WTPowerData } from "./data/WTPower.mjs";
 import { WTArchetypeSheet } from "./sheets/WTArchetypeSheet.mjs";
 import { WTMetaQualitySheet } from "./sheets/WTMetaQualitySheet.mjs";
+import { WTPowerSheet } from "./sheets/WTPowerSheet.mjs";
 
 Hooks.once("init", function () {
   CONFIG.Actor.dataModels.character = WTCharacterData;
@@ -41,6 +42,11 @@ Hooks.once("init", function () {
     types: ["metaquality"],
     makeDefault: true,
     label: game.i18n.localize("WT.Sheet.MetaQuality"),
+  });
+  Items.registerSheet("wildtalents-power", WTPowerSheet, {
+    types: ["power"],
+    makeDefault: true,
+    label: game.i18n.localize("WT.Sheet.Power"),
   });
 
   Handlebars.registerHelper("eq", function (a, b) {

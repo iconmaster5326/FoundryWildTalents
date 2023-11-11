@@ -71,6 +71,10 @@
   "WT.Label.MetaQualityType": "Type",
   "WT.Label.RequiresCondition": "Requires a condition?",
   "WT.Label.Multibuy": "Can buy multiple times with the same parameters?",
+  "WT.Label.PowerType": "Type",
+  "WT.Label.Qualities": "Qualities",
+  "WT.Label.Stat": "Stat",
+  "WT.Label.Skill": "Skill",
 
   "WT.Dialog.EmptySkillSlot": "Drag skill here, or doubleclick...",
   "WT.Dialog.EmptySkillSpecialty": "specialty, etc...",

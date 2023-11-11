@@ -1,4 +1,5 @@
 import { CAPACITY_TYPES, POWER_TYPES } from "../util.mjs";
+import { statField } from "./data.mjs";
 
 export class WTPowerData extends foundry.abstract.DataModel {
   /** @override */
@@ -28,6 +29,8 @@ export class WTPowerData extends foundry.abstract.DataModel {
         initial: 2, // miracle
         choices: ptChoices,
       }),
+      stat: statField(), // only used if hyperstat
+      skill: new fields.StringField(), // ID of skill; only used if hyperskill
       qualities: new fields.ArrayField(
         new fields.SchemaField({
           name: new fields.StringField({ required: true, initial: "" }),

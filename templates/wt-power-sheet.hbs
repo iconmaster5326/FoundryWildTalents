@@ -1,0 +1,64 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header>
+    <h1 class="hbox">
+      <img
+        class="nogrow profile-img vgap8"
+        src="{{item.img}}"
+        data-edit="img"
+        title="{{item.name}}"
+        height="50"
+        width="50"
+      />
+      <input
+        class="grow hgap16 vgap8"
+        type="text"
+        name="name"
+        value="{{data.name}}"
+        placeholder="{{localize 'WT.Label.Name'}}"
+      />
+    </h1>
+  </header>
+
+  <div class="hbox vgap8">
+    <label class="grow">{{localize "WT.Label.PowerType"}}: </label>
+    <select class="grow2x" name="system.powerType">
+      {{#select system.powerType}}
+        {{#each POWER_TYPES as |pt i|}}
+          <option value="{{i}}" {{#if (eq system.powerType i)}}selected{{/if}}>{{localize pt.name}}</option>
+        {{/each}}
+      {{/select}}
+    </select>
+  </div>
+
+  {{#if (eq system.powerType 0)}}
+    <div class="hbox vgap8">
+      <label class="grow">{{localize "WT.Label.Stat"}}: </label>
+      <select class="grow2x" name="system.stat">
+        {{#select system.stat}}
+          {{#each STATS as |stat i|}}
+            <option value="{{i}}" {{#if (eq system.stat i)}}selected{{/if}}>{{localize stat.name}}</option>
+          {{/each}}
+        {{/select}}
+      </select>
+    </div>
+  {{else}}
+    <input class="dummy" type="number" name="system.stat" value="{{system.stat}}">
+  {{/if}}
+
+  {{#if (eq system.powerType 1)}}
+    <div class="hbox vgap8">
+      <label class="grow">{{localize "WT.Label.Skill"}}: </label>
+      <input class="grow2x" type="text" name="system.skill" value="{{system.skill}}">
+    </div>
+  {{else}}
+    <input class="dummy" type="text" name="system.skill" value="{{system.skill}}">
+  {{/if}}
+
+  <h2>{{localize "WT.Label.Qualities"}}</h2>
+  {{#each system.qualities as |quality i|}}
+
+  {{/each}}
+
+  <h2>{{localize "WT.Label.Notes"}}</h2>
+  {{editor (enrich system.notes) target="system.notes" button=true owner=owner editable=editable}}
+</form>
