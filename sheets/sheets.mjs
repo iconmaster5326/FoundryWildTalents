@@ -131,7 +131,7 @@ export function generateAddRefListDropHandler(sheet, item) {
           [propertyName]: newArray,
         });
       } else {
-        if (sheet._tabs[0].active == tab) {
+        if (!tab || sheet._tabs[0].active == tab) {
           actorOrItem.update({
             [propertyName]: getProp().concat([{ id: item.id }]),
           });

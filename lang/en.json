@@ -112,5 +112,7 @@
   "WT.Dialog.EmptyMiracleSlot": "Drag power here, or doubleclick...",
   "WT.Dialog.NewMiracle": "New Miracle",
   "WT.Dialog.RemoveMiracle": "Unbind Power",
+  "WT.Dialog.EmptyExtraSlot": "Drag extra/flaw here...",
+  "WT.Dialog.RemoveExtra": "Unbind Extra/Flaw",
   "WT.Dialog.ProvidedBy": "provided by"
 }

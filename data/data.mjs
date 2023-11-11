@@ -104,6 +104,5 @@ export function extraInstanceField(options = {}) {
     }),
     capacity: powerCapacityField(),
     condition: new fields.StringField(),
-    ...options,
-  });
+  }, options);
 }
