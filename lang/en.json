@@ -85,8 +85,16 @@
   "WT.Dialog.BodyPartBoxes": "boxes",
   "WT.Dialog.BodyPartIsBrain": "brain",
   "WT.Dialog.BodyPartImportant": "important?",
+  "WT.Dialog.New": "New",
   "WT.Dialog.NewSkill": "New Skill",
-  "WT.Dialog.RemoveSkill": "Remove Skill",
+  "WT.Dialog.Remove": "Unbind",
+  "WT.Dialog.RemoveSkill": "Unbind Skill",
   "WT.Dialog.EmptyArchetypeSlot": "Drag archetype here...",
-  "WT.Dialog.RemoveArchetype": "Remove Archetype"
+  "WT.Dialog.RemoveArchetype": "Unbind Archetype",
+  "WT.Dialog.EmptySourceSlot": "Drag meta-quality here...",
+  "WT.Dialog.RemoveSource": "Unbind meta-quality",
+  "WT.Dialog.EmptyPermissionSlot": "Drag meta-quality here...",
+  "WT.Dialog.RemovePermissione": "Unbind meta-quality",
+  "WT.Dialog.EmptyIntrinsicSlot": "Drag meta-quality here...",
+  "WT.Dialog.RemoveIntrinsic": "Unbind meta-quality"
 }

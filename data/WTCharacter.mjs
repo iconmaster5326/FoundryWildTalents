@@ -121,4 +121,140 @@ export class WTCharacterData extends foundry.abstract.DataModel {
       foci: new fields.ArrayField(new fields.StringField()), // ID of focus
     };
   }
+
+  updateProvidedAbilities(actor) {
+    console.log("Updating provided abilities for "+actor.id);
+    const archetypes = this.archetypes
+      .filter((id) => id)
+      .map((id) => Item.get(id));
+    const foci = this.foci.filter((id) => id).map((id) => Item.get(id));
+    // gather data for provided abilities
+    const existingData = {};
+    for (const x of this.sources
+      .concat(this.permissions)
+      .concat(this.intrinsics)
+      .concat(this.hyperstats)
+      .concat(this.hyperskills)
+      .concat(this.miracles)
+      .filter((x) => x.providedBy)) {
+      const key = x.providedBy + "." + x.id;
+      existingData[key] = (existingData[key] ?? []) + [x];
+    }
+    // add the provided abilities back
+    const newSources = [];
+    for (const archetype of archetypes) {
+      for (const x of archetype.system.sources) {
+        const result = { id: x.id, providedBy: archetype.id };
+        const key = archetype.id + "." + x.id;
+        if (existingData[key]) {
+          const existing = existingData[key][0];
+          existingData[key] = existing.slice(1);
+        }
+        newSources.push(result);
+      }
+    }
+    const newPermissions = [];
+    for (const archetype of archetypes) {
+      for (const x of archetype.system.permissions) {
+        const result = {
+          id: x.id,
+          providedBy: archetype.id,
+          condition: x.condition,
+        };
+        const key = archetype.id + "." + x.id;
+        if (existingData[key]) {
+          const existing = existingData[key][0];
+          existingData[key] = existing.slice(1);
+          result.condition = existing.condition;
+        }
+        newPermissions.push(result);
+      }
+    }
+    const newIntrinsics = [];
+    for (const archetype of archetypes) {
+      for (const x of archetype.system.intrinsics) {
+        const result = {
+          id: x.id,
+          providedBy: archetype.id,
+          condition: x.condition,
+          multibuyAmount: x.minMultibuyAmount,
+        };
+        const key = archetype.id + "." + x.id;
+        if (existingData[key]) {
+          const existing = existingData[key][0];
+          existingData[key] = existing.slice(1);
+          result.condition = existing.condition;
+          result.multibuyAmount = existing.multibuyAmount;
+        }
+        newIntrinsics.push(result);
+      }
+    }
+    const newHyperstats = [];
+    for (const powerSource of archetypes.concat(foci)) {
+      for (const x of powerSource.system.hyperstats) {
+        const result = {
+          id: x.id,
+          providedBy: powerSource.id,
+          dice: x.minDice,
+        };
+        const key = powerSource.id + "." + x.id;
+        if (existingData[key]) {
+          const existing = existingData[key][0];
+          existingData[key] = existing.slice(1);
+          result.dice = existing.dice;
+        }
+        newHyperstats.push(result);
+      }
+    }
+    const newHyperskills = [];
+    for (const powerSource of archetypes.concat(foci)) {
+      for (const x of powerSource.system.hyperskills) {
+        const result = {
+          id: x.id,
+          providedBy: powerSource.id,
+          dice: x.minDice,
+        };
+        const key = powerSource.id + "." + x.id;
+        if (existingData[key]) {
+          const existing = existingData[key][0];
+          existingData[key] = existing.slice(1);
+          result.dice = existing.dice;
+        }
+        newHyperskills.push(result);
+      }
+    }
+    const newMiracles = [];
+    for (const powerSource of archetypes.concat(foci)) {
+      for (const x of powerSource.system.miracles) {
+        const result = {
+          id: x.id,
+          providedBy: powerSource.id,
+          dice: x.minDice,
+        };
+        const key = powerSource.id + "." + x.id;
+        if (existingData[key]) {
+          const existing = existingData[key][0];
+          existingData[key] = existing.slice(1);
+          result.dice = existing.dice;
+        }
+        newMiracles.push(result);
+      }
+    }
+    // add the normal abilities back
+    newSources.push(...this.sources.filter((x) => !x.providedBy));
+    newPermissions.push(...this.permissions.filter((x) => !x.providedBy));
+    newIntrinsics.push(...this.intrinsics.filter((x) => !x.providedBy));
+    newHyperstats.push(...this.hyperstats.filter((x) => !x.providedBy));
+    newHyperskills.push(...this.hyperskills.filter((x) => !x.providedBy));
+    newMiracles.push(...this.miracles.filter((x) => !x.providedBy));
+    // update the document
+    actor.update({
+      "system.sources": newSources,
+      "system.permissions": newPermissions,
+      "system.intrinsics": newIntrinsics,
+      "system.hyperstats": newHyperstats,
+      "system.hyperskills": newHyperskills,
+      "system.miracles": newMiracles,
+    });
+  }
 }

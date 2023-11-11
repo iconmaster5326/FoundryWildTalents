@@ -129,9 +129,143 @@
           </li>
         {{/each}}
       </ul>
-      <h2>{{localize "WT.Label.Sources"}}</h2>
-      <h2>{{localize "WT.Label.Permissions"}}</h2>
-      <h2>{{localize "WT.Label.Intrinsics"}}</h2>
+
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Sources"}}</div>
+        <button class="add-source nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.sources as |mq i|}}
+          <li class="hbox">
+            <div class="growhalf"></div>
+            <div class="hbox grow2x slot sourceslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.sources.{{i}}.id" value="{{mq.id}}">
+              {{#with (lookup @root.documents mq.id) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptySourceSlot"}}</div>
+              {{/with}}
+            </div>
+            <div class="grow"></div>
+            <div class="grow">
+              {{#with (lookup @root.documents mq.providedBy) as |providedBy|}}
+                <span class="nowrap placeholder">provided by {{providedBy.name}}</span>
+              {{/with}}
+            </div>
+            <button class="remove-source nogrow" index="{{i}}" {{#if (lookup @root.documents mq.providedBy)}}disabled{{/if}}>-</button>
+          </li>
+        {{/each}}
+      </ul>
+
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Permissions"}}</div>
+        <button class="add-permission nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.permissions as |mq i|}}
+          <li class="hbox">
+            <div class="growhalf"></div>
+            <div class="hbox grow2x slot permissionslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.permissions.{{i}}.id" value="{{mq.id}}">
+              {{#with (lookup @root.documents mq.id) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptyPermissionSlot"}}</div>
+              {{/with}}
+            </div>
+            <div class="grow hbox">
+              {{#with (lookup @root.documents mq.id) as |item|}}
+                {{#if item.system.requiresCondition}}
+                  <div class="nowrap">(</div>
+                  {{#with (lookup @root.documents mq.providedBy) as |providedBy|}}
+                    <div class="grow nowrap">{{mq.condition}}</div>
+                    <input class="dummy" type="text" name="system.permissions.{{i}}.condition" value="{{mq.condition}}">
+                  {{else}}
+                    <input class="grow" type="text" name="system.permissions.{{i}}.condition" value="{{mq.condition}}">
+                  {{/with}}
+                  <div class="nowrap">)</div>
+                {{else}}
+                  <input class="dummy" type="text" name="system.permissions.{{i}}.condition" value="{{mq.condition}}">
+                {{/if}}
+              {{else}}
+                <input class="dummy" type="text" name="system.permissions.{{i}}.condition" value="{{mq.condition}}">
+              {{/with}}
+            </div>
+            <div class="grow">
+              {{#with (lookup @root.documents mq.providedBy) as |providedBy|}}
+                <span class="nowrap placeholder">provided by {{providedBy.name}}</span>
+              {{/with}}
+            </div>
+            <button class="remove-permission nogrow" index="{{i}}" {{#if (lookup @root.documents mq.providedBy)}}disabled{{/if}}>-</button>
+          </li>
+        {{/each}}
+      </ul>
+
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Intrinsics"}}</div>
+        <button class="add-intrinsic nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.intrinsics as |mq i|}}
+          <li class="hbox">
+            <div class="growhalf hbox">
+              {{#with (lookup @root.documents mq.id) as |item|}}
+                {{#if item.system.multibuy}}
+                  {{#with (lookup @root.documents mq.providedBy) as |providedBy|}}
+                    <div class="nowrap">{{mq.multibuyAmount}}</div>
+                    <input class="dummy" type="number" name="system.intrinsics.{{i}}.multibuyAmount" value="{{mq.multibuyAmount}}">
+                  {{else}}
+                    <input class="grow" type="number" name="system.intrinsics.{{i}}.multibuyAmount" value="{{mq.multibuyAmount}}">
+                  {{/with}}
+                  <div class="nowrap">x </div>
+                {{else}}
+                  <input class="dummy" type="number" name="system.intrinsics.{{i}}.multibuyAmount" value="{{mq.multibuyAmount}}">
+                {{/if}}
+              {{else}}
+                <input class="dummy" type="number" name="system.intrinsics.{{i}}.multibuyAmount" value="{{mq.multibuyAmount}}">
+              {{/with}}
+            </div>
+            <div class="hbox grow2x slot intrinsicslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.intrinsics.{{i}}.id" value="{{mq.id}}">
+              {{#with (lookup @root.documents mq.id) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptyIntrinsicSlot"}}</div>
+              {{/with}}
+            </div>
+            <div class="grow hbox">
+              {{#with (lookup @root.documents mq.id) as |item|}}
+                {{#if item.system.requiresCondition}}
+                  <div class="nowrap">(</div>
+                  {{#with (lookup @root.documents mq.providedBy) as |providedBy|}}
+                    <div class="grow nowrap">{{mq.condition}}</div>
+                    <input class="dummy" type="text" name="system.intrinsics.{{i}}.condition" value="{{mq.condition}}">
+                  {{else}}
+                    <input class="grow" type="text" name="system.intrinsics.{{i}}.condition" value="{{mq.condition}}">
+                  {{/with}}
+                  <div class="nowrap">)</div>
+                {{else}}
+                  <input class="dummy" type="text" name="system.intrinsics.{{i}}.condition" value="{{mq.condition}}">
+                {{/if}}
+              {{else}}
+                <input class="dummy" type="text" name="system.intrinsics.{{i}}.condition" value="{{mq.condition}}">
+              {{/with}}
+            </div>
+            <div class="grow">
+              {{#with (lookup @root.documents mq.providedBy) as |providedBy|}}
+                <span class="nowrap placeholder">provided by {{providedBy.name}}</span>
+              {{/with}}
+            </div>
+            <button class="remove-intrinsic nogrow" index="{{i}}" {{#if (lookup @root.documents mq.providedBy)}}disabled{{/if}}>-</button>
+          </li>
+        {{/each}}
+      </ul>
     </div>
     <div class="tab powers" data-group="primary" data-tab="powers">
       <h2>{{localize "WT.Label.Hyperstats"}}</h2>

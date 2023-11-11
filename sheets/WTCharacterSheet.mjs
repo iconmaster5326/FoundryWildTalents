@@ -110,78 +110,134 @@ export class WTCharacterSheet extends ActorSheet {
       });
     });
 
-    html.find(".add-skill").click((event) => {
-      event.preventDefault();
-      this.actor.update({
-        "system.skills": this.actor.system.skills.concat([{}]),
-      });
-    });
-    html.find(".remove-skill").click((event) => {
-      event.preventDefault();
-      const i = Number(event.currentTarget.getAttribute("index"));
-      const newArray = this.actor.system.skills
-        .slice(0, i)
-        .concat(this.actor.system.skills.slice(i + 1));
-      this.actor.update({
-        "system.skills": newArray,
-      });
-    });
-    html.find(".skillslot").dblclick(async (event) => {
-      event.preventDefault();
-      const index = Number(event.currentTarget.getAttribute("index"));
-      const instance = this.actor.system.skills[index];
-      if (instance.id) {
-        // open up existing
-        lookup(instance.id).sheet.render(true);
-      } else {
-        // create new embedded
-        const newItem = await getDocumentClass("Item").create(
-          { name: game.i18n.localize("WT.Dialog.NewSkill"), type: "skill" },
-          { parent: this.actor }
-        );
-        newItem.sheet.render(true);
-        const newArray = this.actor.system.skills.slice();
-        newArray[index] = {
-          ...newArray[index],
-          id: newItem.id,
-        };
-        this.actor.update({
-          "system.skills": newArray,
+    const SHEET = this;
+    function addRefListListener(
+      name,
+      itemTypeName,
+      propertyName,
+      getProp,
+      options = {}
+    ) {
+      html.find(".add-" + name).click((event) => {
+        event.preventDefault();
+        SHEET.actor.update({
+          [propertyName]: getProp().concat([{}]),
         });
-      }
-    });
-    ContextMenu.create(this, html, ".skillslot", [
-      {
-        name: game.i18n.localize("WT.Dialog.RemoveSkill"),
-        icon: "",
-        condition: (slot) => {
-          var index = Number(slot.attr("index"));
-          return this.actor.system.skills[index].id;
-        },
-        callback: async (slot) => {
-          var index = Number(slot.attr("index"));
-          const id = this.actor.system.skills[index].id;
-          const newArray = this.actor.system.skills.slice();
+      });
+      html.find(".remove-" + name).click((event) => {
+        event.preventDefault();
+        const i = Number(event.currentTarget.getAttribute("index"));
+        const newArray = getProp()
+          .slice(0, i)
+          .concat(getProp().slice(i + 1));
+        SHEET.actor.update({
+          [propertyName]: newArray,
+        });
+      });
+      html.find("." + name + "slot").dblclick(async (event) => {
+        event.preventDefault();
+        const index = Number(event.currentTarget.getAttribute("index"));
+        const instance = getProp()[index];
+        if (instance.id) {
+          // open up existing
+          lookup(instance.id).sheet.render(true);
+        } else if (options.creatable) {
+          // create new embedded
+          const newItem = await getDocumentClass("Item").create(
+            {
+              name: game.i18n.localize(
+                options.newInstanceName ?? "WT.Dialog.New"
+              ),
+              type: itemTypeName,
+            },
+            { parent: SHEET.actor }
+          );
+          newItem.sheet.render(true);
+          const newArray = getProp().slice();
           newArray[index] = {
             ...newArray[index],
-            id: undefined,
+            id: newItem.id,
           };
-          const embeddedSkill = this.actor.getEmbeddedDocument("Item", id);
-          if (embeddedSkill) {
-            await embeddedSkill.delete();
-          }
-          this.actor.update({
-            "system.skills": newArray,
+          SHEET.actor.update({
+            [propertyName]: newArray,
           });
+        }
+      });
+      ContextMenu.create(SHEET, html, "." + name + "slot", [
+        {
+          name: game.i18n.localize(
+            options.removeDialogText ?? "WT.Dialog.Remove"
+          ),
+          icon: "",
+          condition: (slot) => {
+            var index = Number(slot.attr("index"));
+            return getProp()[index].id;
+          },
+          callback: async (slot) => {
+            var index = Number(slot.attr("index"));
+            const id = getProp()[index].id;
+            const newArray = getProp().slice();
+            newArray[index] = {
+              ...newArray[index],
+              id: undefined,
+            };
+            const embedded = SHEET.actor.getEmbeddedDocument("Item", id);
+            if (embedded) {
+              await embedded.delete();
+            }
+            SHEET.actor.update({
+              [propertyName]: newArray,
+            });
+          },
         },
-      },
-    ]);
+      ]);
+    }
+
+    addRefListListener(
+      "skill",
+      "skill",
+      "system.skills",
+      () => this.actor.system.skills,
+      {
+        creatable: true,
+        newInstanceName: "WT.Dialog.NewSkill",
+        removeDialogText: "WT.Dialog.RemoveSkill",
+      }
+    );
+    addRefListListener(
+      "source",
+      "metaquality",
+      "system.sources",
+      () => this.actor.system.sources,
+      {
+        removeDialogText: "WT.Dialog.RemoveSource",
+      }
+    );
+    addRefListListener(
+      "permission",
+      "metaquality",
+      "system.permissions",
+      () => this.actor.system.permissions,
+      {
+        removeDialogText: "WT.Dialog.RemovePermission",
+      }
+    );
+    addRefListListener(
+      "intrinsic",
+      "metaquality",
+      "system.intrinsics",
+      () => this.actor.system.intrinsics,
+      {
+        removeDialogText: "WT.Dialog.RemoveIntrinsic",
+      }
+    );
 
     html.find(".add-archetype").click((event) => {
       event.preventDefault();
       this.actor.update({
         "system.archetypes": this.actor.system.archetypes.concat([""]),
       });
+      this.actor.system.updateProvidedAbilities(this.actor);
     });
     html.find(".remove-archetype").click((event) => {
       event.preventDefault();
@@ -192,6 +248,7 @@ export class WTCharacterSheet extends ActorSheet {
       this.actor.update({
         "system.archetypes": newArray,
       });
+      this.actor.system.updateProvidedAbilities(this.actor);
     });
     html.find(".archetypeslot").dblclick(async (event) => {
       event.preventDefault();
@@ -217,6 +274,7 @@ export class WTCharacterSheet extends ActorSheet {
           this.actor.update({
             "system.archetypes": newArray,
           });
+          this.actor.system.updateProvidedAbilities(this.actor);
         },
       },
     ]);
@@ -224,67 +282,90 @@ export class WTCharacterSheet extends ActorSheet {
 
   /** @override */
   _onDropItem(event, itemInfo) {
-    console.log("Dropping item into sheet...");
     if (itemInfo.type == "Item") {
       const itemID = itemInfo.uuid.slice("Item.".length);
-      console.log("It's an Item! " + itemID);
       const item = Item.get(itemID);
       if (!item) return;
-      if (item.type == "skill") {
-        console.log("It's a skill!");
-        const slots = document
-          .elementsFromPoint(event.pageX, event.pageY)
-          .filter((e) => e.classList.contains("skillslot"));
-        if (slots.length) {
-          console.log(
-            "It's over a skill slot! " + slots[0].getAttribute("index")
-          );
-          const index = Number(slots[0].getAttribute("index"));
-          const newArray = this.actor.system.skills.slice();
-          newArray[index] = {
-            ...newArray[index],
-            id: itemID,
-          };
-          this.actor.update({
-            "system.skills": newArray,
-          });
-        } else {
-          console.log("It's NOT over a skill slot!");
-          const tab = this._tabs[0].active;
-          if (tab == "stats") {
-            console.log("We're in the stats tab!");
-            this.actor.update({
-              "system.skills": this.actor.system.skills.concat([
-                { id: itemID },
-              ]),
+
+      const SHEET = this;
+      function handleRefList(tab, name, itemTypeName, propertyName, getProp, options = {}) {
+        if (item.type == itemTypeName && (options.filter ?? ((_) => true))(item)) {
+          const slots = document
+            .elementsFromPoint(event.pageX, event.pageY)
+            .filter((e) => e.classList.contains(name + "slot"));
+          if (slots.length) {
+            const index = Number(slots[0].getAttribute("index"));
+            const newArray = getProp().slice();
+            newArray[index] = {
+              ...newArray[index],
+              id: itemID,
+            };
+            SHEET.actor.update({
+              [propertyName]: newArray,
             });
+          } else {
+            if (SHEET._tabs[0].active == tab) {
+              SHEET.actor.update({
+                [propertyName]: getProp().concat([{ id: itemID }]),
+              });
+            }
           }
         }
-      } else if (item.type == "archetype") {
-        console.log("It's a archetype!");
+      }
+
+      handleRefList(
+        "stats",
+        "skill",
+        "skill",
+        "system.skills",
+        () => this.actor.system.skills
+      );
+      handleRefList(
+        "archetype",
+        "source",
+        "metaquality",
+        "system.sources",
+        () => this.actor.system.sources,
+        {filter: (item) => item.system.metaQualityType == 0},
+      );
+      handleRefList(
+        "archetype",
+        "permission",
+        "metaquality",
+        "system.permissions",
+        () => this.actor.system.permissions,
+        {filter: (item) => item.system.metaQualityType == 1},
+      );
+      handleRefList(
+        "archetype",
+        "intrinsic",
+        "metaquality",
+        "system.intrinsics",
+        () => this.actor.system.intrinsics,
+        {filter: (item) => item.system.metaQualityType == 2},
+      );
+
+      if (item.type == "archetype") {
         const slots = document
           .elementsFromPoint(event.pageX, event.pageY)
           .filter((e) => e.classList.contains("archetypeslot"));
         if (slots.length) {
-          console.log(
-            "It's over a archetype slot! " + slots[0].getAttribute("index")
-          );
           const index = Number(slots[0].getAttribute("index"));
           const newArray = this.actor.system.archetypes.slice();
           newArray[index] = itemID;
           this.actor.update({
             "system.archetypes": newArray,
           });
+          this.actor.system.updateProvidedAbilities(this.actor);
         } else {
-          console.log("It's NOT over a archetype slot!");
           const tab = this._tabs[0].active;
           if (tab == "archetype") {
-            console.log("We're in the archetype tab!");
             this.actor.update({
               "system.archetypes": this.actor.system.archetypes.concat([
                 itemID,
               ]),
             });
+            this.actor.system.updateProvidedAbilities(this.actor);
           }
         }
       }
