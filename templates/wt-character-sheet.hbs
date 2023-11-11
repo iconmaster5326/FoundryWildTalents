@@ -140,6 +140,7 @@
             <div class="growhalf"></div>
             <div class="hbox grow2x slot sourceslot" index="{{i}}">
               <input class="dummy" type="text" name="system.sources.{{i}}.id" value="{{mq.id}}">
+              <input class="dummy" type="text" name="system.sources.{{i}}.providedBy" value="{{mq.providedBy}}">
               {{#with (lookup @root.documents mq.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
                 <div class="grow">{{item.name}}</div>
@@ -169,6 +170,7 @@
             <div class="growhalf"></div>
             <div class="hbox grow2x slot permissionslot" index="{{i}}">
               <input class="dummy" type="text" name="system.permissions.{{i}}.id" value="{{mq.id}}">
+              <input class="dummy" type="text" name="system.permissions.{{i}}.providedBy" value="{{mq.providedBy}}">
               {{#with (lookup @root.documents mq.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
                 <div class="grow">{{item.name}}</div>
@@ -231,6 +233,7 @@
             </div>
             <div class="hbox grow2x slot intrinsicslot" index="{{i}}">
               <input class="dummy" type="text" name="system.intrinsics.{{i}}.id" value="{{mq.id}}">
+              <input class="dummy" type="text" name="system.intrinsics.{{i}}.providedBy" value="{{mq.providedBy}}">
               {{#with (lookup @root.documents mq.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
                 <div class="grow">{{item.name}}</div>
@@ -290,9 +293,95 @@
         {{/each}}
       </ul>
 
-      <h2>{{localize "WT.Label.Hyperstats"}}</h2>
-      <h2>{{localize "WT.Label.Hyperskills"}}</h2>
-      <h2>{{localize "WT.Label.Miracles"}}</h2>
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Hyperstats"}}</div>
+        <button class="add-hyperstat nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.hyperstats as |power i|}}
+          <li class="hbox">
+            <div class="hbox grow2x slot hyperstatslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.hyperstats.{{i}}.id" value="{{power.id}}">
+              <input class="dummy" type="text" name="system.hyperstats.{{i}}.providedBy" value="{{power.providedBy}}">
+              {{#with (lookup @root.documents power.id) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptyHyperstatSlot"}}</div>
+              {{/with}}
+            </div>
+            <div class="nowrap">: </div>
+            <input class="grow" type="text" name="system.hyperstats.{{i}}.dice" value="{{power.dice}}">
+            <div class="grow">
+              {{#with (lookup @root.documents power.providedBy) as |providedBy|}}
+                <span class="nowrap placeholder"> {{localize "WT.Dialog.ProvidedBy"}} {{providedBy.name}} </span>
+              {{/with}}
+            </div>
+            <button class="remove-hyperstat nogrow" index="{{i}}" {{#if (lookup @root.documents power.providedBy)}}disabled{{/if}}>-</button>
+          </li>
+        {{/each}}
+      </ul>
+
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Hyperskills"}}</div>
+        <button class="add-hyperskill nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.hyperskills as |power i|}}
+          <li class="hbox">
+            <div class="hbox grow2x slot hyperskillslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.hyperskills.{{i}}.id" value="{{power.id}}">
+              <input class="dummy" type="text" name="system.hyperskills.{{i}}.providedBy" value="{{power.providedBy}}">
+              {{#with (lookup @root.documents power.id) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptyHyperskillSlot"}}</div>
+              {{/with}}
+            </div>
+            <div class="nowrap">: </div>
+            <input class="grow" type="text" name="system.hyperskills.{{i}}.dice" value="{{power.dice}}">
+            <div class="grow">
+              {{#with (lookup @root.documents power.providedBy) as |providedBy|}}
+                <span class="nowrap placeholder"> {{localize "WT.Dialog.ProvidedBy"}} {{providedBy.name}} </span>
+              {{/with}}
+            </div>
+            <button class="remove-hyperskill nogrow" index="{{i}}" {{#if (lookup @root.documents power.providedBy)}}disabled{{/if}}>-</button>
+          </li>
+        {{/each}}
+      </ul>
+
+      <h2 class="hbox">
+        <div class="grow">{{localize "WT.Label.Miracles"}}</div>
+        <button class="add-miracle nogrow">+</button>
+      </h2>
+      <ul>
+        {{#each system.miracles as |power i|}}
+          <li class="hbox">
+            <div class="hbox grow2x slot miracleslot" index="{{i}}">
+              <input class="dummy" type="text" name="system.miracles.{{i}}.id" value="{{power.id}}">
+              <input class="dummy" type="text" name="system.miracles.{{i}}.providedBy" value="{{power.providedBy}}">
+              {{#with (lookup @root.documents power.id) as |item|}}
+                <img class="nogrow" src="{{item.img}}" width="24" height="24">
+                <div class="grow">{{item.name}}</div>
+              {{else}}
+                <img class="nogrow" width="24" height="24">
+                <div class="grow placeholder">{{localize "WT.Dialog.EmptyMiracleSlot"}}</div>
+              {{/with}}
+            </div>
+            <div class="nowrap">: </div>
+            <input class="grow" type="text" name="system.miracles.{{i}}.dice" value="{{power.dice}}">
+            <div class="grow">
+              {{#with (lookup @root.documents power.providedBy) as |providedBy|}}
+                <span class="nowrap placeholder"> {{localize "WT.Dialog.ProvidedBy"}} {{providedBy.name}} </span>
+              {{/with}}
+            </div>
+            <button class="remove-miracle nogrow" index="{{i}}" {{#if (lookup @root.documents power.providedBy)}}disabled{{/if}}>-</button>
+          </li>
+        {{/each}}
+      </ul>
     </div>
     <div class="tab silhouette" data-group="primary" data-tab="silhouette">
       <div>

@@ -70,7 +70,7 @@ export function generateAddRefSheetListener(sheet, html) {
         icon: "",
         condition: (slot) => {
           var index = Number(slot.attr("index"));
-          return getProp()[index].id;
+          return getProp()[index].id && !getProp()[index].providedBy;
         },
         callback: async (slot) => {
           var index = Number(slot.attr("index"));
@@ -110,6 +110,7 @@ export function generateAddRefListDropHandler(sheet, item) {
         .filter((e) => e.classList.contains(name + "slot"));
       if (slots.length) {
         const index = Number(slots[0].getAttribute("index"));
+        if (getProp()[index].providedBy) return;
         try {
           const embedded = actorOrItem.getEmbeddedDocument(
             "Item",

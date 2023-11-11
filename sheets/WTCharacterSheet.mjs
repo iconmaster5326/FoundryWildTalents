@@ -156,6 +156,42 @@ export class WTCharacterSheet extends ActorSheet {
         removeDialogText: "WT.Dialog.RemoveIntrinsic",
       }
     );
+    addRefListListener(
+      "hyperstat",
+      "power",
+      "system.hyperstats",
+      () => this.actor.system.hyperstats,
+      {
+        creatable: true,
+        newInstanceName: "WT.Dialog.NewHyperstat",
+        createWith: { system: { powerType: 0 } },
+        removeDialogText: "WT.Dialog.RemoveHyperstat",
+      }
+    );
+    addRefListListener(
+      "hyperskill",
+      "power",
+      "system.hyperskills",
+      () => this.actor.system.hyperskills,
+      {
+        creatable: true,
+        newInstanceName: "WT.Dialog.NewHyperskill",
+        createWith: { system: { powerType: 1 } },
+        removeDialogText: "WT.Dialog.RemoveHyperskill",
+      }
+    );
+    addRefListListener(
+      "miracle",
+      "power",
+      "system.miracles",
+      () => this.actor.system.miracles,
+      {
+        creatable: true,
+        newInstanceName: "WT.Dialog.NewMiracle",
+        createWith: { system: { powerType: 2 } },
+        removeDialogText: "WT.Dialog.RemoveMiracle",
+      }
+    );
 
     html.find(".add-archetype").click((event) => {
       event.preventDefault();
@@ -344,6 +380,30 @@ export class WTCharacterSheet extends ActorSheet {
         "system.intrinsics",
         () => this.actor.system.intrinsics,
         { filter: (item) => item.system.metaQualityType == 2 }
+      );
+      await addRefListDropHandler(
+        "powers",
+        "hyperstat",
+        "power",
+        "system.hyperstats",
+        () => this.actor.system.hyperstats,
+        { filter: (item) => item.system.powerType == 0 }
+      );
+      await addRefListDropHandler(
+        "powers",
+        "hyperskill",
+        "power",
+        "system.hyperskills",
+        () => this.actor.system.hyperskills,
+        { filter: (item) => item.system.powerType == 1 }
+      );
+      await addRefListDropHandler(
+        "powers",
+        "miracle",
+        "power",
+        "system.miracles",
+        () => this.actor.system.miracles,
+        { filter: (item) => item.system.powerType == 2 }
       );
 
       if (item.type == "archetype") {

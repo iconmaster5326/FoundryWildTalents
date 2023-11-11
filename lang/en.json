@@ -103,5 +103,14 @@
   "WT.Dialog.EmptyIntrinsicSlot": "Drag meta-quality here...",
   "WT.Dialog.NewIntrinsic": "New Intrinsic",
   "WT.Dialog.RemoveIntrinsic": "Unbind meta-quality",
+  "WT.Dialog.EmptyHyperskillSlot": "Drag power here, or doubleclick...",
+  "WT.Dialog.NewHyperskill": "New Hyperskill",
+  "WT.Dialog.RemoveHyperskill": "Unbind Power",
+  "WT.Dialog.EmptyHyperstatSlot": "Drag power here, or doubleclick...",
+  "WT.Dialog.NewHyperstat": "New Hyperstat",
+  "WT.Dialog.RemoveHyperstat": "Unbind Power",
+  "WT.Dialog.EmptyMiracleSlot": "Drag power here, or doubleclick...",
+  "WT.Dialog.NewMiracle": "New Miracle",
+  "WT.Dialog.RemoveMiracle": "Unbind Power",
   "WT.Dialog.ProvidedBy": "provided by"
 }
