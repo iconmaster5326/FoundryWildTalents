@@ -24,6 +24,12 @@
   "WT.PowerCapacity.Touch": "Touch",
   "WT.PowerCapacity.Self": "Self",
 
+  "WT.OREDieType.Normal": "Die",
+  "WT.OREDieType.Hard": "Hard die",
+  "WT.OREDieType.Wiggle": "Wiggle die",
+  "WT.OREDieType.Expert": "Expert die",
+  "WT.OREDieType.Fixed": "Fixed die",
+
   "WT.Sheet.Character": "Wild Talents character",
   "WT.Sheet.Skill": "Wild Talents skill",
   "WT.Sheet.Archetype": "Wild Talents archetype",
@@ -124,5 +130,7 @@
   "WT.ORERollDialog.Dice": "Dice",
   "WT.ORERollDialog.MinWidth": "Min. width",
   "WT.ORERollDialog.MinHeight": "Min. height",
+  "WT.ORERollDialog.PenaltyDice": "Penalty dice",
+  "WT.ORERollDialog.GobbleDice": "Gobble dice",
   "WT.ORERollDialog.Confirm": "Roll"
 }

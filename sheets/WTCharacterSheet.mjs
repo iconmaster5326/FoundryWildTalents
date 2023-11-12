@@ -374,9 +374,9 @@ export class WTCharacterSheet extends ActorSheet {
 
     html.find(".roll-stat").click(async (event) => {
       event.preventDefault();
-      (await ORERollDialog.create(
+      return ORERollDialog.showAndChat(
         this.actor.system.stats[event.currentTarget.getAttribute("stat")]
-      )).render(true);
+      );
     });
   }
 

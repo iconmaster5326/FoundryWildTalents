@@ -1,0 +1,14 @@
+<div class="wildtalents ore-roll-chat-message vboxstretch">
+  {{#each oreRoll.sets as |set i|}}
+    <div class="hbox vgap16">
+      <div class="nowrap">Got a set: {{set.width}}x{{set.height}}!</div>
+    </div>
+  {{/each}}
+  <div class="hbox vgap16">
+    <div class="nowrap">Loose dice: </div>
+    {{#each oreRoll.looseDice as |die i|}}
+      <div class="nowrap">{{die.face}} ({{localize (lookup (lookup @root.ORE_DIE_TYPES die.type) "name")}})</div>
+    {{/each}}
+  </div>
+  <div class="nowrap vgap16">Gobbled: {{oreRoll.gobbled}}</div>
+</div>
