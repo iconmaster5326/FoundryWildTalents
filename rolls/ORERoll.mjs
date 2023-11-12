@@ -1,3 +1,5 @@
+import { OREDice } from "./OREDice.mjs";
+
 export const ORE_DIE_TYPES = [
   { name: "WT.OREDieType.Normal", category: "normal", points: 1 },
   { name: "WT.OREDieType.Hard", category: "hard", points: 2 },
@@ -87,6 +89,52 @@ export class ORERoll {
       flags: {
         ...(options.flags ?? {}),
         core: { ...(options?.flags?.core ?? {}), canPopout: true },
+      },
+    });
+  }
+
+  get dice() {
+    return this.sets.flatMap((x) => x).concat(this.looseDice);
+  }
+
+  get asOREDice() {
+    const dice = this.dice;
+    return new OREDice({
+      dice: dice.filter((die) => die.type == ORE_DIE_TYPE_NORMAL).length,
+      hardDice: dice.filter((die) => die.type == ORE_DIE_TYPE_HARD).length,
+      wiggleDice: dice.filter((die) => die.type == ORE_DIE_TYPE_WIGGLE).length,
+      expertDice: dice.filter((die) => die.type == ORE_DIE_TYPE_EXPERT).length,
+      fixedDice: {
+        [1]: dice.filter(
+          (die) => die.type == ORE_DIE_TYPE_FIXED && die.face == 1
+        ).length,
+        [2]: dice.filter(
+          (die) => die.type == ORE_DIE_TYPE_FIXED && die.face == 2
+        ).length,
+        [3]: dice.filter(
+          (die) => die.type == ORE_DIE_TYPE_FIXED && die.face == 3
+        ).length,
+        [4]: dice.filter(
+          (die) => die.type == ORE_DIE_TYPE_FIXED && die.face == 4
+        ).length,
+        [5]: dice.filter(
+          (die) => die.type == ORE_DIE_TYPE_FIXED && die.face == 5
+        ).length,
+        [6]: dice.filter(
+          (die) => die.type == ORE_DIE_TYPE_FIXED && die.face == 6
+        ).length,
+        [7]: dice.filter(
+          (die) => die.type == ORE_DIE_TYPE_FIXED && die.face == 7
+        ).length,
+        [8]: dice.filter(
+          (die) => die.type == ORE_DIE_TYPE_FIXED && die.face == 8
+        ).length,
+        [9]: dice.filter(
+          (die) => die.type == ORE_DIE_TYPE_FIXED && die.face == 9
+        ).length,
+        [10]: dice.filter(
+          (die) => die.type == ORE_DIE_TYPE_FIXED && die.face == 10
+        ).length,
       },
     });
   }

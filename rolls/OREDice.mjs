@@ -294,7 +294,7 @@ export class OREDice {
     return result;
   }
 
-  toString(options = {}) {
+  get asString() {
     var result = "";
     if (this.dice > 0) {
       result += this.dice + "d";
@@ -318,7 +318,7 @@ export class OREDice {
 
   async roll(options = {}) {
     const result = [];
-    
+
     if (this.dice > 0) {
       const roll = new Roll(this.dice + "d10");
       const rollResult = await roll.evaluate();
