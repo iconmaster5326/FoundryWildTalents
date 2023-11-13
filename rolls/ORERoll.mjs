@@ -190,10 +190,12 @@ export class ORERoll {
   }
 
   getDieFromJQ(jq) {
-    if (Boolean(jq.attr("loose"))) {
-      return this.looseDice[Number(jq.attr("index1"))];
+    if (Boolean(jq.find(".die-data-is-loose").text())) {
+      return this.looseDice[Number(jq.find(".die-data-index1").text())];
     } else {
-      return this.sets[Number(jq.attr("index1"))][Number(jq.attr("index2"))];
+      return this.sets[Number(jq.find(".die-data-index1").text())][
+        Number(jq.find(".die-data-index2").text())
+      ];
     }
   }
 }

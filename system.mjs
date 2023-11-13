@@ -93,19 +93,24 @@ Hooks.once("init", async function () {
       ".message:not(:has(.ore-roll-chat-message))",
       this._getEntryContextOptions()
     );
-    ContextMenu.create(this, html, ".message:has(.ore-roll-chat-message)", [
-      {
-        name: "Refresh",
-        icon: "",
-        condition: (messageHTML) => true,
-        callback: async (messageHTML) => {
-          const message = game.messages.get(messageHTML.data("messageId"));
-          const roll = ORERoll.fromRollFlavor(message.rolls[0]);
-          roll.rerenderChatMessage(message);
+    ContextMenu.create(
+      this,
+      html,
+      ".message:has(.ore-roll-chat-message):not(:has(.die:hover))",
+      [
+        {
+          name: "Refresh",
+          icon: "",
+          condition: (messageHTML) => true,
+          callback: async (messageHTML) => {
+            const message = game.messages.get(messageHTML.data("messageId"));
+            const roll = ORERoll.fromRollFlavor(message.rolls[0]);
+            roll.rerenderChatMessage(message);
+          },
         },
-      },
-      ...this._getEntryContextOptions(),
-    ]);
+        ...this._getEntryContextOptions(),
+      ]
+    );
   };
 });
 
@@ -133,19 +138,20 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
 
     ContextMenu.create(
       message.sheet,
-      html.find(".die"),
-      ".ore-roll-chat-message",
+      html.find(".ore-roll-chat-message"),
+      ".die",
       [
         {
           name: "Reroll die",
           icon: "",
           condition: (dieJQ) => {
+            console.log(dieJQ);
             const die = roll.getDieFromJQ(dieJQ);
             return die.type == ORE_DIE_TYPE_NORMAL;
           },
           callback: async (dieJQ) => {
             const die = roll.getDieFromJQ(dieJQ);
-            die.face = (await new roll("1d10").execute()).total;
+            die.face = (await new Roll("1d10").evaluate()).total;
             roll.rerenderChatMessage(message);
           },
         },
