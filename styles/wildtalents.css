@@ -194,3 +194,7 @@
   font-style: bold;
   white-space: nowrap;
 }
+
+.wildtalents .hbox-dice {
+  flex-flow: row wrap;
+}

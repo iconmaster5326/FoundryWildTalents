@@ -26,6 +26,14 @@ export class OREDie {
   static fromJSON(json) {
     return new OREDie(json.face, json.type);
   }
+
+  static jqInfo(jq) {
+    return {
+      loose: jq.find(".die-data-is-loose").text() === "true",
+      index1: Number(jq.find(".die-data-index1").text()),
+      index2: Number(jq.find(".die-data-index2").text()),
+    };
+  }
 }
 
 function remove(array, die) {
@@ -190,12 +198,24 @@ export class ORERoll {
   }
 
   getDieFromJQ(jq) {
-    if (Boolean(jq.find(".die-data-is-loose").text())) {
-      return this.looseDice[Number(jq.find(".die-data-index1").text())];
+    const info = OREDie.jqInfo(jq);
+    if (info.loose) {
+      return this.looseDice[info.index1];
     } else {
-      return this.sets[Number(jq.find(".die-data-index1").text())][
-        Number(jq.find(".die-data-index2").text())
-      ];
+      return this.sets[info.index1][info.index2];
+    }
+  }
+
+  popDieFromJQ(jq) {
+    const info = OREDie.jqInfo(jq);
+    if (info.loose) {
+      return this.looseDice.splice(info.index1, 1)[0];
+    } else {
+      const result = this.sets[info.index1].splice(info.index2, 1)[0];
+      if (this.sets[info.index1].length == 0) {
+        this.sets.splice(info.index1, 1);
+      }
+      return result;
     }
   }
 }

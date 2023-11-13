@@ -13,9 +13,13 @@ import { WTPowerSheet } from "./sheets/WTPowerSheet.mjs";
 import { WTExtraSheet } from "./sheets/WTExtraSheet.mjs";
 import { WTFocusSheet } from "./sheets/WTFocusSheet.mjs";
 import {
+  OREDie,
+  OREDieSet,
   ORERoll,
   ORE_DIE_TYPES,
+  ORE_DIE_TYPE_EXPERT,
   ORE_DIE_TYPE_NORMAL,
+  ORE_DIE_TYPE_WIGGLE,
 } from "./rolls/ORERoll.mjs";
 
 Hooks.once("init", async function () {
@@ -105,7 +109,7 @@ Hooks.once("init", async function () {
           callback: async (messageHTML) => {
             const message = game.messages.get(messageHTML.data("messageId"));
             const roll = ORERoll.fromRollFlavor(message.rolls[0]);
-            roll.rerenderChatMessage(message);
+            ORERoll.fromDice(roll.dice).rerenderChatMessage(message);
           },
         },
         ...this._getEntryContextOptions(),
@@ -136,16 +140,118 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
   if (html.find(".ore-roll-chat-message").length) {
     const roll = ORERoll.fromRollFlavor(message.rolls[0]);
 
+    const setValueOptions = [];
+    for (var i = 1; i <= 10; i++) {
+      const i_ = i;
+      setValueOptions.push({
+        name: "Set to @FACE@".replace("@FACE@", i),
+        icon: "",
+        condition: (dieJQ) => {
+          const die = roll.getDieFromJQ(dieJQ);
+          if (die.type == ORE_DIE_TYPE_WIGGLE) {
+            return !!roll.looseDice.find((d) => d.face == i_);
+          }
+          return false;
+        },
+        callback: async (dieJQ) => {
+          const die = roll.getDieFromJQ(dieJQ);
+          die.face = i_;
+          roll.rerenderChatMessage(message);
+        },
+      });
+    }
+
+    const moveToSetOptions = [];
+    for (var i = 0; i < roll.sets.length; i++) {
+      const i_ = i;
+      const set = roll.sets[i];
+      moveToSetOptions.push({
+        name: "Move to set @SET@ (@W@x@H@)"
+          .replace("@SET@", i + 1)
+          .replace("@W@", set.width)
+          .replace("@H@", set.height),
+        icon: "",
+        condition: (dieJQ) => {
+          const die = roll.getDieFromJQ(dieJQ);
+          return !set.includes(die);
+        },
+        callback: async (dieJQ) => {
+          const die = roll.popDieFromJQ(dieJQ);
+          if (die.type == ORE_DIE_TYPE_WIGGLE) {
+            die.face = set.height;
+          }
+          set.push(die);
+          roll.rerenderChatMessage(message);
+        },
+      });
+    }
+
     ContextMenu.create(
       message.sheet,
       html.find(".ore-roll-chat-message"),
       ".die",
       [
+        ...moveToSetOptions,
+        ...setValueOptions,
+        {
+          name: "Remove from set",
+          icon: "",
+          condition: (dieJQ) => {
+            const die = roll.getDieFromJQ(dieJQ);
+            return !roll.looseDice.includes(die);
+          },
+          callback: async (dieJQ) => {
+            const die = roll.popDieFromJQ(dieJQ);
+            roll.looseDice.push(die);
+            roll.rerenderChatMessage(message);
+          },
+        },
+        {
+          name: "Move to new set",
+          icon: "",
+          condition: (dieJQ) => {
+            return true;
+          },
+          callback: async (dieJQ) => {
+            const die = roll.popDieFromJQ(dieJQ);
+            roll.sets.push(new OREDieSet(die));
+            roll.rerenderChatMessage(message);
+          },
+        },
+        {
+          name: "Disband set",
+          icon: "",
+          condition: (dieJQ) => {
+            const die = roll.getDieFromJQ(dieJQ);
+            return !roll.looseDice.includes(die);
+          },
+          callback: async (dieJQ) => {
+            const set = roll.sets.splice(OREDie.jqInfo(dieJQ).index1, 1)[0];
+            for (const die of set) {
+              roll.looseDice.push(die);
+            }
+            roll.rerenderChatMessage(message);
+          },
+        },
+        {
+          name: "Set face...",
+          icon: "",
+          condition: (dieJQ) => {
+            const die = roll.getDieFromJQ(dieJQ);
+            return (
+              die.type == ORE_DIE_TYPE_WIGGLE || die.type == ORE_DIE_TYPE_EXPERT
+            );
+          },
+          callback: async (dieJQ) => {
+            const die = roll.getDieFromJQ(dieJQ);
+            // TODO
+            roll.rerenderChatMessage(message);
+          },
+        },
         {
           name: "Reroll die",
           icon: "",
           condition: (dieJQ) => {
-            console.log(dieJQ);
             const die = roll.getDieFromJQ(dieJQ);
             return die.type == ORE_DIE_TYPE_NORMAL;
           },

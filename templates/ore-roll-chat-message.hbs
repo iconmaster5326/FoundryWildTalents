@@ -6,17 +6,21 @@
     <div class="hbox vgap16">
       <div class="die-set hbox">
         <div class="nowrap">{{set.width}}x{{set.height}}: </div>
-        {{#each set as |die j|}}
-          {{> "systems/wildtalents/templates/parts/die.hbs" die=die loose=false index1=i index2=j}}
-        {{/each}}
+        <div class="hbox hbox-dice">
+          {{#each set as |die j|}}
+            {{> "systems/wildtalents/templates/parts/die.hbs" die=die loose=false index1=i index2=j}}
+          {{/each}}
+        </div>
       </div>
     </div>
   {{/each}}
   <div class="hbox vgap16">
     <div>Loose dice: </div>
-    {{#each oreRoll.looseDice as |die i|}}
-      {{> "systems/wildtalents/templates/parts/die.hbs" die=die loose=true index1=i}}
-    {{/each}}
+    <div class="hbox hbox-dice">
+      {{#each oreRoll.looseDice as |die i|}}
+        {{> "systems/wildtalents/templates/parts/die.hbs" die=die loose=true index1=i}}
+      {{/each}}
+    </div>
   </div>
   <div class="nowrap vgap16">Gobbled: {{oreRoll.gobbled}}</div>
 </div>
