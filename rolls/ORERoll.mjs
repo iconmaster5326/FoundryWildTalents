@@ -188,4 +188,12 @@ export class ORERoll {
   static fromRollFlavor(roll) {
     return ORERoll.fromJSON(JSON.parse(roll.terms[0].flavor));
   }
+
+  getDieFromJQ(jq) {
+    if (Boolean(jq.attr("loose"))) {
+      return this.looseDice[Number(jq.attr("index1"))];
+    } else {
+      return this.sets[Number(jq.attr("index1"))][Number(jq.attr("index2"))];
+    }
+  }
 }

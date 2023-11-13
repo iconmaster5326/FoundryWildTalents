@@ -30,6 +30,12 @@
   "WT.OREDieType.Expert": "Expert die",
   "WT.OREDieType.Fixed": "Fixed die",
 
+  "WT.OREDieType.NormalLetter": "",
+  "WT.OREDieType.HardLetter": "H",
+  "WT.OREDieType.WiggleLetter": "W",
+  "WT.OREDieType.ExpertLetter": "E",
+  "WT.OREDieType.FixedLetter": "F",
+
   "WT.Sheet.Character": "Wild Talents character",
   "WT.Sheet.Skill": "Wild Talents skill",
   "WT.Sheet.Archetype": "Wild Talents archetype",

@@ -71,17 +71,17 @@
 }
 
 .wildtalents .hgap4 {
-    margin-left: 2px;
-    margin-right: 2px;
-  }
-  .wildtalents .hgap8 {
-    margin-left: 4px;
-    margin-right: 4px;
-  }
-  .wildtalents .hgap16 {
-    margin-left: 8px;
-    margin-right: 8px;
-  }
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.wildtalents .hgap8 {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+.wildtalents .hgap16 {
+  margin-left: 8px;
+  margin-right: 8px;
+}
 
 .wildtalents .sheet-tabs {
   flex: 0;
@@ -113,4 +113,84 @@
 }
 .wildtalents button:disabled {
   color: gray;
+}
+
+.wildtalents .die {
+  position: relative;
+  text-align: center;
+  width: 64px;
+  height: 64px;
+}
+.wildtalents .die .die-bg {
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+.wildtalents .die-set {
+  border: 4px dotted black;
+}
+.wildtalents .die .die-mask {
+  /* background-color: var(--die-color); */
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+.wildtalents .die.in-set .die-mask {
+  mask: url("../assets/dice/in_set.png");
+}
+.wildtalents .die.loose .die-mask {
+  mask: url("../assets/dice/loose.png");
+}
+.wildtalents .die.in-set .die-bg {
+  background-image: url("../assets/dice/in_set.png");
+}
+.wildtalents .die.loose .die-bg {
+  background-image: url("../assets/dice/loose.png");
+}
+.wildtalents .die.face-1 .die-mask {
+  --die-color: #ff000080;
+}
+.wildtalents .die.face-2 .die-mask {
+  --die-color: #ff800080;
+}
+.wildtalents .die.face-3 .die-mask {
+  --die-color: #ffff0080;
+}
+.wildtalents .die.face-4 .die-mask {
+  --die-color: #80ff0080;
+}
+.wildtalents .die.face-5 .die-mask {
+  --die-color: #00ff8080;
+}
+.wildtalents .die.face-6 .die-mask {
+  --die-color: #00ffff80;
+}
+.wildtalents .die.face-7 .die-mask {
+  --die-color: #0080ff80;
+}
+.wildtalents .die.face-8 .die-mask {
+  --die-color: #0000ff80;
+}
+.wildtalents .die.face-9 .die-mask {
+  --die-color: #8000ff80;
+}
+.wildtalents .die.face-10 .die-mask {
+  --die-color: #ff00ff80;
+}
+.wildtalents .die .die-face {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  white-space: nowrap;
+}
+.wildtalents .die .die-type {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-style: bold;
+  white-space: nowrap;
 }

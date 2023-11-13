@@ -4,13 +4,18 @@
   </h3>
   {{#each oreRoll.sets as |set i|}}
     <div class="hbox vgap16">
-      <div class="nowrap">Got a set: {{set.width}}x{{set.height}}!</div>
+      <div class="die-set hbox">
+        <div class="nowrap">{{set.width}}x{{set.height}}: </div>
+        {{#each set as |die j|}}
+          {{> "systems/wildtalents/templates/parts/die.hbs" die=die loose=false index1=i index2=j}}
+        {{/each}}
+      </div>
     </div>
   {{/each}}
   <div class="hbox vgap16">
     <div>Loose dice: </div>
     {{#each oreRoll.looseDice as |die i|}}
-      <div>{{die.face}} ({{localize (lookup (lookup @root.ORE_DIE_TYPES die.type) "name")}})</div>
+      {{> "systems/wildtalents/templates/parts/die.hbs" die=die loose=true index1=i}}
     {{/each}}
   </div>
   <div class="nowrap vgap16">Gobbled: {{oreRoll.gobbled}}</div>

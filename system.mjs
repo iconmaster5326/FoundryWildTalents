@@ -12,7 +12,11 @@ import { WTMetaQualitySheet } from "./sheets/WTMetaQualitySheet.mjs";
 import { WTPowerSheet } from "./sheets/WTPowerSheet.mjs";
 import { WTExtraSheet } from "./sheets/WTExtraSheet.mjs";
 import { WTFocusSheet } from "./sheets/WTFocusSheet.mjs";
-import { ORERoll } from "./rolls/ORERoll.mjs";
+import {
+  ORERoll,
+  ORE_DIE_TYPES,
+  ORE_DIE_TYPE_NORMAL,
+} from "./rolls/ORERoll.mjs";
 
 Hooks.once("init", async function () {
   CONFIG.Actor.dataModels.character = WTCharacterData;
@@ -71,8 +75,38 @@ Hooks.once("init", async function () {
   Handlebars.registerHelper("enrich", function (t) {
     return TextEditor.enrichHTML(t, { async: false });
   });
+  Handlebars.registerHelper("dieTypeLetter", function (t) {
+    return game.i18n.localize(ORE_DIE_TYPES[t].name + "Letter");
+  });
 
-  await loadTemplates(["systems/wildtalents/templates/parts/silhouette.hbs"]);
+  const TEMPLATE_PARTS = "systems/wildtalents/templates/parts/";
+  await loadTemplates([
+    TEMPLATE_PARTS + "silhouette.hbs",
+    TEMPLATE_PARTS + "die.hbs",
+  ]);
+
+  // monkey patch ChatLog._contextMenu for ORE roll messages
+  ChatLog.prototype._contextMenu = function (html) {
+    ContextMenu.create(
+      this,
+      html,
+      ".message:not(:has(.ore-roll-chat-message))",
+      this._getEntryContextOptions()
+    );
+    ContextMenu.create(this, html, ".message:has(.ore-roll-chat-message)", [
+      {
+        name: "Refresh",
+        icon: "",
+        condition: (messageHTML) => true,
+        callback: async (messageHTML) => {
+          const message = game.messages.get(messageHTML.data("messageId"));
+          const roll = ORERoll.fromRollFlavor(message.rolls[0]);
+          roll.rerenderChatMessage(message);
+        },
+      },
+      ...this._getEntryContextOptions(),
+    ]);
+  };
 });
 
 const ASSETS = "systems/wildtalents/assets/";
@@ -88,25 +122,36 @@ const ITEM_TYPES = [
 
 Hooks.on("preCreateItem", function (item, data, options, itemID) {
   if (data.img || ITEM_TYPES.indexOf(data.type) == -1) return;
-  item.updateSource({ img: ASSETS + data.type + DEFAULT_ICON_EXT });
+  item.updateSource({
+    img: ASSETS + "default-icons/" + data.type + DEFAULT_ICON_EXT,
+  });
 });
 
 Hooks.on("renderChatMessage", async function (message, html, data) {
   if (html.find(".ore-roll-chat-message").length) {
     const roll = ORERoll.fromRollFlavor(message.rolls[0]);
 
-    // ContextMenu.create(message.sheet, html, ".ore-roll-chat-message", [
-    //   {
-    //     name: game.i18n.localize("WT.Dialog.Gobble"),
-    //     icon: "",
-    //     condition: (_) => true,
-    //     callback: async (_) => {
-    //       roll.gobble(1);
-    //       roll.rerenderChatMessage(message);
-    //     },
-    //   },
-    // ]);
+    ContextMenu.create(
+      message.sheet,
+      html.find(".die"),
+      ".ore-roll-chat-message",
+      [
+        {
+          name: "Reroll die",
+          icon: "",
+          condition: (dieJQ) => {
+            const die = roll.getDieFromJQ(dieJQ);
+            return die.type == ORE_DIE_TYPE_NORMAL;
+          },
+          callback: async (dieJQ) => {
+            const die = roll.getDieFromJQ(dieJQ);
+            die.face = (await new roll("1d10").execute()).total;
+            roll.rerenderChatMessage(message);
+          },
+        },
+      ]
+    );
   }
 });
 
-CONFIG.debug.hooks = true;
+// CONFIG.debug.hooks = true;
