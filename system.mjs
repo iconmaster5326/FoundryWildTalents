@@ -12,6 +12,7 @@ import { WTMetaQualitySheet } from "./sheets/WTMetaQualitySheet.mjs";
 import { WTPowerSheet } from "./sheets/WTPowerSheet.mjs";
 import { WTExtraSheet } from "./sheets/WTExtraSheet.mjs";
 import { WTFocusSheet } from "./sheets/WTFocusSheet.mjs";
+import { ORERoll } from "./rolls/ORERoll.mjs";
 
 Hooks.once("init", async function () {
   CONFIG.Actor.dataModels.character = WTCharacterData;
@@ -90,4 +91,22 @@ Hooks.on("preCreateItem", function (item, data, options, itemID) {
   item.updateSource({ img: ASSETS + data.type + DEFAULT_ICON_EXT });
 });
 
-// CONFIG.debug.hooks = true;
+Hooks.on("renderChatMessage", async function (message, html, data) {
+  if (html.find(".ore-roll-chat-message").length) {
+    const roll = ORERoll.fromRollFlavor(message.rolls[0]);
+
+    // ContextMenu.create(message.sheet, html, ".ore-roll-chat-message", [
+    //   {
+    //     name: game.i18n.localize("WT.Dialog.Gobble"),
+    //     icon: "",
+    //     condition: (_) => true,
+    //     callback: async (_) => {
+    //       roll.gobble(1);
+    //       roll.rerenderChatMessage(message);
+    //     },
+    //   },
+    // ]);
+  }
+});
+
+CONFIG.debug.hooks = true;

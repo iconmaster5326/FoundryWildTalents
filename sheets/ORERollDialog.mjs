@@ -45,7 +45,7 @@ export class ORERollDialog extends Dialog {
     });
   }
 
-  static show(dice, options = {}) {
+  static async show(dice, options = {}) {
     return new Promise(async (resolve, reject) => {
       (await ORERollDialog.create(dice, {
         ...options,

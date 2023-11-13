@@ -18,6 +18,14 @@ export class OREDie {
     this.face = face;
     this.type = type;
   }
+
+  get asJSON() {
+    return { face: this.face, type: this.type };
+  }
+
+  static fromJSON(json) {
+    return new OREDie(json.face, json.type);
+  }
 }
 
 function remove(array, die) {
@@ -77,19 +85,39 @@ export class ORERoll {
     this.gobbled += amount;
   }
 
+  get asRollFlavor() {
+    const roll = new Roll("0");
+    roll.terms[0] = new NumericTerm({
+      number: 0,
+      options: { flavor: JSON.stringify(this.asJSON) },
+    });
+    return roll;
+  }
+
+  async renderChatMessageContent(options = {}) {
+    return renderTemplate(
+      "systems/wildtalents/templates/ore-roll-chat-message.hbs",
+      { ...options, oreRoll: this, ORE_DIE_TYPES: ORE_DIE_TYPES }
+    );
+  }
+
   async showChatMessage(options = {}) {
     return ChatMessage.create({
       ...options,
-      content: await renderTemplate(
-        "systems/wildtalents/templates/ore-roll-chat-message.hbs",
-        { ...options, oreRoll: this, ORE_DIE_TYPES: ORE_DIE_TYPES }
-      ),
+      content: await this.renderChatMessageContent(options),
       type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-      roll: await new Roll("0").evaluate(),
+      roll: await this.asRollFlavor.evaluate(),
       flags: {
         ...(options.flags ?? {}),
         core: { ...(options?.flags?.core ?? {}), canPopout: true },
       },
+    });
+  }
+
+  async rerenderChatMessage(chatMessage, options = {}) {
+    chatMessage.update({
+      content: await this.renderChatMessageContent(options),
+      roll: await this.asRollFlavor.evaluate(),
     });
   }
 
@@ -137,5 +165,27 @@ export class ORERoll {
         ).length,
       },
     });
+  }
+
+  get asJSON() {
+    return {
+      sets: this.sets.map((s) => s.map((d) => d.asJSON)),
+      looseDice: this.looseDice.map((d) => d.asJSON),
+      gobbled: this.gobbled,
+    };
+  }
+
+  static fromJSON(json) {
+    return new ORERoll(
+      json.sets.map((s) => s.map((d) => OREDie.fromJSON(d))),
+      json.looseDice.map((d) => OREDie.fromJSON(d)),
+      {
+        gobbled: json.gobbled,
+      }
+    );
+  }
+
+  static fromRollFlavor(roll) {
+    return ORERoll.fromJSON(JSON.parse(roll.terms[0].flavor));
   }
 }
