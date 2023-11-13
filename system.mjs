@@ -83,6 +83,9 @@ Hooks.once("init", async function () {
   Handlebars.registerHelper("dieTypeLetter", function (t) {
     return game.i18n.localize(ORE_DIE_TYPES[t].name + "Letter");
   });
+  Handlebars.registerHelper("dieIsGobbled", function (roll, die) {
+    return roll.isGobbled(die);
+  });
 
   const TEMPLATE_PARTS = "systems/wildtalents/templates/parts/";
   await loadTemplates([
@@ -110,7 +113,31 @@ Hooks.once("init", async function () {
           callback: async (messageHTML) => {
             const message = game.messages.get(messageHTML.data("messageId"));
             const roll = ORERoll.fromRollFlavor(message.rolls[0]);
-            ORERoll.fromDice(roll.dice).rerenderChatMessage(message);
+            ORERoll.fromDice(roll.dice, {
+              gobbled: roll.gobbled,
+            }).rerenderChatMessage(message);
+          },
+        },
+        {
+          name: game.i18n.localize("WT.Dialog.GobbleOne"),
+          icon: "",
+          condition: (messageHTML) => true,
+          callback: async (messageHTML) => {
+            const message = game.messages.get(messageHTML.data("messageId"));
+            const roll = ORERoll.fromRollFlavor(message.rolls[0]);
+            roll.gobble(1);
+            roll.rerenderChatMessage(message);
+          },
+        },
+        {
+          name: game.i18n.localize("WT.Dialog.UngobbleOne"),
+          icon: "",
+          condition: (messageHTML) => true,
+          callback: async (messageHTML) => {
+            const message = game.messages.get(messageHTML.data("messageId"));
+            const roll = ORERoll.fromRollFlavor(message.rolls[0]);
+            roll.gobble(-1);
+            roll.rerenderChatMessage(message);
           },
         },
         ...this._getEntryContextOptions(),

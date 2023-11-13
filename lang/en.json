@@ -132,6 +132,8 @@
   "WT.Dialog.UseSilhouette": "Use this archetye's custom silhouette",
   "WT.Dialog.RestoreSilhouette": "Restore default silhouette",
   "WT.Dialog.Refresh": "Refresh",
+  "WT.Dialog.GobbleOne": "Gobble 1",
+  "WT.Dialog.UngobbleOne": "Ungobble 1",
   "WT.Dialog.SetFace": "Set to @FACE@",
   "WT.Dialog.MoveToSet": "Move to set @SET@ (@W@x@H@)",
   "WT.Dialog.RemoveFromSet": "Remove from set",

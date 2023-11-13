@@ -146,6 +146,10 @@
 .wildtalents .die.in-set .die-bg {
   background-image: url("../assets/dice/in_set.png");
 }
+.wildtalents .die.in-set.gobbled .die-bg {
+  background-image: url("../assets/dice/gobbled.png"),
+    url("../assets/dice/in_set.png");
+}
 .wildtalents .die.loose .die-bg {
   background-image: url("../assets/dice/loose.png");
 }

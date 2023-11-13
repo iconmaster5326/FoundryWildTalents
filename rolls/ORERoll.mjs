@@ -220,4 +220,27 @@ export class ORERoll {
       return result;
     }
   }
+
+  isGobbled(die) {
+    var toGobble = this.gobbled;
+    if (toGobble <= 0) {
+      return false;
+    }
+    for (var face = 10; face >= 1; face--) {
+      for (const set of this.sets) {
+        if (set.height == face) {
+          const i = set.indexOf(die);
+          if (i != -1 && i >= set.width - toGobble) {
+            return true;
+          } else {
+            toGobble -= Math.min(set.width, toGobble);
+            if (toGobble <= 0) {
+              return false;
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
 }

@@ -1,4 +1,4 @@
-<div class="die {{#if loose}}loose{{else}}in-set{{/if}} face-{{die.face}}">
+<div class="die {{#if loose}}loose{{else}}in-set{{/if}} {{#if (dieIsGobbled roll die)}}gobbled{{/if}} face-{{die.face}}">
     <div class="dummy die-data-is-loose">{{loose}}</div>
     <div class="dummy die-data-index1">{{index1}}</div>
     <div class="dummy die-data-index2">{{index2}}</div>
