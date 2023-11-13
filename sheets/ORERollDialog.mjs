@@ -22,15 +22,11 @@ export class ORERollDialog extends Dialog {
             const jq = $(html);
             if (options.onRoll) {
               await options.onRoll({
-                dice: jq.find('[name="dice"]').attr("value"),
-                minWidth: Number(jq.find('[name="minWidth"]').attr("value")),
-                minHeight: Number(jq.find('[name="minHeight"]').attr("value")),
-                penaltyDice: Number(
-                  jq.find('[name="penaltyDice"]').attr("value")
-                ),
-                gobbleDice: Number(
-                  jq.find('[name="gobbleDice"]').attr("value")
-                ),
+                dice: jq.find('[name="dice"]').val(),
+                minWidth: Number(jq.find('[name="minWidth"]').val()),
+                minHeight: Number(jq.find('[name="minHeight"]').val()),
+                penaltyDice: Number(jq.find('[name="penaltyDice"]').val()),
+                gobbleDice: Number(jq.find('[name="gobbleDice"]').val()),
               });
             }
           },
@@ -47,15 +43,17 @@ export class ORERollDialog extends Dialog {
 
   static async show(dice, options = {}) {
     return new Promise(async (resolve, reject) => {
-      (await ORERollDialog.create(dice, {
-        ...options,
-        onRoll: async (result) => {
-          if (options.onRoll) {
-            await options.onRoll(result);
-          }
-          resolve(result);
-        },
-      })).render(true);
+      (
+        await ORERollDialog.create(dice, {
+          ...options,
+          onRoll: async (result) => {
+            if (options.onRoll) {
+              await options.onRoll(result);
+            }
+            resolve(result);
+          },
+        })
+      ).render(true);
     });
   }
 

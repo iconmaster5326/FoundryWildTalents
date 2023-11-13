@@ -51,10 +51,12 @@ export class OREDieSet extends Array {
     return this.length;
   }
   get height() {
-    if (!this.length) {
-      return 0;
+    for (const die of this) {
+      if (die.face != "*") {
+        return die.face;
+      }
     }
-    return this[0].face;
+    return "*";
   }
   remove(die) {
     return remove(this, die);

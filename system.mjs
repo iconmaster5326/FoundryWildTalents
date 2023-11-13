@@ -21,6 +21,7 @@ import {
   ORE_DIE_TYPE_NORMAL,
   ORE_DIE_TYPE_WIGGLE,
 } from "./rolls/ORERoll.mjs";
+import { ORESetFaceDialog } from "./sheets/ORESetFaceDIalog.mjs";
 
 Hooks.once("init", async function () {
   CONFIG.Actor.dataModels.character = WTCharacterData;
@@ -103,7 +104,7 @@ Hooks.once("init", async function () {
       ".message:has(.ore-roll-chat-message):not(:has(.die:hover))",
       [
         {
-          name: "Refresh",
+          name: game.i18n.localize("WT.Dialog.Refresh"),
           icon: "",
           condition: (messageHTML) => true,
           callback: async (messageHTML) => {
@@ -144,11 +145,19 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
     for (var i = 1; i <= 10; i++) {
       const i_ = i;
       setValueOptions.push({
-        name: "Set to @FACE@".replace("@FACE@", i),
+        name: game.i18n.localize("WT.Dialog.SetFace").replace("@FACE@", i),
         icon: "",
         condition: (dieJQ) => {
           const die = roll.getDieFromJQ(dieJQ);
+          if (die.face == i_) {
+            return false;
+          }
           if (die.type == ORE_DIE_TYPE_WIGGLE) {
+            for (const set of roll.sets) {
+              if (set.includes(die)) {
+                return set.height == i_;
+              }
+            }
             return !!roll.looseDice.find((d) => d.face == i_);
           }
           return false;
@@ -166,7 +175,8 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
       const i_ = i;
       const set = roll.sets[i];
       moveToSetOptions.push({
-        name: "Move to set @SET@ (@W@x@H@)"
+        name: game.i18n
+          .localize("WT.Dialog.MoveToSet")
           .replace("@SET@", i + 1)
           .replace("@W@", set.width)
           .replace("@H@", set.height),
@@ -194,32 +204,49 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
         ...moveToSetOptions,
         ...setValueOptions,
         {
-          name: "Remove from set",
+          name: game.i18n.localize("WT.Dialog.RemoveFromSet"),
           icon: "",
           condition: (dieJQ) => {
             const die = roll.getDieFromJQ(dieJQ);
+            for (const set of roll.sets) {
+              if (set.includes(die) && set.width == 1) {
+                return false;
+              }
+            }
             return !roll.looseDice.includes(die);
           },
           callback: async (dieJQ) => {
             const die = roll.popDieFromJQ(dieJQ);
+            if (die.type == ORE_DIE_TYPE_WIGGLE) {
+              die.face = "*";
+            }
             roll.looseDice.push(die);
             roll.rerenderChatMessage(message);
           },
         },
         {
-          name: "Move to new set",
+          name: game.i18n.localize("WT.Dialog.ToNewSet"),
           icon: "",
           condition: (dieJQ) => {
+            const die = roll.getDieFromJQ(dieJQ);
+            for (const set of roll.sets) {
+              if (set.includes(die) && set.width == 1) {
+                return false;
+              }
+            }
             return true;
           },
           callback: async (dieJQ) => {
             const die = roll.popDieFromJQ(dieJQ);
+            if (die.type == ORE_DIE_TYPE_WIGGLE) {
+              die.face = "*";
+            }
             roll.sets.push(new OREDieSet(die));
             roll.rerenderChatMessage(message);
           },
         },
         {
-          name: "Disband set",
+          name: game.i18n.localize("WT.Dialog.DisbandSet"),
           icon: "",
           condition: (dieJQ) => {
             const die = roll.getDieFromJQ(dieJQ);
@@ -228,13 +255,16 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
           callback: async (dieJQ) => {
             const set = roll.sets.splice(OREDie.jqInfo(dieJQ).index1, 1)[0];
             for (const die of set) {
+              if (die.type == ORE_DIE_TYPE_WIGGLE) {
+                die.face = "*";
+              }
               roll.looseDice.push(die);
             }
             roll.rerenderChatMessage(message);
           },
         },
         {
-          name: "Set face...",
+          name: game.i18n.localize("WT.Dialog.SetFaceAdvanced"),
           icon: "",
           condition: (dieJQ) => {
             const die = roll.getDieFromJQ(dieJQ);
@@ -244,12 +274,14 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
           },
           callback: async (dieJQ) => {
             const die = roll.getDieFromJQ(dieJQ);
-            // TODO
+            die.face = await ORESetFaceDialog.show(
+              die.face == "*" ? 1 : die.face
+            );
             roll.rerenderChatMessage(message);
           },
         },
         {
-          name: "Reroll die",
+          name: game.i18n.localize("WT.Dialog.RerollDie"),
           icon: "",
           condition: (dieJQ) => {
             const die = roll.getDieFromJQ(dieJQ);

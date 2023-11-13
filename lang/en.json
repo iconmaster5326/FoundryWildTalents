@@ -131,6 +131,14 @@
   "WT.Dialog.ProvidedBy": "provided by",
   "WT.Dialog.UseSilhouette": "Use this archetye's custom silhouette",
   "WT.Dialog.RestoreSilhouette": "Restore default silhouette",
+  "WT.Dialog.Refresh": "Refresh",
+  "WT.Dialog.SetFace": "Set to @FACE@",
+  "WT.Dialog.MoveToSet": "Move to set @SET@ (@W@x@H@)",
+  "WT.Dialog.RemoveFromSet": "Remove from set",
+  "WT.Dialog.ToNewSet": "Move to new set",
+  "WT.Dialog.DisbandSet": "Disband set",
+  "WT.Dialog.SetFaceAdvanced": "Set face...",
+  "WT.Dialog.RerollDie": "Reroll die",
 
   "WT.ORERollDialog.Title": "Configure Your Roll",
   "WT.ORERollDialog.Dice": "Dice",
@@ -138,5 +146,9 @@
   "WT.ORERollDialog.MinHeight": "Min. height",
   "WT.ORERollDialog.PenaltyDice": "Penalty dice",
   "WT.ORERollDialog.GobbleDice": "Gobble dice",
-  "WT.ORERollDialog.Confirm": "Roll"
+  "WT.ORERollDialog.Confirm": "Roll",
+
+  "WT.ORESetFaceDialog.Title": "Set Face",
+  "WT.ORESetFaceDialog.Face": "Face",
+  "WT.ORESetFaceDialog.Confirm": "OK"
 }
