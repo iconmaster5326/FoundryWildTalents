@@ -73,7 +73,7 @@ export class WTMinionData extends foundry.abstract.DataModel {
   }
 
   get initiative() {
-    return -100 - this.groupSize;
+    return 100 - this.groupSize;
   }
 
   get effectiveCommand() {
