@@ -1,3 +1,4 @@
+import { OREDice } from "../rolls/OREDice.mjs";
 import { DEFAULT_SILHOUETTE, QUALITY_TYPES, STATS } from "../util.mjs";
 import { ORERollDialog } from "./ORERollDialog.mjs";
 import {
@@ -372,30 +373,48 @@ export class WTCharacterSheet extends ActorSheet {
       },
     ]);
 
+    const showOrRoll = async (event, dice, flavor) => {
+      if (event.shiftKey) {
+        return (
+          await OREDice.fromString(dice).roll({
+            flavor: flavor,
+          })
+        ).showChatMessage();
+      } else {
+        return ORERollDialog.showAndChat(dice, {
+          flavor: flavor,
+        });
+      }
+    };
+
     html.find(".roll-stat").click(async (event) => {
       event.preventDefault();
       const field = event.currentTarget.getAttribute("stat");
-      return ORERollDialog.showAndChat(this.actor.system.stats[field], {
-        flavor: game.i18n.localize(STATS.find((s) => s.field == field).name),
-      });
+      return showOrRoll(
+        event,
+        this.actor.system.stats[field],
+        game.i18n.localize(STATS.find((s) => s.field == field).name)
+      );
     });
 
-    const rollSkill = async (skillInstance, stat) => {
+    const rollSkill = async (event, skillInstance, stat) => {
       const skill = lookup(skillInstance.id);
       const statDice = this.actor.system.stats[STATS[stat].field];
-      return ORERollDialog.showAndChat(statDice + " + " + skillInstance.dice, {
-        flavor:
-          game.i18n.localize(STATS[stat].name) +
+      return showOrRoll(
+        event,
+        statDice + " + " + skillInstance.dice,
+        game.i18n.localize(STATS[stat].name) +
           " + " +
           skill.name +
-          (skillInstance.specialty ? " (" + skillInstance.specialty + ")" : ""),
-      });
+          (skillInstance.specialty ? " (" + skillInstance.specialty + ")" : "")
+      );
     };
     html.find(".roll-skill").click(async (event) => {
       event.preventDefault();
       const index = Number(event.currentTarget.getAttribute("index"));
       const skillInstance = this.actor.system.skills[index];
       return rollSkill(
+        event,
         skillInstance,
         lookup(skillInstance.id).system.primaryStat
       );
@@ -411,7 +430,7 @@ export class WTCharacterSheet extends ActorSheet {
         condition: (jq) => true,
         callback: async (jq) => {
           const index = Number(jq.attr("index"));
-          return rollSkill(this.actor.system.skills[index], i_);
+          return rollSkill({}, this.actor.system.skills[index], i_);
         },
       });
     }
@@ -424,17 +443,18 @@ export class WTCharacterSheet extends ActorSheet {
       const powerInstance = this.actor.system.hyperstats[i];
       const power = lookup(powerInstance.id);
       const quality = power.system.qualities[j];
-      return ORERollDialog.showAndChat(powerInstance.dice, {
-        flavor:
-          "[" +
+      return showOrRoll(
+        event,
+        powerInstance.dice,
+        "[" +
           game.i18n.localize(
             QUALITY_TYPES[quality.qualityType].name + "Letter"
           ) +
           "+" +
           quality.level +
           "] " +
-          (quality.name || power.name),
-      });
+          (quality.name || power.name)
+      );
     });
     ContextMenu.create(this, html, ".roll-hyperstat", [
       {
@@ -466,22 +486,20 @@ export class WTCharacterSheet extends ActorSheet {
       },
     ]);
 
-    const rollHyperskill = async (powerInstance, quality, stat) => {
+    const rollHyperskill = async (event, powerInstance, quality, stat) => {
       const power = lookup(powerInstance.id);
-      return ORERollDialog.showAndChat(
+      return showOrRoll(
+        event,
         this.actor.system.stats[STATS[stat].field] + " + " + powerInstance.dice,
-        {
-          flavor:
-            game.i18n.localize(STATS[stat].name) +
-            " + [" +
-            game.i18n.localize(
-              QUALITY_TYPES[quality.qualityType].name + "Letter"
-            ) +
-            "+" +
-            quality.level +
-            "] " +
-            (quality.name || power.name),
-        }
+        game.i18n.localize(STATS[stat].name) +
+          " + [" +
+          game.i18n.localize(
+            QUALITY_TYPES[quality.qualityType].name + "Letter"
+          ) +
+          "+" +
+          quality.level +
+          "] " +
+          (quality.name || power.name)
       );
     };
     html.find(".roll-hyperskill").click(async (event) => {
@@ -491,6 +509,7 @@ export class WTCharacterSheet extends ActorSheet {
       const powerInstance = this.actor.system.hyperskills[i];
       const power = lookup(powerInstance.id);
       rollHyperskill(
+        event,
         powerInstance,
         power.system.qualities[j],
         lookup(power.system.skill.id).system.primaryStat
@@ -510,6 +529,7 @@ export class WTCharacterSheet extends ActorSheet {
           const j = Number(jq.attr("index2"));
           const powerInstance = this.actor.system.hyperskills[i];
           rollHyperskill(
+            {},
             powerInstance,
             lookup(powerInstance.id).system.qualities[j],
             i_
@@ -526,17 +546,18 @@ export class WTCharacterSheet extends ActorSheet {
       const powerInstance = this.actor.system.miracles[i];
       const power = lookup(powerInstance.id);
       const quality = power.system.qualities[j];
-      return ORERollDialog.showAndChat(powerInstance.dice, {
-        flavor:
-          "[" +
+      return showOrRoll(
+        event,
+        powerInstance.dice,
+        "[" +
           game.i18n.localize(
             QUALITY_TYPES[quality.qualityType].name + "Letter"
           ) +
           "+" +
           quality.level +
           "] " +
-          (quality.name || power.name),
-      });
+          (quality.name || power.name)
+      );
     });
   }
 
