@@ -1,3 +1,4 @@
+import { OREDice } from "../rolls/OREDice.mjs";
 import { DEFAULT_SILHOUETTE, STATS } from "../util.mjs";
 import { bodyPartField, rollField } from "./data.mjs";
 
@@ -245,5 +246,9 @@ export class WTCharacterData extends foundry.abstract.DataModel {
       "system.hyperskills": newHyperskills,
       "system.miracles": newMiracles,
     });
+  }
+
+  get initiative() {
+    return -OREDice.fromString(this.stats.sense).size;
   }
 }

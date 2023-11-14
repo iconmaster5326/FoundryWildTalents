@@ -22,5 +22,6 @@
       "name": "English",
       "path": "lang/en.json"
     }
-  ]
+  ],
+  "initiative": "@initiative"
 }
