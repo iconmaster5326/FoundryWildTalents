@@ -148,7 +148,15 @@
   "WT.ORERollDialog.MinHeight": "Min. height",
   "WT.ORERollDialog.PenaltyDice": "Penalty dice",
   "WT.ORERollDialog.GobbleDice": "Gobble dice",
+  "WT.ORERollDialog.ExpertDiceFaces": "Expert dice faces",
+  "WT.ORERollDialog.ExpertDieFacesPlaceholder": "comma-separated list of faces...",
   "WT.ORERollDialog.Confirm": "Roll",
+
+  "WT.Chat.Rolled": "Rolled",
+  "WT.Chat.Result": "Result",
+  "WT.Chat.Success": "Success",
+  "WT.Chat.Failure": "Failure",
+  "WT.Chat.Loose": "Loose dice",
 
   "WT.ORESetFaceDialog.Title": "Set Face",
   "WT.ORESetFaceDialog.Face": "Face",

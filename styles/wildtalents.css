@@ -202,3 +202,9 @@
 .wildtalents .hbox-dice {
   flex-flow: row wrap;
 }
+.wildtalents .roll-success {
+  color: green;
+}
+.wildtalents .roll-failure {
+  color: red;
+}

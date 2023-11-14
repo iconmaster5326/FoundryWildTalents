@@ -115,6 +115,9 @@ Hooks.once("init", async function () {
             const roll = ORERoll.fromRollFlavor(message.rolls[0]);
             ORERoll.fromDice(roll.dice, {
               gobbled: roll.gobbled,
+              minHeight: roll.minHeight,
+              minWidth: roll.minWidth,
+              flavor: roll.flavor,
             }).rerenderChatMessage(message);
           },
         },

@@ -68,6 +68,9 @@ export class ORERoll {
     this.sets = new Array(...sets.map((s) => new OREDieSet(...s)));
     this.looseDice = new Array(...looseDice);
     this.gobbled = options.gobbled ?? 0;
+    this.minWidth = options.minWidth ?? 2;
+    this.minHeight = options.minHeight ?? 1;
+    this.flavor = options.flavor;
   }
 
   static fromDice(dice, options = {}) {
@@ -182,6 +185,9 @@ export class ORERoll {
       sets: this.sets.map((s) => s.map((d) => d.asJSON)),
       looseDice: this.looseDice.map((d) => d.asJSON),
       gobbled: this.gobbled,
+      minWidth: this.minWidth,
+      minHeight: this.minHeight,
+      flavor: this.flavor,
     };
   }
 
@@ -191,6 +197,9 @@ export class ORERoll {
       json.looseDice.map((d) => OREDie.fromJSON(d)),
       {
         gobbled: json.gobbled,
+        minWidth: json.minWidth,
+        minHeight: json.minHeight,
+        flavor: json.flavor,
       }
     );
   }
@@ -226,7 +235,11 @@ export class ORERoll {
     if (toGobble <= 0) {
       return false;
     }
-    for (var face = 10; face >= 1; face--) {
+    for (
+      var face = "*";
+      face == "*" || face >= 1;
+      face == "*" ? (face = 10) : face--
+    ) {
       for (const set of this.sets) {
         if (set.height == face) {
           const i = set.indexOf(die);
@@ -239,6 +252,19 @@ export class ORERoll {
             }
           }
         }
+      }
+    }
+    return false;
+  }
+
+  get isSuccess() {
+    for (const set of this.sets) {
+      if (
+        set.width - set.reduce((a, v) => a + (this.isGobbled(v) ? 1 : 0), 0) >=
+          this.minWidth &&
+        (set.height == "*" || set.height >= this.minHeight)
+      ) {
+        return true;
       }
     }
     return false;

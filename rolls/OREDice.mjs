@@ -333,7 +333,7 @@ export class OREDice {
     for (var i = 0; i < this.expertDice; i++) {
       result.push(
         new OREDie(
-          options.expertDice ? options.expertDice[i] : "*",
+          options.expertDiceFaces ? options.expertDiceFaces[i] : "*",
           ORE_DIE_TYPE_EXPERT
         )
       );

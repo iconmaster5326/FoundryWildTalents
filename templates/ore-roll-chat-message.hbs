@@ -1,7 +1,15 @@
 <div class="wildtalents ore-roll-chat-message vboxstretch">
   <h3 class="hbox vgap16">
-    Rolled: {{oreRoll.asOREDice.asString}}
+    {{localize "WT.Chat.Rolled"}}: {{oreRoll.asOREDice.asString}}
   </h3>
+  {{#if oreRoll.flavor}}
+    <div class="nowrap vgap16"><i>{{oreRoll.flavor}}</i></div>
+  {{/if}}
+  {{#if oreRoll.isSuccess}}
+    <div class="nowrap vgap16 roll-success">{{localize "WT.Chat.Result"}}: {{localize "WT.Chat.Success"}}</div>
+  {{else}}
+    <div class="nowrap vgap16 roll-failure">{{localize "WT.Chat.Result"}}: {{localize "WT.Chat.Failure"}}</div>
+  {{/if}}
   {{#each oreRoll.sets as |set i|}}
     <div class="hbox vgap16">
       <div class="die-set hbox">
@@ -15,12 +23,11 @@
     </div>
   {{/each}}
   <div class="hbox vgap16">
-    <div>Loose dice: </div>
+    <div>{{localize "WT.Chat.Loose"}}: </div>
     <div class="hbox hbox-dice">
       {{#each oreRoll.looseDice as |die i|}}
         {{> "systems/wildtalents/templates/parts/die.hbs" roll=@root.oreRoll die=die loose=true index1=i}}
       {{/each}}
     </div>
   </div>
-  <div class="nowrap vgap16">Gobbled: {{oreRoll.gobbled}}</div>
 </div>
