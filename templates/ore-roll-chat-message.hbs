@@ -14,7 +14,7 @@
     <div class="hbox vgap16">
       <div class="die-set hbox">
         <div class="nowrap">{{set.width}}x{{set.height}}: </div>
-        <div class="hbox hbox-dice">
+        <div class="hbox hbox-flow">
           {{#each set as |die j|}}
             {{> "systems/wildtalents/templates/parts/die.hbs" roll=@root.oreRoll die=die loose=false index1=i index2=j}}
           {{/each}}
@@ -24,7 +24,7 @@
   {{/each}}
   <div class="hbox vgap16">
     <div>{{localize "WT.Chat.Loose"}}: </div>
-    <div class="hbox hbox-dice">
+    <div class="hbox hbox-flow">
       {{#each oreRoll.looseDice as |die i|}}
         {{> "systems/wildtalents/templates/parts/die.hbs" roll=@root.oreRoll die=die loose=true index1=i}}
       {{/each}}

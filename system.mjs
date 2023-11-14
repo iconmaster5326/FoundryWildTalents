@@ -22,6 +22,7 @@ import {
   ORE_DIE_TYPE_WIGGLE,
 } from "./rolls/ORERoll.mjs";
 import { ORESetFaceDialog } from "./sheets/ORESetFaceDIalog.mjs";
+import { QUALITY_TYPES } from "./util.mjs";
 
 Hooks.once("init", async function () {
   CONFIG.Actor.dataModels.character = WTCharacterData;
@@ -85,6 +86,9 @@ Hooks.once("init", async function () {
   });
   Handlebars.registerHelper("dieIsGobbled", function (roll, die) {
     return roll.isGobbled(die);
+  });
+  Handlebars.registerHelper("qualityTypeLetter", function (t) {
+    return game.i18n.localize(QUALITY_TYPES[t].name + "Letter");
   });
 
   const TEMPLATE_PARTS = "systems/wildtalents/templates/parts/";

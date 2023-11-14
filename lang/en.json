@@ -18,6 +18,10 @@
   "WT.PowerQuality.Defends": "Defends",
   "WT.PowerQuality.Useful": "Useful",
 
+  "WT.PowerQuality.AttacksLetter": "A",
+  "WT.PowerQuality.DefendsLetter": "D",
+  "WT.PowerQuality.UsefulLetter": "U",
+
   "WT.PowerCapacity.Mass": "Mass",
   "WT.PowerCapacity.Range": "Range",
   "WT.PowerCapacity.Speed": "Speed",
@@ -142,6 +146,7 @@
   "WT.Dialog.SetFaceAdvanced": "Set face...",
   "WT.Dialog.RerollDie": "Reroll die",
   "WT.Dialog.RollSkillWithStat": "Roll using @STAT@",
+  "WT.Dialog.RollHyperstatWithStat": "Roll combined with stat",
 
   "WT.ORERollDialog.Title": "Configure Your Roll",
   "WT.ORERollDialog.Dice": "Dice",

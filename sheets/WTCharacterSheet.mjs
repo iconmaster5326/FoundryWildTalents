@@ -1,4 +1,4 @@
-import { DEFAULT_SILHOUETTE, STATS } from "../util.mjs";
+import { DEFAULT_SILHOUETTE, QUALITY_TYPES, STATS } from "../util.mjs";
 import { ORERollDialog } from "./ORERollDialog.mjs";
 import {
   generateAddRefListDropHandler,
@@ -379,10 +379,11 @@ export class WTCharacterSheet extends ActorSheet {
         flavor: game.i18n.localize(STATS.find((s) => s.field == field).name),
       });
     });
+
     const rollSkill = async (skillInstance, stat) => {
       const skill = lookup(skillInstance.id);
       const statDice = this.actor.system.stats[STATS[stat].field];
-      return ORERollDialog.showAndChat(statDice + "+" + skillInstance.dice, {
+      return ORERollDialog.showAndChat(statDice + " + " + skillInstance.dice, {
         flavor:
           game.i18n.localize(STATS[stat].name) +
           " + " +
@@ -399,10 +400,10 @@ export class WTCharacterSheet extends ActorSheet {
         lookup(skillInstance.id).system.primaryStat
       );
     });
-    const rollAltStats = [];
+    const rollSkillMenu = [];
     for (var i = 0; i < STATS.length; i++) {
       const i_ = i;
-      rollAltStats.push({
+      rollSkillMenu.push({
         name: game.i18n
           .localize("WT.Dialog.RollSkillWithStat")
           .replace("@STAT@", game.i18n.localize(STATS[i_].name)),
@@ -414,7 +415,129 @@ export class WTCharacterSheet extends ActorSheet {
         },
       });
     }
-    ContextMenu.create(this, html, ".roll-skill", rollAltStats);
+    ContextMenu.create(this, html, ".roll-skill", rollSkillMenu);
+
+    html.find(".roll-hyperstat").click(async (event) => {
+      event.preventDefault();
+      const i = Number(event.currentTarget.getAttribute("index1"));
+      const j = Number(event.currentTarget.getAttribute("index2"));
+      const powerInstance = this.actor.system.hyperstats[i];
+      const power = lookup(powerInstance.id);
+      const quality = power.system.qualities[j];
+      return ORERollDialog.showAndChat(powerInstance.dice, {
+        flavor:
+          "[" +
+          game.i18n.localize(
+            QUALITY_TYPES[quality.qualityType].name + "Letter"
+          ) +
+          "+" +
+          quality.level +
+          "] " +
+          (quality.name || power.name),
+      });
+    });
+    ContextMenu.create(this, html, ".roll-hyperstat", [
+      {
+        name: game.i18n.localize("WT.Dialog.RollHyperstatWithStat"),
+        icon: "",
+        condition: (jq) => true,
+        callback: async (jq) => {
+          const i = Number(jq.attr("index1"));
+          const j = Number(jq.attr("index2"));
+          const powerInstance = this.actor.system.hyperstats[i];
+          const power = lookup(powerInstance.id);
+          const quality = power.system.qualities[j];
+          return ORERollDialog.showAndChat(
+            this.actor.system.stats[STATS[power.system.stat].field] +
+              " + " +
+              powerInstance.dice,
+            {
+              flavor:
+                game.i18n.localize(STATS[power.system.stat].name) +
+                " + [" +
+                game.i18n.localize(
+                  QUALITY_TYPES[quality.qualityType].name + "Letter"
+                ) +
+                "+0] " +
+                (quality.name || power.name),
+            }
+          );
+        },
+      },
+    ]);
+
+    const rollHyperskill = async (powerInstance, quality, stat) => {
+      const power = lookup(powerInstance.id);
+      return ORERollDialog.showAndChat(
+        this.actor.system.stats[STATS[stat].field] + " + " + powerInstance.dice,
+        {
+          flavor:
+            game.i18n.localize(STATS[stat].name) +
+            " + [" +
+            game.i18n.localize(
+              QUALITY_TYPES[quality.qualityType].name + "Letter"
+            ) +
+            "+" +
+            quality.level +
+            "] " +
+            (quality.name || power.name),
+        }
+      );
+    };
+    html.find(".roll-hyperskill").click(async (event) => {
+      event.preventDefault();
+      const i = Number(event.currentTarget.getAttribute("index1"));
+      const j = Number(event.currentTarget.getAttribute("index2"));
+      const powerInstance = this.actor.system.hyperskills[i];
+      const power = lookup(powerInstance.id);
+      rollHyperskill(
+        powerInstance,
+        power.system.qualities[j],
+        lookup(power.system.skill.id).system.primaryStat
+      );
+    });
+    const hyperskillMenu = [];
+    for (var i = 0; i < STATS.length; i++) {
+      const i_ = i;
+      hyperskillMenu.push({
+        name: game.i18n
+          .localize("WT.Dialog.RollSkillWithStat")
+          .replace("@STAT@", game.i18n.localize(STATS[i_].name)),
+        icon: "",
+        condition: (jq) => true,
+        callback: async (jq) => {
+          const i = Number(jq.attr("index1"));
+          const j = Number(jq.attr("index2"));
+          const powerInstance = this.actor.system.hyperskills[i];
+          rollHyperskill(
+            powerInstance,
+            lookup(powerInstance.id).system.qualities[j],
+            i_
+          );
+        },
+      });
+    }
+    ContextMenu.create(this, html, ".roll-hyperskill", hyperskillMenu);
+
+    html.find(".roll-miracle").click(async (event) => {
+      event.preventDefault();
+      const i = Number(event.currentTarget.getAttribute("index1"));
+      const j = Number(event.currentTarget.getAttribute("index2"));
+      const powerInstance = this.actor.system.miracles[i];
+      const power = lookup(powerInstance.id);
+      const quality = power.system.qualities[j];
+      return ORERollDialog.showAndChat(powerInstance.dice, {
+        flavor:
+          "[" +
+          game.i18n.localize(
+            QUALITY_TYPES[quality.qualityType].name + "Letter"
+          ) +
+          "+" +
+          quality.level +
+          "] " +
+          (quality.name || power.name),
+      });
+    });
   }
 
   /** @override */
