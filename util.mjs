@@ -33,6 +33,24 @@ export const CAPACITY_TYPES = [
   { name: "WT.PowerCapacity.Self", field: "self" },
 ];
 
+export const MINION_RATINGS = [
+  { name: "WT.MinionRating.Rabble", command: 8, skill: 10, demoralization: 2 },
+  { name: "WT.MinionRating.Trained", command: 6, skill: 8, demoralization: 4 },
+  {
+    name: "WT.MinionRating.Professional",
+    command: 4,
+    skill: 6,
+    demoralization: 6,
+  },
+  { name: "WT.MinionRating.Expert", command: 2, skill: 3, demoralization: 8 },
+];
+
+export const DAMAGE_TYPES = [
+  { name: "WT.DamageType.Shock" },
+  { name: "WT.DamageType.Killing" },
+  { name: "WT.DamageType.ShockKilling" },
+];
+
 export const DEFAULT_SILHOUETTE = [
   { hitLocations: "1", name: "Left Leg", boxes: 5 },
   { hitLocations: "2", name: "Right Leg", boxes: 5 },

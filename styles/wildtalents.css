@@ -208,3 +208,7 @@
 .wildtalents .roll-failure {
   color: red;
 }
+
+.wildtalents .hide {
+  visibility: hidden;
+}

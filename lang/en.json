@@ -40,7 +40,21 @@
   "WT.OREDieType.ExpertLetter": "E",
   "WT.OREDieType.FixedLetter": "F",
 
+  "WT.MinionRating.Rabble": "Rabble",
+  "WT.MinionRating.Trained": "Trained",
+  "WT.MinionRating.Professional": "Professional",
+  "WT.MinionRating.Expert": "Expert",
+
+  "WT.DamageType.Shock": "Shock",
+  "WT.DamageType.Killing": "Killing",
+  "WT.DamageType.ShockKilling": "Shock and Killing",
+
+  "WT.DamageType.ShockLetter": "S",
+  "WT.DamageType.KillingLetter": "K",
+  "WT.DamageType.ShockKillingLetter": "S+K",
+
   "WT.Sheet.Character": "Wild Talents character",
+  "WT.Sheet.Minion": "Wild Talents minion",
   "WT.Sheet.Skill": "Wild Talents skill",
   "WT.Sheet.Archetype": "Wild Talents archetype",
   "WT.Sheet.Extra": "Wild Talents extra/flaw",
@@ -97,6 +111,15 @@
   "WT.Label.Foci": "Foci",
   "WT.Label.Capacities": "Capacities",
   "WT.Label.Extras": "Extras/Flaws",
+  "WT.Label.GroupSize": "Group size",
+  "WT.Label.MinionRating": "Minion Rating",
+  "WT.Label.CommandDifficulty": "Command difficulty",
+  "WT.Label.SkillDifficulty": "Skill difficulty",
+  "WT.Label.DemoralizationDifficulty": "Demoralize difficulty",
+  "WT.Label.DamageType": "Damage type",
+  "WT.Label.LAR": "LAR",
+  "WT.Label.HAR": "HAR",
+  "WT.Label.Masteries": "Masteries",
 
   "WT.Dialog.EmptySkillSpecialty": "specialty, etc...",
   "WT.Dialog.BodyPartBoxes": "boxes",

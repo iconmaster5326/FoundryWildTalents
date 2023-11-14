@@ -1,20 +1,19 @@
-import { OREDice } from "../rolls/OREDice.mjs";
 import { DEFAULT_SILHOUETTE, QUALITY_TYPES, STATS } from "../util.mjs";
 import { ORERollDialog } from "./ORERollDialog.mjs";
 import {
+  WTActorSheet,
   generateAddRefListDropHandler,
   generateAddRefSheetListener,
+  showOrRoll,
 } from "./sheets.mjs";
 
 const SHEET_HTML = "systems/wildtalents/templates/wt-character-sheet.hbs";
 
-export class WTCharacterSheet extends ActorSheet {
+export class WTCharacterSheet extends WTActorSheet {
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       template: SHEET_HTML,
-      width: 600,
-      height: 600,
       classes: ["wildtalents", "character"],
       tabs: [
         {
@@ -37,10 +36,6 @@ export class WTCharacterSheet extends ActorSheet {
       Item.get(id) || this.actor.getEmbeddedDocument("Item", id);
 
     const context = super.getData();
-    const actorData = this.actor.toObject(false);
-    context.system = actorData.system;
-    context.flags = actorData.flags;
-    context.rollData = context.actor.getRollData();
 
     context.documents = {};
     for (const skill of context.system.skills) {
@@ -372,20 +367,6 @@ export class WTCharacterSheet extends ActorSheet {
         },
       },
     ]);
-
-    const showOrRoll = async (event, dice, flavor) => {
-      if (event.shiftKey) {
-        return (
-          await OREDice.fromString(dice).roll({
-            flavor: flavor,
-          })
-        ).showChatMessage();
-      } else {
-        return ORERollDialog.showAndChat(dice, {
-          flavor: flavor,
-        });
-      }
-    };
 
     html.find(".roll-stat").click(async (event) => {
       event.preventDefault();

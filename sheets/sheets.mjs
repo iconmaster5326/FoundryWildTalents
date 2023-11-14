@@ -1,3 +1,6 @@
+import { OREDice } from "../rolls/OREDice.mjs";
+import { ORERollDialog } from "./ORERollDialog.mjs";
+
 export function generateAddRefSheetListener(sheet, html) {
   const actorOrItem = sheet.actor ?? sheet.item;
 
@@ -183,3 +186,39 @@ export class WTItemSheet extends ItemSheet {
   /** @protected */
   async _onDropItem(event, itemInfo) {}
 }
+
+export class WTActorSheet extends ActorSheet {
+  /** @override */
+  static get defaultOptions() {
+    return mergeObject(super.defaultOptions, {
+      width: 600,
+      height: 600,
+    });
+  }
+
+  /** @override */
+  getData() {
+    const context = super.getData();
+    const actorData = this.actor.toObject(false);
+    context.system = actorData.system;
+    context.flags = actorData.flags;
+    context.rollData = context.actor.getRollData();
+    return context;
+  }
+}
+
+export const showOrRoll = async (event, dice, flavor, options = {}) => {
+  if (event.shiftKey) {
+    return (
+      await OREDice.fromString(dice, options).roll({
+        ...options,
+        flavor: flavor,
+      })
+    ).showChatMessage(options);
+  } else {
+    return ORERollDialog.showAndChat(dice, {
+      ...options,
+      flavor: flavor,
+    });
+  }
+};

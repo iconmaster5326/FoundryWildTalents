@@ -23,10 +23,13 @@ import {
 } from "./rolls/ORERoll.mjs";
 import { ORESetFaceDialog } from "./sheets/ORESetFaceDIalog.mjs";
 import { QUALITY_TYPES } from "./util.mjs";
+import { WTMinionSheet } from "./sheets/WTMinionSheet.mjs";
+import { WTMinionData } from "./data/WTMinion.mjs";
 
 Hooks.once("init", async function () {
   CONFIG.Actor.dataModels.character = WTCharacterData;
   CONFIG.Actor.dataModels.npc = WTCharacterData;
+  CONFIG.Actor.dataModels.minion = WTMinionData;
   CONFIG.Item.dataModels.skill = WTSkillData;
   CONFIG.Item.dataModels.archetype = WTArchetypeData;
   CONFIG.Item.dataModels.extra = WTExtraData;
@@ -39,6 +42,11 @@ Hooks.once("init", async function () {
     types: ["character", "npc"],
     makeDefault: true,
     label: game.i18n.localize("WT.Sheet.Character"),
+  });
+  Actors.registerSheet("wildtalents-minion", WTMinionSheet, {
+    types: ["minion"],
+    makeDefault: true,
+    label: game.i18n.localize("WT.Sheet.Minion"),
   });
 
   Items.unregisterSheet("core", ItemSheet);
