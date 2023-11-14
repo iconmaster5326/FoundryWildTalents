@@ -26,6 +26,7 @@ import { QUALITY_TYPES } from "./util.mjs";
 
 Hooks.once("init", async function () {
   CONFIG.Actor.dataModels.character = WTCharacterData;
+  CONFIG.Actor.dataModels.npc = WTCharacterData;
   CONFIG.Item.dataModels.skill = WTSkillData;
   CONFIG.Item.dataModels.archetype = WTArchetypeData;
   CONFIG.Item.dataModels.extra = WTExtraData;
@@ -35,7 +36,7 @@ Hooks.once("init", async function () {
 
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("wildtalents-character", WTCharacterSheet, {
-    types: ["character"],
+    types: ["character", "npc"],
     makeDefault: true,
     label: game.i18n.localize("WT.Sheet.Character"),
   });
@@ -163,6 +164,14 @@ const ITEM_TYPES = [
   "focus",
   "extra",
 ];
+
+Hooks.on("preCreateActor", function (actor, data, options, actorID) {
+  if (data.type == "character") {
+    actor.updateSource({
+      "prototypeToken.actorLink": true,
+    });
+  }
+});
 
 Hooks.on("preCreateItem", function (item, data, options, itemID) {
   if (data.img || ITEM_TYPES.indexOf(data.type) == -1) return;

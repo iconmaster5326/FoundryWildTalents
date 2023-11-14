@@ -1,8 +1,10 @@
 {
   "Actor": {
-    "types": ["character"],
+    "types": ["character", "npc", "minion"],
     "htmlFields": ["appearence", "notes"],
-    "character": {}
+    "character": {},
+    "npc": {},
+    "minion": {}
   },
   "Item": {
     "types": [
