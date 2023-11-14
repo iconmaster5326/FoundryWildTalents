@@ -19,6 +19,11 @@
     </h1>
   </header>
 
+  <div class="hbox vgap16">
+    <div class="nowrap">{{localize "WT.Label.PointsPerDie"}}: </div>
+    <input class="grow" type="number" value="{{item.system.pointsPerDie}}" disabled>
+  </div>
+
   <div class="hbox vgap8">
     <label class="grow">{{localize "WT.Label.PowerType"}}: </label>
     <select class="grow2x" name="system.powerType">
@@ -53,7 +58,7 @@
           <input class="dummy" type="text" name="system.skill.id" value="{{system.skill.id}}">
           {{#with (lookup @root.documents system.skill.id) as |item|}}
             <img class="nogrow" src="{{item.img}}" width="24" height="24">
-            <div class="grow">{{item.name}}</div>
+            <div class="grow">{{item.name}} ({{localizeUnit "PtsPerDie" item.system.pointsPerDie}})</div>
           {{else}}
             <img class="nogrow" width="24" height="24">
             <div class="grow placeholder">{{localize "WT.Dialog.EmptySkillSlot"}}</div>
@@ -127,7 +132,7 @@
                     <input class="dummy" type="text" name="system.qualities.{{i}}.extras.{{j}}.id" value="{{extra.id}}">
                     {{#with (lookup @root.documents extra.id) as |item|}}
                       <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                      <div class="grow">{{item.name}}</div>
+                      <div class="grow">{{item.name}} ({{localizeUnit "Pts" (extraPtsPerDie extra)}})</div>
                     {{else}}
                       <img class="nogrow" width="24" height="24">
                       <div class="grow placeholder">{{localize "WT.Dialog.EmptyExtraSlot"}}</div>
@@ -168,6 +173,10 @@
           </div>
           <div class="hbox vgap4">
             <input class="grow" type="text" name="system.qualities.{{i}}.notes" value="{{quality.notes}}" placeholder="{{localize "WT.Label.Notes"}}">
+          </div>
+          <div class="hbox vgap4">
+            <div class="nowrap">{{localize "WT.Label.PointsPerDie"}}: </div>
+            <input class="grow" type="number" value="{{qualityPtsPerDie quality}}" disabled>
           </div>
         </div>
         <button class="remove-quality nogrow" index="{{i}}">-</button>

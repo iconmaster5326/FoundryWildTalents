@@ -51,4 +51,19 @@ export class WTArchetypeData extends foundry.abstract.DataModel {
       silhouette: new fields.ArrayField(bodyPartField(false)),
     };
   }
+
+  get pointCost() {
+    return (
+      this.sources.reduce((a, v) => a + Item.get(v.id).system.pointCost, 0) +
+      this.permissions.reduce(
+        (a, v) => a + Item.get(v.id).system.pointCost,
+        0
+      ) +
+      this.intrinsics.reduce((a, v) => a + Item.get(v.id).system.pointCost, 0)
+    );
+  }
+
+  powerPointsPerDie(item, powerInstance) {
+    return Item.get(powerInstance.id).system.pointsPerDie;
+  }
 }

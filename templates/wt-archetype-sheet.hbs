@@ -28,6 +28,10 @@
 
   <section class="sheet-body">
     <div class="tab general" data-group="primary" data-tab="general">
+      <div class="hbox vgap16">
+        <div class="nowrap">{{localize "WT.Label.PointCost"}}: </div>
+        <input class="grow" type="number" value="{{item.system.pointCost}}" disabled>
+      </div>
       <h2>{{localize "WT.Label.Notes"}}</h2>
       {{editor (enrich system.notes) target="system.notes" button=true owner=owner editable=editable}}
     </div>
@@ -44,7 +48,7 @@
               <input class="dummy" type="text" name="system.sources.{{i}}.id" value="{{mq.id}}">
               {{#with (lookup @root.documents mq.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                <div class="grow">{{item.name}}</div>
+                <div class="grow">{{item.name}} ({{localizeUnit "Pts" item.system.pointCost}})</div>
               {{else}}
                 <img class="nogrow" width="24" height="24">
                 <div class="grow placeholder">{{localize "WT.Dialog.EmptySourceSlot"}}</div>
@@ -68,7 +72,7 @@
               <input class="dummy" type="text" name="system.permissions.{{i}}.id" value="{{mq.id}}">
               {{#with (lookup @root.documents mq.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                <div class="grow">{{item.name}}</div>
+                <div class="grow">{{item.name}} ({{localizeUnit "Pts" item.system.pointCost}})</div>
               {{else}}
                 <img class="nogrow" width="24" height="24">
                 <div class="grow placeholder">{{localize "WT.Dialog.EmptyPermissionSlot"}}</div>
@@ -115,7 +119,7 @@
               <input class="dummy" type="text" name="system.intrinsics.{{i}}.id" value="{{mq.id}}">
               {{#with (lookup @root.documents mq.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                <div class="grow">{{item.name}}</div>
+                <div class="grow">{{item.name}} ({{localizeUnit "Pts" item.system.pointCost}})</div>
               {{else}}
                 <img class="nogrow" width="24" height="24">
                 <div class="grow placeholder">{{localize "WT.Dialog.EmptyIntrinsicSlot"}}</div>
@@ -151,7 +155,7 @@
               <input class="dummy" type="text" name="system.hyperstats.{{i}}.id" value="{{power.id}}">
               {{#with (lookup @root.documents power.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                <div class="grow">{{item.name}}</div>
+                <div class="grow">{{item.name}} ({{localizeUnit "PtsPerDie" (powerPtsPerDie @root.item power)}})</div>
               {{else}}
                 <img class="nogrow" width="24" height="24">
                 <div class="grow placeholder">{{localize "WT.Dialog.EmptyHyperstatSlot"}}</div>
@@ -175,7 +179,7 @@
               <input class="dummy" type="text" name="system.hyperskills.{{i}}.id" value="{{power.id}}">
               {{#with (lookup @root.documents power.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                <div class="grow">{{item.name}}</div>
+                <div class="grow">{{item.name}} ({{localizeUnit "PtsPerDie" (powerPtsPerDie @root.item power)}})</div>
               {{else}}
                 <img class="nogrow" width="24" height="24">
                 <div class="grow placeholder">{{localize "WT.Dialog.EmptyHyperskillSlot"}}</div>
@@ -199,7 +203,7 @@
               <input class="dummy" type="text" name="system.miracles.{{i}}.id" value="{{power.id}}">
               {{#with (lookup @root.documents power.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                <div class="grow">{{item.name}}</div>
+                <div class="grow">{{item.name}} ({{localizeUnit "PtsPerDie" (powerPtsPerDie @root.item power)}})</div>
               {{else}}
                 <img class="nogrow" width="24" height="24">
                 <div class="grow placeholder">{{localize "WT.Dialog.EmptyMiracleSlot"}}</div>

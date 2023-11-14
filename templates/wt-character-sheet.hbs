@@ -99,7 +99,7 @@
               <input class="dummy" type="text" name="system.skills.{{i}}.id" value="{{skill.id}}">
               {{#with (lookup @root.documents skill.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                <div class="grow">{{item.name}}</div>
+                <div class="grow">{{item.name}} ({{localizeUnit "PtsPerDie" item.system.pointsPerDie}})</div>
               {{else}}
                 <img class="nogrow" width="24" height="24">
                 <div class="grow placeholder">{{localize "WT.Dialog.EmptySkillSlot"}}</div>
@@ -137,7 +137,7 @@
               <input class="dummy" type="text" name="system.archetypes.{{i}}" value="{{archetype}}">
               {{#with (lookup @root.documents archetype) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                <div class="grow">{{item.name}}</div>
+                <div class="grow">{{item.name}} ({{localizeUnit "Pts" item.system.pointCost}})</div>
               {{else}}
                 <img class="nogrow" width="24" height="24">
                 <div class="grow placeholder">{{localize "WT.Dialog.EmptyArchetypeSlot"}}</div>
@@ -161,7 +161,7 @@
               <input class="dummy" type="text" name="system.sources.{{i}}.providedBy" value="{{mq.providedBy}}">
               {{#with (lookup @root.documents mq.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                <div class="grow">{{item.name}}</div>
+                <div class="grow">{{item.name}}{{#unless mq.providedBy}} ({{localizeUnit "Pts" item.system.pointCost}}){{/unless}}</div>
               {{else}}
                 <img class="nogrow" width="24" height="24">
                 <div class="grow placeholder">{{localize "WT.Dialog.EmptySourceSlot"}}</div>
@@ -191,7 +191,7 @@
               <input class="dummy" type="text" name="system.permissions.{{i}}.providedBy" value="{{mq.providedBy}}">
               {{#with (lookup @root.documents mq.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                <div class="grow">{{item.name}}</div>
+                <div class="grow">{{item.name}}{{#unless mq.providedBy}} ({{localizeUnit "Pts" item.system.pointCost}}){{/unless}}</div>
               {{else}}
                 <img class="nogrow" width="24" height="24">
                 <div class="grow placeholder">{{localize "WT.Dialog.EmptyPermissionSlot"}}</div>
@@ -254,7 +254,7 @@
               <input class="dummy" type="text" name="system.intrinsics.{{i}}.providedBy" value="{{mq.providedBy}}">
               {{#with (lookup @root.documents mq.id) as |item|}}
                 <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                <div class="grow">{{item.name}}</div>
+                <div class="grow">{{item.name}}{{#unless mq.providedBy}} ({{localizeUnit "Pts" item.system.pointCost}}){{/unless}}</div>
               {{else}}
                 <img class="nogrow" width="24" height="24">
                 <div class="grow placeholder">{{localize "WT.Dialog.EmptyIntrinsicSlot"}}</div>
@@ -325,7 +325,7 @@
                   <input class="dummy" type="text" name="system.hyperstats.{{i}}.providedBy" value="{{power.providedBy}}">
                   {{#with (lookup @root.documents power.id) as |item|}}
                     <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                    <div class="grow">{{item.name}}</div>
+                    <div class="grow">{{item.name}} ({{localizeUnit "PtsPerDie" (powerPtsPerDie @root.actor power)}})</div>
                   {{else}}
                     <img class="nogrow" width="24" height="24">
                     <div class="grow placeholder">{{localize "WT.Dialog.EmptyHyperstatSlot"}}</div>
@@ -366,7 +366,7 @@
                   <input class="dummy" type="text" name="system.hyperskills.{{i}}.providedBy" value="{{power.providedBy}}">
                   {{#with (lookup @root.documents power.id) as |item|}}
                     <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                    <div class="grow">{{item.name}}</div>
+                    <div class="grow">{{item.name}} ({{localizeUnit "PtsPerDie" (powerPtsPerDie @root.actor power)}})</div>
                   {{else}}
                     <img class="nogrow" width="24" height="24">
                     <div class="grow placeholder">{{localize "WT.Dialog.EmptyHyperskillSlot"}}</div>
@@ -407,7 +407,7 @@
                   <input class="dummy" type="text" name="system.miracles.{{i}}.providedBy" value="{{power.providedBy}}">
                   {{#with (lookup @root.documents power.id) as |item|}}
                     <img class="nogrow" src="{{item.img}}" width="24" height="24">
-                    <div class="grow">{{item.name}}</div>
+                    <div class="grow">{{item.name}} ({{localizeUnit "PtsPerDie" (powerPtsPerDie @root.actor power)}})</div>
                   {{else}}
                     <img class="nogrow" width="24" height="24">
                     <div class="grow placeholder">{{localize "WT.Dialog.EmptyMiracleSlot"}}</div>

@@ -22,7 +22,7 @@ import {
   ORE_DIE_TYPE_WIGGLE,
 } from "./rolls/ORERoll.mjs";
 import { ORESetFaceDialog } from "./sheets/ORESetFaceDIalog.mjs";
-import { QUALITY_TYPES } from "./util.mjs";
+import { QUALITY_TYPES, extraPointsPerDie, qualityPointsPerDie } from "./util.mjs";
 import { WTMinionSheet } from "./sheets/WTMinionSheet.mjs";
 import { WTMinionData } from "./data/WTMinion.mjs";
 
@@ -98,6 +98,16 @@ Hooks.once("init", async function () {
   });
   Handlebars.registerHelper("qualityTypeLetter", function (t) {
     return game.i18n.localize(QUALITY_TYPES[t].name + "Letter");
+  });
+  Handlebars.registerHelper("powerPtsPerDie", function (char, powerInstance) {
+    return char.system.powerPointsPerDie(char, powerInstance);
+  });
+  Handlebars.registerHelper("qualityPtsPerDie", qualityPointsPerDie);
+  Handlebars.registerHelper("extraPtsPerDie", extraPointsPerDie);
+  Handlebars.registerHelper("localizeUnit", function (unit, x) {
+    return game.i18n
+      .localize("WT.Unit." + unit)
+      .replace("@X@", x);
   });
 
   const TEMPLATE_PARTS = "systems/wildtalents/templates/parts/";

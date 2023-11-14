@@ -251,4 +251,16 @@ export class WTCharacterData extends foundry.abstract.DataModel {
   get initiative() {
     return -OREDice.fromString(this.stats.sense).size;
   }
+
+  powerPointsPerDie(actor, powerInstance) {
+    const lookup = (id) =>
+      Item.get(id) || actor.getEmbeddedDocument("Item", id);
+
+    if (powerInstance.providedBy) {
+      const item = lookup(powerInstance.providedBy);
+      return item.system.powerPointsPerDie(item, powerInstance);
+    } else {
+      return lookup(powerInstance.id).system.pointsPerDie;
+    }
+  }
 }

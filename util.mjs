@@ -14,9 +14,9 @@ export const META_QUALITY_TYPES = [
 ];
 
 export const POWER_TYPES = [
-  { name: "WT.PowerType.Hyperstat", field: "hyperstats" },
-  { name: "WT.PowerType.Hyperskill", field: "hyperskills" },
-  { name: "WT.PowerType.Miracle", field: "miracles" },
+  { name: "WT.PowerType.Hyperstat", field: "hyperstats", cost: 4 },
+  { name: "WT.PowerType.Hyperskill", field: "hyperskills", cost: 1 },
+  { name: "WT.PowerType.Miracle", field: "miracles", cost: 0 },
 ];
 
 export const QUALITY_TYPES = [
@@ -26,11 +26,11 @@ export const QUALITY_TYPES = [
 ];
 
 export const CAPACITY_TYPES = [
-  { name: "WT.PowerCapacity.Mass", field: "mass" },
-  { name: "WT.PowerCapacity.Range", field: "range" },
-  { name: "WT.PowerCapacity.Speed", field: "speed" },
-  { name: "WT.PowerCapacity.Touch", field: "touch" },
-  { name: "WT.PowerCapacity.Self", field: "self" },
+  { name: "WT.PowerCapacity.Mass", field: "mass", cost: 2 },
+  { name: "WT.PowerCapacity.Range", field: "range", cost: 2 },
+  { name: "WT.PowerCapacity.Speed", field: "speed", cost: 2 },
+  { name: "WT.PowerCapacity.Touch", field: "touch", cost: 1 },
+  { name: "WT.PowerCapacity.Self", field: "self", cost: 1 },
 ];
 
 export const MINION_RATINGS = [
@@ -64,3 +64,35 @@ export const DEFAULT_SILHOUETTE = [
   },
   { hitLocations: "10", name: "Head", boxes: 4, brainBoxes: 4 },
 ];
+
+function firstOneIsFree(caplist) {
+  const result = { ...caplist };
+  for (const ct of CAPACITY_TYPES) {
+    if (result[ct.field]) {
+      result[ct.field] = false;
+      return result;
+    }
+  }
+  return result;
+}
+
+export function qualityPointsPerDie(quality) {
+  const caplist = firstOneIsFree(quality.capacities);
+  return Math.max(
+    1,
+    2 +
+      quality.level +
+      Object.keys(caplist).reduce(
+        (a, v) =>
+          a + caplist[v] * CAPACITY_TYPES.find((ct) => ct.field == v).cost,
+        0
+      ) +
+      quality.extras.reduce((a, v) => a + extraPointsPerDie(v), 0)
+  );
+}
+
+export function extraPointsPerDie(extraInstance) {
+  return (
+    Item.get(extraInstance.id).system.pointCost * extraInstance.multibuyAmount
+  );
+}

@@ -1,11 +1,16 @@
-import { CAPACITY_TYPES, POWER_TYPES, QUALITY_TYPES } from "../util.mjs";
+import {
+  CAPACITY_TYPES,
+  POWER_TYPES,
+  QUALITY_TYPES,
+  qualityPointsPerDie,
+} from "../util.mjs";
 import { extraInstanceField, statField } from "./data.mjs";
 
 export class WTPowerData extends foundry.abstract.DataModel {
   /** @override */
   static defineSchema() {
     const fields = foundry.data.fields;
-    
+
     const ptChoices = {};
     for (var i = 0; i < POWER_TYPES.length; i++) {
       const pt = POWER_TYPES[i];
@@ -32,7 +37,8 @@ export class WTPowerData extends foundry.abstract.DataModel {
         choices: ptChoices,
       }),
       stat: statField(), // only used if hyperstat
-      skill: new fields.SchemaField({ // only used if hyperskill
+      skill: new fields.SchemaField({
+        // only used if hyperskill
         id: new fields.StringField(), // ID of skill
         specialty: new fields.StringField(),
       }),
@@ -56,5 +62,12 @@ export class WTPowerData extends foundry.abstract.DataModel {
         })
       ),
     };
+  }
+
+  get pointsPerDie() {
+    return (
+      POWER_TYPES[this.powerType].cost +
+      this.qualities.reduce((a, v) => a + qualityPointsPerDie(v), 0)
+    );
   }
 }

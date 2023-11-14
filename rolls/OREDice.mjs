@@ -1,6 +1,7 @@
 import {
   OREDie,
   ORERoll,
+  ORE_DIE_TYPES,
   ORE_DIE_TYPE_EXPERT,
   ORE_DIE_TYPE_FIXED,
   ORE_DIE_TYPE_HARD,
@@ -347,5 +348,16 @@ export class OREDice {
       result.push(new OREDie("*", ORE_DIE_TYPE_WIGGLE));
     }
     return ORERoll.fromDice(result, options);
+  }
+
+  get pointCost() {
+    return (
+      this.dice * ORE_DIE_TYPES[ORE_DIE_TYPE_NORMAL].points +
+      this.hardDice * ORE_DIE_TYPES[ORE_DIE_TYPE_HARD].points +
+      this.wiggleDice * ORE_DIE_TYPES[ORE_DIE_TYPE_WIGGLE].points +
+      this.expertDice * ORE_DIE_TYPES[ORE_DIE_TYPE_EXPERT].points +
+      this.fixedDice.reduce((a, v) => a + v, 0) *
+        ORE_DIE_TYPES[ORE_DIE_TYPE_FIXED].points
+    );
   }
 }

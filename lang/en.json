@@ -172,6 +172,9 @@
   "WT.Dialog.RollSkillWithStat": "Roll using @STAT@",
   "WT.Dialog.RollHyperstatWithStat": "Roll combined with stat",
 
+  "WT.Unit.Pts": "@X@ pts",
+  "WT.Unit.PtsPerDie": "@X@/d",
+
   "WT.ORERollDialog.Title": "Configure Your Roll",
   "WT.ORERollDialog.Dice": "Dice",
   "WT.ORERollDialog.MinWidth": "Min. width",
