@@ -58,17 +58,19 @@
     <div class="tab stats" data-group="primary" data-tab="stats">
       <div>
         <h2>{{localize "WT.Label.Stats"}}</h2>
-        {{#each STATS as |stat i|}}
-          <div class="hbox vgap8">
-            <label class="grow">{{localize stat.name}}</label>
-            <button class="nogrow roll-stat" stat="{{stat.field}}"><i class="fa-solid fa-dice"></i></button>
-            <input class="grow2x"
-              type="text"
-              name="system.stats.{{stat.field}}"
-              value="{{lookup @root.system.stats stat.field}}"
-            />
-          </div>
-        {{/each}}
+        <ul>
+          {{#each STATS as |stat i|}}
+            <li class="hbox vgap8">
+              <button class="nogrow roll-stat" stat="{{stat.field}}"><i class="fa-solid fa-dice"></i></button>
+              <label class="grow">{{localize stat.name}}</label>
+              <input class="grow2x"
+                type="text"
+                name="system.stats.{{stat.field}}"
+                value="{{lookup @root.system.stats stat.field}}"
+              />
+            </li>
+          {{/each}}
+        </ul>
       </div>
       <div>
         <h2 class="hbox">
@@ -78,6 +80,7 @@
         <ul>
           {{#each system.skills as |skill i|}}
           <li class="hbox vgap8">
+            <button class="nogrow roll-skill" index="{{i}}"><i class="fa-solid fa-dice"></i></button>
             <div class="grow2x slot skillslot hbox" index="{{i}}">
               <input class="dummy" type="text" name="system.skills.{{i}}.id" value="{{skill.id}}">
               {{#with (lookup @root.documents skill.id) as |item|}}

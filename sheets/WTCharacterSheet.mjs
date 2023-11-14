@@ -374,13 +374,47 @@ export class WTCharacterSheet extends ActorSheet {
 
     html.find(".roll-stat").click(async (event) => {
       event.preventDefault();
-      const statField = event.currentTarget.getAttribute("stat");
-      return ORERollDialog.showAndChat(this.actor.system.stats[statField], {
-        flavor: game.i18n.localize(
-          STATS.find((s) => s.field == statField).name
-        ),
+      const field = event.currentTarget.getAttribute("stat");
+      return ORERollDialog.showAndChat(this.actor.system.stats[field], {
+        flavor: game.i18n.localize(STATS.find((s) => s.field == field).name),
       });
     });
+    const rollSkill = async (skillInstance, stat) => {
+      const skill = lookup(skillInstance.id);
+      const statDice = this.actor.system.stats[STATS[stat].field];
+      return ORERollDialog.showAndChat(statDice + "+" + skillInstance.dice, {
+        flavor:
+          game.i18n.localize(STATS[stat].name) +
+          " + " +
+          skill.name +
+          (skillInstance.specialty ? " (" + skillInstance.specialty + ")" : ""),
+      });
+    };
+    html.find(".roll-skill").click(async (event) => {
+      event.preventDefault();
+      const index = Number(event.currentTarget.getAttribute("index"));
+      const skillInstance = this.actor.system.skills[index];
+      return rollSkill(
+        skillInstance,
+        lookup(skillInstance.id).system.primaryStat
+      );
+    });
+    const rollAltStats = [];
+    for (var i = 0; i < STATS.length; i++) {
+      const i_ = i;
+      rollAltStats.push({
+        name: game.i18n
+          .localize("WT.Dialog.RollSkillWithStat")
+          .replace("@STAT@", game.i18n.localize(STATS[i_].name)),
+        icon: "",
+        condition: (jq) => true,
+        callback: async (jq) => {
+          const index = Number(jq.attr("index"));
+          return rollSkill(this.actor.system.skills[index], i_);
+        },
+      });
+    }
+    ContextMenu.create(this, html, ".roll-skill", rollAltStats);
   }
 
   /** @override */

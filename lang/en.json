@@ -141,6 +141,7 @@
   "WT.Dialog.DisbandSet": "Disband set",
   "WT.Dialog.SetFaceAdvanced": "Set face...",
   "WT.Dialog.RerollDie": "Reroll die",
+  "WT.Dialog.RollSkillWithStat": "Roll using @STAT@",
 
   "WT.ORERollDialog.Title": "Configure Your Roll",
   "WT.ORERollDialog.Dice": "Dice",
