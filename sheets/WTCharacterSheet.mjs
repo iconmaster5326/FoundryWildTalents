@@ -30,6 +30,24 @@ export class WTCharacterSheet extends WTActorSheet {
     return SHEET_HTML;
   }
 
+  get health() {
+    const health = [];
+    for (const bodyPart of this.actor.system.silhouette) {
+      const boxes = [];
+      for (var i = 0; i < bodyPart.boxes; i++) {
+        var state = "healthy";
+        if (i < bodyPart.killingDamage) {
+          state = "killing";
+        } else if (i < bodyPart.killingDamage + bodyPart.shockDamage) {
+          state = "shock";
+        }
+        boxes.push({ state: state });
+      }
+      health.push({ name: bodyPart.name, boxes: boxes });
+    }
+    return health;
+  }
+
   /** @override */
   getData() {
     const lookup = (id) =>
@@ -66,6 +84,7 @@ export class WTCharacterSheet extends WTActorSheet {
       context.documents[focus] = lookup(focus);
     }
 
+    context.health = this.health;
     context.STATS = STATS;
     return context;
   }
@@ -539,6 +558,37 @@ export class WTCharacterSheet extends WTActorSheet {
           "] " +
           (quality.name || power.name)
       );
+    });
+
+    html.find(".healthbox").click(async (event) => {
+      var health = this.health;
+      var i = Number($(event.currentTarget).find(".box-info-index1").text());
+      var j = Number($(event.currentTarget).find(".box-info-index2").text());
+      var newArray = this.actor.system.silhouette.slice();
+      var state = health[i].boxes[j].state;
+      newArray[i] = {
+        ...newArray[i],
+        shockDamage:
+          newArray[i].shockDamage +
+          (state == "shock" ? -1 : state == "healthy" ? 1 : 0),
+        killingDamage: newArray[i].killingDamage + (state == "shock" ? 1 : 0),
+      };
+      this.actor.update({ "system.silhouette": newArray });
+    });
+    html.find(".healthbox").contextmenu(async (event) => {
+      var health = this.health;
+      var i = Number($(event.currentTarget).find(".box-info-index1").text());
+      var j = Number($(event.currentTarget).find(".box-info-index2").text());
+      var newArray = this.actor.system.silhouette.slice();
+      var state = health[i].boxes[j].state;
+      newArray[i] = {
+        ...newArray[i],
+        shockDamage:
+          newArray[i].shockDamage -
+          (state == "killing" ? -1 : state == "shock" ? 1 : 0),
+        killingDamage: newArray[i].killingDamage - (state == "killing" ? 1 : 0),
+      };
+      this.actor.update({ "system.silhouette": newArray });
     });
   }
 

@@ -212,3 +212,21 @@
 .wildtalents .hide {
   visibility: hidden;
 }
+
+.wildtalents .healthbox {
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 32px;
+  height: 24px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.wildtalents .healthbox.healthy {
+  background-image: url("../assets/health/box.png");
+}
+.wildtalents .healthbox.shock {
+  background-image: url("../assets/health/box_shock.png");
+}
+.wildtalents .healthbox.killing {
+  background-image: url("../assets/health/box_killing.png");
+}

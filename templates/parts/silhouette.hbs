@@ -34,25 +34,21 @@
         />
         <div class="nowrap">)</div>
       </div>
-      <div class="hbox vgap4">
-        {{#if bodyPart.shockDamage includeZero=true}}
-        <div class="nowrap">{{localize "WT.Label.ShockDamage"}}: </div>
-        <input class="grow"
-          type="number"
-          name="system.silhouette.{{i}}.shockDamage"
-          value="{{bodyPart.shockDamage}}"
-        />
-        {{/if}}
-        {{#if bodyPart.killingDamage includeZero=true}}
-        <div class="nowrap"> {{localize "WT.Label.KillingDamage"}}: </div>
-        <input class="grow"
-          type="number"
-          name="system.silhouette.{{i}}.killingDamage"
-          value="{{bodyPart.killingDamage}}"
-        />
-        {{/if}}
-      </div>
     </div>
+    {{#if bodyPart.shockDamage includeZero=true}}
+    <input class="dummy"
+      type="number"
+      name="system.silhouette.{{i}}.shockDamage"
+      value="{{bodyPart.shockDamage}}"
+    />
+    {{/if}}
+    {{#if bodyPart.killingDamage includeZero=true}}
+    <input class="dummy"
+      type="number"
+      name="system.silhouette.{{i}}.killingDamage"
+      value="{{bodyPart.killingDamage}}"
+    />
+    {{/if}}
     <button class="remove-body-part nogrow" index="{{i}}">-</button>
   </li>
   {{/each}}

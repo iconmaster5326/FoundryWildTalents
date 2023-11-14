@@ -74,6 +74,7 @@
 
   "WT.Label.Name": "Name",
   "WT.Label.General": "General",
+  "WT.Label.Health": "Health",
   "WT.Label.PointTotal": "Points Spent",
   "WT.Label.XP": "Points to Spend",
   "WT.Label.Willpower": "Willpower",
