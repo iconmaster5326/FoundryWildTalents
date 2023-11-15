@@ -30,7 +30,7 @@ import {
 } from "./util.mjs";
 import { WTMinionSheet } from "./sheets/WTMinionSheet.mjs";
 import { WTMinionData } from "./data/WTMinion.mjs";
-import { ORERollDialog } from "./sheets/ORERollDialog.mjs";
+import { ORERollDialog, parseEDFs } from "./sheets/ORERollDialog.mjs";
 import { OREDice } from "./rolls/OREDice.mjs";
 
 Hooks.once("init", async function () {
@@ -604,6 +604,70 @@ Hooks.once("ready", async () => {
       return false;
     }
   });
+});
+
+const ORE_OPTIONS = {
+  mh: { option: "minHeight", ctor: Number },
+  mw: { option: "minWidth", ctor: Number },
+  pd: { option: "penaltyDice", ctor: Number },
+  gd: { option: "gobbleDice", ctor: Number },
+  ed: { option: "extraDice", ctor: (s) => parseEDFs(s, 1000) },
+  flavor: { option: "flavor", ctor: String },
+};
+const ORE_COMMAND = "/ore";
+
+async function oreCommand(message) {
+  const args = message.split(/\s+/).slice(1);
+  var dice = "";
+  var options = {};
+
+  for (const arg of args) {
+    if (arg.includes("=")) {
+      const parts = arg.split("=");
+      if (parts.length != 2) {
+        return ui.notifications.error(
+          `${ORE_COMMAND} failed: ill-formed option '${arg}' (expected key=value)`
+        );
+      }
+      const option = ORE_OPTIONS[parts[0]];
+      if (!option) {
+        return ui.notifications.error(
+          `${ORE_COMMAND} failed: unknown option (expected one of: ${Object.keys(
+            ORE_OPTIONS
+          ).join(" ")})`
+        );
+      }
+      try {
+        options[option.option] = option.ctor(parts[1]);
+      } catch (e) {
+        console.error(e);
+        return ui.notifications.error(
+          `${ORE_COMMAND} failed: option ${parts[0]}: Invalid value '${parts[1]}'`
+        );
+      }
+    } else {
+      dice = dice + arg;
+    }
+  }
+
+  try {
+    (
+      await OREDice.fromString(dice, options)
+        .penalize(options.penaltyDice, options)
+        .constrain(options)
+        .roll(options)
+    ).showChatMessage(options);
+  } catch (e) {
+    console.error(e);
+    return ui.notifications.error(`${ORE_COMMAND} failed: ${e.message}'`);
+  }
+}
+
+Hooks.on("chatMessage", (chatlog, message, data) => {
+  if (message && message.split(/\s+/)[0] == ORE_COMMAND) {
+    oreCommand(message);
+    return false;
+  }
 });
 
 // CONFIG.debug.hooks = true;

@@ -2,7 +2,7 @@ import { OREDice } from "../rolls/OREDice.mjs";
 
 const SHEET_HTML = "systems/wildtalents/templates/ore-roll-dialog.hbs";
 
-function parseEDFs(s, n) {
+export function parseEDFs(s, n) {
   const edfs = s.split(",").map((ss) => Number(ss.trim()));
   const stars = new Array(Math.max(0, n - edfs.length));
   stars.fill("*");
