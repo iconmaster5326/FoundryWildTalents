@@ -171,6 +171,9 @@
   "WT.Dialog.RerollDie": "Reroll die",
   "WT.Dialog.RollSkillWithStat": "Roll using @STAT@",
   "WT.Dialog.RollHyperstatWithStat": "Roll combined with stat",
+  "WT.Dialog.RollCommand": "Command check",
+  "WT.Dialog.RollSkill": "Skill check",
+  "WT.Dialog.RollDemoralization": "Demoralization check",
 
   "WT.Unit.Pts": "@X@ pts",
   "WT.Unit.PtsPerDie": "@X@/d",
@@ -178,6 +181,11 @@
   "WT.Macro.Stat": "@ACTOR@: Roll @STAT@",
   "WT.Macro.Skill": "@ACTOR@: Roll @SKILL@@SPECIALTY@",
   "WT.Macro.Power": "@ACTOR@: Roll @POWER@@QUALITY@",
+  "WT.Macro.MinionGeneral": "@ACTOR@: Roll for Group",
+  "WT.Macro.MinionCommand": "@ACTOR@: Make Command check",
+  "WT.Macro.MinionSkill": "@ACTOR@: Make Skill check",
+  "WT.Macro.MinionDemoralization": "@ACTOR@: Make Demoralization check",
+  "WT.Macro.MinionMastery": "@ACTOR@: Roll @SKILL@@SPECIALTY@",
 
   "WT.ORERollDialog.Title": "Configure Your Roll",
   "WT.ORERollDialog.Dice": "Dice",

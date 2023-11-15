@@ -383,16 +383,23 @@ Hooks.once("ready", async () => {
       dataType,
       macroGetName,
       macroGetDice,
-      macroGetFlavor
+      macroGetFlavor,
+      macroGetOptions = (actor, data) => undefined
     ) {
       if (data.type == dataType) {
         const actor = Actor.get(data.actor);
         const name = macroGetName(data, actor);
         const fn = data.quick ? "quickRoll" : "roll";
+        var options = macroGetOptions(data, actor);
+        if (options) {
+          options = "\n    " + options.replace("\n", "\n    ");
+        } else {
+          options = "";
+        }
         const command = `await game.wildtalents.${fn}(
   ${macroGetDice(data, actor)},
   {
-    flavor: "${macroGetFlavor(data, actor)}",
+    flavor: "${macroGetFlavor(data, actor)}",${options}
   }
 )`;
 
@@ -513,6 +520,83 @@ Hooks.once("ready", async () => {
             ) +
             "+0] " +
             (quality.name || power.name)
+          );
+        }
+      )) === false
+    ) {
+      return false;
+    } else if (
+      (await onActorDrop(
+        "WTMinionGeneral",
+        (data, actor) =>
+          game.i18n
+            .localize("WT.Macro.MinionGeneral")
+            .replace("@ACTOR@", actor.name),
+        (data, actor) => `Actor.get("${actor.id}").system.groupSize + "d"`,
+        (data, actor) => ""
+      )) === false
+    ) {
+      return false;
+    } else if (
+      (await onActorDrop(
+        "WTMinionCommand",
+        (data, actor) =>
+          game.i18n
+            .localize("WT.Macro.MinionCommand")
+            .replace("@ACTOR@", actor.name),
+        (data, actor) => `Actor.get("${actor.id}").system.groupSize + "d"`,
+        (data, actor) => game.i18n.localize("WT.Dialog.RollCommand"),
+        (data, actor) =>
+          `minHeight: Actor.get("${actor.id}").system.effectiveCommand,`
+      )) === false
+    ) {
+      return false;
+    } else if (
+      (await onActorDrop(
+        "WTMinionSkill",
+        (data, actor) =>
+          game.i18n
+            .localize("WT.Macro.MinionSkill")
+            .replace("@ACTOR@", actor.name),
+        (data, actor) => `Actor.get("${actor.id}").system.groupSize + "d"`,
+        (data, actor) => game.i18n.localize("WT.Dialog.RollSkill"),
+        (data, actor) =>
+          `minHeight: Actor.get("${actor.id}").system.effectiveSkill,`
+      )) === false
+    ) {
+      return false;
+    } else if (
+      (await onActorDrop(
+        "WTMinionDemoralization",
+        (data, actor) =>
+          game.i18n
+            .localize("WT.Macro.MinionDemoralization")
+            .replace("@ACTOR@", actor.name),
+        (data, actor) => `Actor.get("${actor.id}").system.groupSize + "d"`,
+        (data, actor) => game.i18n.localize("WT.Dialog.RollDemoralization"),
+        (data, actor) =>
+          `minHeight: Actor.get("${actor.id}").system.effectiveDemoralization,`
+      )) === false
+    ) {
+      return false;
+    } else if (
+      (await onActorDrop(
+        "WTMinionMastery",
+        (data, actor) =>
+          game.i18n
+            .localize("WT.Macro.MinionMastery")
+            .replace("@ACTOR@", actor.name)
+            .replace("@SKILL@", actorLookupItem(actor, data.mastery.id).name)
+            .replace(
+              "@SPECIALTY@",
+              data.mastery.specialty ? " (" + data.mastery.specialty + ")" : ""
+            ),
+        (data, actor) => `Actor.get("${actor.id}").system.masteryDice`,
+        (data, actor) => {
+          const skill = actorLookupItem(actor, data.mastery.id);
+          return (
+            skill.name +
+            (data.mastery.specialty ? " (" + data.mastery.specialty + ")" : "")
           );
         }
       )) === false

@@ -64,6 +64,17 @@ export class WTMinionSheet extends WTActorSheet {
       event.preventDefault();
       return showOrRoll(event, this.actor.system.groupSize + "d");
     });
+    html.find(".roll-general").on("dragstart", async (event) => {
+      event.originalEvent.dataTransfer.setData(
+        "text/plain",
+        JSON.stringify({
+          type: "WTMinionGeneral",
+          actor: this.actor.id,
+          quick: event.shiftKey || event.ctrlKey,
+        })
+      );
+    });
+
     html.find(".roll-command").click(async (event) => {
       event.preventDefault();
       return showOrRoll(
@@ -75,6 +86,17 @@ export class WTMinionSheet extends WTActorSheet {
         }
       );
     });
+    html.find(".roll-command").on("dragstart", async (event) => {
+      event.originalEvent.dataTransfer.setData(
+        "text/plain",
+        JSON.stringify({
+          type: "WTMinionCommand",
+          actor: this.actor.id,
+          quick: event.shiftKey || event.ctrlKey,
+        })
+      );
+    });
+
     html.find(".roll-skill").click(async (event) => {
       event.preventDefault();
       return showOrRoll(
@@ -86,6 +108,17 @@ export class WTMinionSheet extends WTActorSheet {
         }
       );
     });
+    html.find(".roll-skill").on("dragstart", async (event) => {
+      event.originalEvent.dataTransfer.setData(
+        "text/plain",
+        JSON.stringify({
+          type: "WTMinionSkill",
+          actor: this.actor.id,
+          quick: event.shiftKey || event.ctrlKey,
+        })
+      );
+    });
+
     html.find(".roll-demoralization").click(async (event) => {
       event.preventDefault();
       return showOrRoll(
@@ -97,20 +130,45 @@ export class WTMinionSheet extends WTActorSheet {
         }
       );
     });
+    html.find(".roll-demoralization").on("dragstart", async (event) => {
+      event.originalEvent.dataTransfer.setData(
+        "text/plain",
+        JSON.stringify({
+          type: "WTMinionDemoralization",
+          actor: this.actor.id,
+          quick: event.shiftKey || event.ctrlKey,
+        })
+      );
+    });
+
     html.find(".roll-mastery").click(async (event) => {
       event.preventDefault();
       const index = Number(event.currentTarget.getAttribute("index"));
       const masteryInstance = this.actor.system.masteries[index];
       const skill = lookup(masteryInstance.id);
-      const face = 6 - Math.floor(this.actor.system.groupSize / 5);
 
       return showOrRoll(
         event,
-        face > 0 ? "2f" + face + "d" : "0d",
+        this.actor.system.masteryDice,
         skill.name +
           (masteryInstance.specialty
             ? " (" + masteryInstance.specialty + ")"
             : "")
+      );
+    });
+    html.find(".roll-mastery").on("dragstart", async (event) => {
+      const masteryInstance =
+        this.actor.system.masteries[
+          Number(event.currentTarget.getAttribute("index"))
+        ];
+      event.originalEvent.dataTransfer.setData(
+        "text/plain",
+        JSON.stringify({
+          type: "WTMinionMastery",
+          actor: this.actor.id,
+          mastery: masteryInstance,
+          quick: event.shiftKey || event.ctrlKey,
+        })
       );
     });
   }

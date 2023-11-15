@@ -89,4 +89,9 @@ export class WTMinionData extends foundry.abstract.DataModel {
       this.demoralization || MINION_RATINGS[this.minionRating].demoralization
     );
   }
+
+  get masteryDice() {
+    const face = 6 - Math.floor(this.groupSize / 5);
+    return face > 0 ? "2f" + face + "d" : "0d";
+  }
 }

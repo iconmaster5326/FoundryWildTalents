@@ -7,7 +7,7 @@
   </header>
   
   <div class="hbox">
-    <button class="nogrow roll-general" index="{{i}}"><i class="fa-solid fa-dice"></i></button>
+    <button class="nogrow roll-general" index="{{i}}"  draggable="true"><i class="fa-solid fa-dice"></i></button>
     <div class="nowrap grow">{{localize "WT.Label.GroupSize"}}: </div>
     <input class="grow2x" type="number" name="system.groupSize" value="{{system.groupSize}}">
   </div>
@@ -26,17 +26,17 @@
 
   {{#with (lookup MINION_RATINGS system.minionRating) as |mr|}}
   <div class="hbox">
-    <button class="nogrow roll-command" index="{{i}}"><i class="fa-solid fa-dice"></i></button>
+    <button class="nogrow roll-command" index="{{i}}"  draggable="true"><i class="fa-solid fa-dice"></i></button>
     <div class="nowrap grow">{{localize "WT.Label.CommandDifficulty"}}: </div>
     <input class="grow2x" type="number" name="system.command" value="{{@root.system.command}}" placeholder="{{mr.command}}">
   </div>
   <div class="hbox">
-    <button class="nogrow roll-skill" index="{{i}}"><i class="fa-solid fa-dice"></i></button>
+    <button class="nogrow roll-skill" index="{{i}}"  draggable="true"><i class="fa-solid fa-dice"></i></button>
     <div class="nowrap grow">{{localize "WT.Label.SkillDifficulty"}}: </div>
     <input class="grow2x" type="number" name="system.skill" value="{{@root.system.skill}}" placeholder="{{mr.skill}}">
   </div>
   <div class="hbox">
-    <button class="nogrow roll-demoralization" index="{{i}}"><i class="fa-solid fa-dice"></i></button>
+    <button class="nogrow roll-demoralization" index="{{i}}"  draggable="true"><i class="fa-solid fa-dice"></i></button>
     <div class="nowrap grow">{{localize "WT.Label.DemoralizationDifficulty"}}: </div>
     <input class="grow2x" type="number" name="system.demoralization" value="{{@root.system.demoralization}}" placeholder="{{mr.demoralization}}">
   </div>
@@ -69,9 +69,9 @@
   <ul>
     {{#each system.masteries as |mastery i|}}
       <li class="hbox vgap8">
-        <button class="nogrow roll-mastery" index="{{i}}"><i class="fa-solid fa-dice"></i></button>
+        <button class="nogrow roll-mastery" index="{{i}}"  draggable="true"><i class="fa-solid fa-dice"></i></button>
         <div class="grow2x slot masteryslot hbox" index="{{i}}">
-          <input class="dummy" type="text" name="system.skills.{{i}}.id" value="{{mastery.id}}">
+          <input class="dummy" type="text" name="system.masteries.{{i}}.id" value="{{mastery.id}}">
           {{#with (lookup @root.documents mastery.id) as |item|}}
             <img class="nogrow" src="{{item.img}}" width="24" height="24">
             <div class="grow">{{item.name}}</div>
@@ -83,7 +83,7 @@
         <div class="nowrap"> (</div>
         <input class="grow"
           type="text"
-          name="system.skills.{{i}}.specialty"
+          name="system.masteries.{{i}}.specialty"
           value="{{mastery.specialty}}"
           placeholder="{{localize "WT.Dialog.EmptySkillSpecialty"}}"
         />
