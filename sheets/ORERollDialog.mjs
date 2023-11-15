@@ -84,6 +84,6 @@ export class ORERollDialog extends Dialog {
       minHeight: result.minHeight,
       expertDiceFaces: result.expertDiceFaces,
     });
-    return roll.showChatMessage();
+    return roll.showChatMessage(options);
   }
 }

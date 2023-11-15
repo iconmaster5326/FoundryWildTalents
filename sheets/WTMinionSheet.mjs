@@ -62,7 +62,7 @@ export class WTMinionSheet extends WTActorSheet {
 
     html.find(".roll-general").click(async (event) => {
       event.preventDefault();
-      return showOrRoll(event, this.actor.system.groupSize + "d");
+      return showOrRoll(this.actor, event, this.actor.system.groupSize + "d");
     });
     html.find(".roll-general").on("dragstart", async (event) => {
       event.originalEvent.dataTransfer.setData(
@@ -77,7 +77,7 @@ export class WTMinionSheet extends WTActorSheet {
 
     html.find(".roll-command").click(async (event) => {
       event.preventDefault();
-      return showOrRoll(
+      return showOrRoll(this.actor, 
         event,
         this.actor.system.groupSize + "d",
         game.i18n.localize("WT.Dialog.RollCommand"),
@@ -99,7 +99,7 @@ export class WTMinionSheet extends WTActorSheet {
 
     html.find(".roll-skill").click(async (event) => {
       event.preventDefault();
-      return showOrRoll(
+      return showOrRoll(this.actor, 
         event,
         this.actor.system.groupSize + "d",
         game.i18n.localize("WT.Dialog.RollSkill"),
@@ -121,7 +121,7 @@ export class WTMinionSheet extends WTActorSheet {
 
     html.find(".roll-demoralization").click(async (event) => {
       event.preventDefault();
-      return showOrRoll(
+      return showOrRoll(this.actor, 
         event,
         this.actor.system.groupSize + "d",
         game.i18n.localize("WT.Dialog.RollDemoralization"),
@@ -147,7 +147,7 @@ export class WTMinionSheet extends WTActorSheet {
       const masteryInstance = this.actor.system.masteries[index];
       const skill = lookup(masteryInstance.id);
 
-      return showOrRoll(
+      return showOrRoll(this.actor, 
         event,
         this.actor.system.masteryDice,
         skill.name +

@@ -207,17 +207,21 @@ export class WTActorSheet extends ActorSheet {
   }
 }
 
-export const showOrRoll = async (event, dice, flavor, options = {}) => {
+export const showOrRoll = async (actor, event, dice, flavor, options = {}) => {
   if (event.shiftKey || event.ctrlKey) {
     return (
       await OREDice.fromString(dice, options).roll({
         ...options,
         flavor: flavor,
       })
-    ).showChatMessage(options);
+    ).showChatMessage({
+      ...options,
+      speaker: { actor: actor.id },
+    });
   } else {
     return ORERollDialog.showAndChat(dice, {
       ...options,
+      speaker: { actor: actor.id },
       flavor: flavor,
     });
   }

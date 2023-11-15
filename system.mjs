@@ -399,7 +399,8 @@ Hooks.once("ready", async () => {
         const command = `await game.wildtalents.${fn}(
   ${macroGetDice(data, actor)},
   {
-    flavor: "${macroGetFlavor(data, actor)}",${options}
+    flavor: "${macroGetFlavor(data, actor)}",
+    speaker: { actor: "${actor.id}" },${options}
   }
 )`;
 

@@ -390,7 +390,7 @@ export class WTCharacterSheet extends WTActorSheet {
     html.find(".roll-stat").click(async (event) => {
       event.preventDefault();
       const field = event.currentTarget.getAttribute("stat");
-      return showOrRoll(
+      return showOrRoll(this.actor, 
         event,
         this.actor.system.stats[field],
         game.i18n.localize(STATS.find((s) => s.field == field).name)
@@ -412,7 +412,7 @@ export class WTCharacterSheet extends WTActorSheet {
     const rollSkill = async (event, skillInstance, stat) => {
       const skill = lookup(skillInstance.id);
       const statDice = this.actor.system.stats[STATS[stat].field];
-      return showOrRoll(
+      return showOrRoll(this.actor, 
         event,
         statDice + " + " + skillInstance.dice,
         game.i18n.localize(STATS[stat].name) +
@@ -469,7 +469,7 @@ export class WTCharacterSheet extends WTActorSheet {
       const powerInstance = this.actor.system.hyperstats[i];
       const power = lookup(powerInstance.id);
       const quality = power.system.qualities[j];
-      return showOrRoll(
+      return showOrRoll(this.actor, 
         event,
         powerInstance.dice,
         "[" +
@@ -528,7 +528,7 @@ export class WTCharacterSheet extends WTActorSheet {
 
     const rollHyperskill = async (event, powerInstance, quality, stat) => {
       const power = lookup(powerInstance.id);
-      return showOrRoll(
+      return showOrRoll(this.actor, 
         event,
         this.actor.system.stats[STATS[stat].field] + " + " + powerInstance.dice,
         game.i18n.localize(STATS[stat].name) +
@@ -600,7 +600,7 @@ export class WTCharacterSheet extends WTActorSheet {
       const powerInstance = this.actor.system.miracles[i];
       const power = lookup(powerInstance.id);
       const quality = power.system.qualities[j];
-      return showOrRoll(
+      return showOrRoll(this.actor, 
         event,
         powerInstance.dice,
         "[" +
