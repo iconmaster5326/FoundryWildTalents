@@ -129,6 +129,13 @@ Hooks.once("init", async function () {
       ".message:not(:has(.ore-roll-chat-message))",
       this._getEntryContextOptions()
     );
+
+    const isMessageOurs = (messageHTML) => {
+      return (
+        game.user.isGM ||
+        game.messages.get(messageHTML.data("messageId")).user.id == game.user.id
+      );
+    };
     ContextMenu.create(
       this,
       html,
@@ -137,7 +144,7 @@ Hooks.once("init", async function () {
         {
           name: game.i18n.localize("WT.Dialog.Refresh"),
           icon: "",
-          condition: (messageHTML) => true,
+          condition: isMessageOurs,
           callback: async (messageHTML) => {
             const message = game.messages.get(messageHTML.data("messageId"));
             const roll = ORERoll.fromRollFlavor(message.rolls[0]);
@@ -152,7 +159,7 @@ Hooks.once("init", async function () {
         {
           name: game.i18n.localize("WT.Dialog.GobbleOne"),
           icon: "",
-          condition: (messageHTML) => true,
+          condition: isMessageOurs,
           callback: async (messageHTML) => {
             const message = game.messages.get(messageHTML.data("messageId"));
             const roll = ORERoll.fromRollFlavor(message.rolls[0]);
@@ -163,7 +170,7 @@ Hooks.once("init", async function () {
         {
           name: game.i18n.localize("WT.Dialog.UngobbleOne"),
           icon: "",
-          condition: (messageHTML) => true,
+          condition: isMessageOurs,
           callback: async (messageHTML) => {
             const message = game.messages.get(messageHTML.data("messageId"));
             const roll = ORERoll.fromRollFlavor(message.rolls[0]);
@@ -207,6 +214,14 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
   if (html.find(".ore-roll-chat-message").length) {
     const roll = ORERoll.fromRollFlavor(message.rolls[0]);
 
+    const isMessageOurs = (dieJQ) => {
+      return (
+        game.user.isGM ||
+        game.messages.get(dieJQ.parents(".message").data("messageId"))
+          .user.id == game.user.id
+      );
+    };
+
     const setValueOptions = [];
     for (var i = 1; i <= 10; i++) {
       const i_ = i;
@@ -214,6 +229,7 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
         name: game.i18n.localize("WT.Dialog.SetFace").replace("@FACE@", i),
         icon: "",
         condition: (dieJQ) => {
+          if (!isMessageOurs(dieJQ)) return false;
           const die = roll.getDieFromJQ(dieJQ);
           if (die.face == i_) {
             return false;
@@ -248,6 +264,7 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
           .replace("@H@", set.height),
         icon: "",
         condition: (dieJQ) => {
+          if (!isMessageOurs(dieJQ)) return false;
           const die = roll.getDieFromJQ(dieJQ);
           return !set.includes(die);
         },
@@ -273,6 +290,7 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
           name: game.i18n.localize("WT.Dialog.RemoveFromSet"),
           icon: "",
           condition: (dieJQ) => {
+            if (!isMessageOurs(dieJQ)) return false;
             const die = roll.getDieFromJQ(dieJQ);
             for (const set of roll.sets) {
               if (set.includes(die) && set.width == 1) {
@@ -294,6 +312,7 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
           name: game.i18n.localize("WT.Dialog.ToNewSet"),
           icon: "",
           condition: (dieJQ) => {
+            if (!isMessageOurs(dieJQ)) return false;
             const die = roll.getDieFromJQ(dieJQ);
             for (const set of roll.sets) {
               if (set.includes(die) && set.width == 1) {
@@ -315,6 +334,7 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
           name: game.i18n.localize("WT.Dialog.DisbandSet"),
           icon: "",
           condition: (dieJQ) => {
+            if (!isMessageOurs(dieJQ)) return false;
             const die = roll.getDieFromJQ(dieJQ);
             return !roll.looseDice.includes(die);
           },
@@ -333,6 +353,7 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
           name: game.i18n.localize("WT.Dialog.SetFaceAdvanced"),
           icon: "",
           condition: (dieJQ) => {
+            if (!isMessageOurs(dieJQ)) return false;
             const die = roll.getDieFromJQ(dieJQ);
             return (
               die.type == ORE_DIE_TYPE_WIGGLE || die.type == ORE_DIE_TYPE_EXPERT
@@ -350,6 +371,7 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
           name: game.i18n.localize("WT.Dialog.RerollDie"),
           icon: "",
           condition: (dieJQ) => {
+            if (!isMessageOurs(dieJQ)) return false;
             const die = roll.getDieFromJQ(dieJQ);
             return die.type == ORE_DIE_TYPE_NORMAL;
           },
