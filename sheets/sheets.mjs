@@ -208,7 +208,7 @@ export class WTActorSheet extends ActorSheet {
 }
 
 export const showOrRoll = async (event, dice, flavor, options = {}) => {
-  if (event.shiftKey) {
+  if (event.shiftKey || event.ctrlKey) {
     return (
       await OREDice.fromString(dice, options).roll({
         ...options,

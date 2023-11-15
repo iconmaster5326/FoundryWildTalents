@@ -75,7 +75,7 @@
         <ul>
           {{#each STATS as |stat i|}}
             <li class="hbox vgap8">
-              <button class="nogrow roll-stat" stat="{{stat.field}}"><i class="fa-solid fa-dice"></i></button>
+              <button class="nogrow roll-stat" stat="{{stat.field}}" draggable="true"><i class="fa-solid fa-dice"></i></button>
               <label class="grow">{{localize stat.name}}</label>
               <input class="grow2x"
                 type="text"
@@ -94,7 +94,7 @@
         <ul>
           {{#each system.skills as |skill i|}}
           <li class="hbox vgap8">
-            <button class="nogrow roll-skill" index="{{i}}"><i class="fa-solid fa-dice"></i></button>
+            <button class="nogrow roll-skill" index="{{i}}" draggable="true"><i class="fa-solid fa-dice"></i></button>
             <div class="grow2x slot skillslot hbox" index="{{i}}">
               <input class="dummy" type="text" name="system.skills.{{i}}.id" value="{{skill.id}}">
               {{#with (lookup @root.documents skill.id) as |item|}}
@@ -342,7 +342,7 @@
               <div class="grow hbox hbox-flow">
                 {{#with (lookup @root.documents power.id) as |item|}}
                   {{#each item.system.qualities as |quality j|}}
-                    <button class="nowrap nogrow roll-hyperstat" index1="{{i}}" index2="{{j}}"><i class="fa-solid fa-dice"></i>[{{qualityTypeLetter quality.qualityType}}+{{quality.level}}] {{quality.name}}</button>
+                    <button class="nowrap nogrow roll-hyperstat" index1="{{i}}" index2="{{j}}" draggable="true"><i class="fa-solid fa-dice"></i>[{{qualityTypeLetter quality.qualityType}}+{{quality.level}}] {{quality.name}}</button>
                   {{/each}}
                 {{/with}}
               </div>
@@ -383,7 +383,7 @@
               <div class="grow hbox hbox-flow">
                 {{#with (lookup @root.documents power.id) as |item|}}
                   {{#each item.system.qualities as |quality j|}}
-                    <button class="nowrap nogrow roll-hyperskill" index1="{{i}}" index2="{{j}}"><i class="fa-solid fa-dice"></i>[{{qualityTypeLetter quality.qualityType}}+{{quality.level}}] {{quality.name}}</button>
+                    <button class="nowrap nogrow roll-hyperskill" index1="{{i}}" index2="{{j}}" draggable="true"><i class="fa-solid fa-dice"></i>[{{qualityTypeLetter quality.qualityType}}+{{quality.level}}] {{quality.name}}</button>
                   {{/each}}
                 {{/with}}
               </div>
@@ -424,7 +424,7 @@
               <div class="grow hbox hbox-flow">
                 {{#with (lookup @root.documents power.id) as |item|}}
                   {{#each item.system.qualities as |quality j|}}
-                    <button class="nowrap nogrow roll-miracle" index1="{{i}}" index2="{{j}}"><i class="fa-solid fa-dice"></i>[{{qualityTypeLetter quality.qualityType}}+{{quality.level}}] {{quality.name}}</button>
+                    <button class="nowrap nogrow roll-miracle" index1="{{i}}" index2="{{j}}" draggable="true"><i class="fa-solid fa-dice"></i>[{{qualityTypeLetter quality.qualityType}}+{{quality.level}}] {{quality.name}}</button>
                   {{/each}}
                 {{/with}}
               </div>

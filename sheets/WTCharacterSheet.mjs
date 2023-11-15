@@ -396,6 +396,18 @@ export class WTCharacterSheet extends WTActorSheet {
         game.i18n.localize(STATS.find((s) => s.field == field).name)
       );
     });
+    html.find(".roll-stat").on("dragstart", async (event) => {
+      const field = event.currentTarget.getAttribute("stat");
+      event.originalEvent.dataTransfer.setData(
+        "text/plain",
+        JSON.stringify({
+          type: "WTStat",
+          actor: this.actor.id,
+          stat: STATS.findIndex((s) => s.field == field),
+          quick: event.shiftKey || event.ctrlKey,
+        })
+      );
+    });
 
     const rollSkill = async (event, skillInstance, stat) => {
       const skill = lookup(skillInstance.id);
@@ -435,6 +447,20 @@ export class WTCharacterSheet extends WTActorSheet {
       });
     }
     ContextMenu.create(this, html, ".roll-skill", rollSkillMenu);
+    html.find(".roll-skill").on("dragstart", async (event) => {
+      event.originalEvent.dataTransfer.setData(
+        "text/plain",
+        JSON.stringify({
+          type: "WTSkill",
+          actor: this.actor.id,
+          skill:
+            this.actor.system.skills[
+              Number(event.currentTarget.getAttribute("index"))
+            ],
+          quick: event.shiftKey || event.ctrlKey,
+        })
+      );
+    });
 
     html.find(".roll-hyperstat").click(async (event) => {
       event.preventDefault();
@@ -485,6 +511,20 @@ export class WTCharacterSheet extends WTActorSheet {
         },
       },
     ]);
+    html.find(".roll-hyperstat").on("dragstart", async (event) => {
+      const i = Number(event.currentTarget.getAttribute("index1"));
+      const j = Number(event.currentTarget.getAttribute("index2"));
+      event.originalEvent.dataTransfer.setData(
+        "text/plain",
+        JSON.stringify({
+          type: "WTQuality",
+          actor: this.actor.id,
+          power: this.actor.system.hyperstats[i],
+          quality: j,
+          quick: event.shiftKey || event.ctrlKey,
+        })
+      );
+    });
 
     const rollHyperskill = async (event, powerInstance, quality, stat) => {
       const power = lookup(powerInstance.id);
@@ -538,6 +578,20 @@ export class WTCharacterSheet extends WTActorSheet {
       });
     }
     ContextMenu.create(this, html, ".roll-hyperskill", hyperskillMenu);
+    html.find(".roll-hyperskill").on("dragstart", async (event) => {
+      const i = Number(event.currentTarget.getAttribute("index1"));
+      const j = Number(event.currentTarget.getAttribute("index2"));
+      event.originalEvent.dataTransfer.setData(
+        "text/plain",
+        JSON.stringify({
+          type: "WTQuality",
+          actor: this.actor.id,
+          power: this.actor.system.hyperskills[i],
+          quality: j,
+          quick: event.shiftKey || event.ctrlKey,
+        })
+      );
+    });
 
     html.find(".roll-miracle").click(async (event) => {
       event.preventDefault();
@@ -557,6 +611,20 @@ export class WTCharacterSheet extends WTActorSheet {
           quality.level +
           "] " +
           (quality.name || power.name)
+      );
+    });
+    html.find(".roll-miracle").on("dragstart", async (event) => {
+      const i = Number(event.currentTarget.getAttribute("index1"));
+      const j = Number(event.currentTarget.getAttribute("index2"));
+      event.originalEvent.dataTransfer.setData(
+        "text/plain",
+        JSON.stringify({
+          type: "WTQuality",
+          actor: this.actor.id,
+          power: this.actor.system.miracles[i],
+          quality: j,
+          quick: event.shiftKey || event.ctrlKey,
+        })
       );
     });
 

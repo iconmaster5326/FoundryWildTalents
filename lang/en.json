@@ -175,6 +175,10 @@
   "WT.Unit.Pts": "@X@ pts",
   "WT.Unit.PtsPerDie": "@X@/d",
 
+  "WT.Macro.Stat": "@ACTOR@: Roll @STAT@",
+  "WT.Macro.Skill": "@ACTOR@: Roll @SKILL@@SPECIALTY@",
+  "WT.Macro.Power": "@ACTOR@: Roll @POWER@@QUALITY@",
+
   "WT.ORERollDialog.Title": "Configure Your Roll",
   "WT.ORERollDialog.Dice": "Dice",
   "WT.ORERollDialog.MinWidth": "Min. width",

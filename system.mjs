@@ -22,9 +22,16 @@ import {
   ORE_DIE_TYPE_WIGGLE,
 } from "./rolls/ORERoll.mjs";
 import { ORESetFaceDialog } from "./sheets/ORESetFaceDIalog.mjs";
-import { QUALITY_TYPES, extraPointsPerDie, qualityPointsPerDie } from "./util.mjs";
+import {
+  QUALITY_TYPES,
+  STATS,
+  extraPointsPerDie,
+  qualityPointsPerDie,
+} from "./util.mjs";
 import { WTMinionSheet } from "./sheets/WTMinionSheet.mjs";
 import { WTMinionData } from "./data/WTMinion.mjs";
+import { ORERollDialog } from "./sheets/ORERollDialog.mjs";
+import { OREDice } from "./rolls/OREDice.mjs";
 
 Hooks.once("init", async function () {
   CONFIG.Actor.dataModels.character = WTCharacterData;
@@ -105,9 +112,7 @@ Hooks.once("init", async function () {
   Handlebars.registerHelper("qualityPtsPerDie", qualityPointsPerDie);
   Handlebars.registerHelper("extraPtsPerDie", extraPointsPerDie);
   Handlebars.registerHelper("localizeUnit", function (unit, x) {
-    return game.i18n
-      .localize("WT.Unit." + unit)
-      .replace("@X@", x);
+    return game.i18n.localize("WT.Unit." + unit).replace("@X@", x);
   });
 
   const TEMPLATE_PARTS = "systems/wildtalents/templates/parts/";
@@ -357,6 +362,164 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
       ]
     );
   }
+});
+
+function actorLookupItem(actor, id) {
+  return Item.get(id) || actor.getEmbeddedDocument("Item", id);
+}
+
+Game.prototype.wildtalents = {
+  roll: ORERollDialog.showAndChat,
+  quickRoll: async (dice, options = {}) => {
+    return (
+      await OREDice.fromString(dice, options).roll(options)
+    ).showChatMessage(options);
+  },
+};
+
+Hooks.once("ready", async () => {
+  Hooks.on("hotbarDrop", async (bar, data, slot) => {
+    async function onActorDrop(
+      dataType,
+      macroGetName,
+      macroGetDice,
+      macroGetFlavor
+    ) {
+      if (data.type == dataType) {
+        const actor = Actor.get(data.actor);
+        const name = macroGetName(data, actor);
+        const fn = data.quick ? "quickRoll" : "roll";
+        const command = `await game.wildtalents.${fn}(
+  ${macroGetDice(data, actor)},
+  {
+    flavor: "${macroGetFlavor(data, actor)}",
+  }
+)`;
+
+        var macro = game.macros.contents.find(
+          (m) => m.name == name && m.command == command
+        );
+        if (!macro) {
+          macro = await Macro.create({
+            name: name,
+            type: "script",
+            img: ASSETS + "macro/roll.png",
+            command: command,
+          });
+        }
+        game.user.assignHotbarMacro(macro, slot);
+        return false;
+      }
+    }
+
+    if (
+      (await onActorDrop(
+        "WTStat",
+        (data, actor) =>
+          game.i18n
+            .localize("WT.Macro.Stat")
+            .replace("@ACTOR@", actor.name)
+            .replace("@STAT@", game.i18n.localize(STATS[data.stat].name)),
+        (data, actor) =>
+          `Actor.get("${actor.id}").system.stats.${STATS[data.stat].field}`,
+        (data, actor) => game.i18n.localize(STATS[data.stat].name)
+      )) === false
+    ) {
+      return false;
+    } else if (
+      (await onActorDrop(
+        "WTSkill",
+        (data, actor) =>
+          game.i18n
+            .localize("WT.Macro.Skill")
+            .replace("@ACTOR@", actor.name)
+            .replace("@SKILL@", actorLookupItem(actor, data.skill.id).name)
+            .replace(
+              "@SPECIALTY@",
+              data.skill.specialty ? " (" + data.skill.specialty + ")" : ""
+            ),
+        (data, actor) => {
+          const skill = actorLookupItem(actor, data.skill.id);
+          return `Actor.get("${actor.id}").system.stats.${
+            STATS[skill.system.primaryStat].field
+          } + " + " + Actor.get("${
+            actor.id
+          }").system.skills.find(s => s.id == "${
+            data.skill.id
+          }" && s.specialty == "${data.skill.specialty}").dice`;
+        },
+        (data, actor) => {
+          const skill = actorLookupItem(actor, data.skill.id);
+          return (
+            game.i18n.localize(STATS[skill.system.primaryStat].name) +
+            " + " +
+            skill.name +
+            (data.skill.specialty ? " (" + data.skill.specialty + ")" : "")
+          );
+        }
+      )) === false
+    ) {
+      return false;
+    } else if (
+      (await onActorDrop(
+        "WTQuality",
+        (data, actor) => {
+          const power = actorLookupItem(actor, data.power.id);
+          return game.i18n
+            .localize("WT.Macro.Power")
+            .replace("@ACTOR@", actor.name)
+            .replace("@POWER@", power.name)
+            .replace(
+              "@QUALITY@",
+              power.system.qualities[data.quality].name
+                ? " (" + power.system.qualities[data.quality].name + ")"
+                : ""
+            );
+        },
+        (data, actor) => {
+          const power = actorLookupItem(actor, data.power.id);
+          const field = ["hyperstats", "hyperskills", "miracles"][
+            power.system.powerType
+          ];
+
+          var prefix = "";
+          if (power.system.powerType == 1) {
+            // hyperskill
+            prefix = `Actor.get("${actor.id}").system.stats.${
+              STATS[power.system.stat].field
+            } + " + " + `;
+          }
+
+          return (
+            prefix +
+            `Actor.get("${actor.id}").system.${field}.find(p => p.id == "${data.power.id}" && p.providedBy == "${data.power.providedBy}").dice`
+          );
+        },
+        (data, actor) => {
+          const power = actorLookupItem(actor, data.power.id);
+          const quality = power.system.qualities[data.quality];
+
+          var prefix = "";
+          if (power.system.powerType == 1) {
+            // hyperskill
+            prefix = game.i18n.localize(STATS[power.system.stat].name) + " + ";
+          }
+
+          return (
+            prefix +
+            "[" +
+            game.i18n.localize(
+              QUALITY_TYPES[quality.qualityType].name + "Letter"
+            ) +
+            "+0] " +
+            (quality.name || power.name)
+          );
+        }
+      )) === false
+    ) {
+      return false;
+    }
+  });
 });
 
 // CONFIG.debug.hooks = true;
