@@ -6,7 +6,9 @@ import {
   showOrRoll,
 } from "./sheets.mjs";
 
-const SHEET_HTML = "systems/wildtalents/templates/wt-minion-sheet.hbs";
+const TEMPLATES = "systems/wildtalents/templates/";
+const SHEET_HTML = TEMPLATES + "wt-minion-sheet.hbs";
+const SHEET_HTML_LIMITED = TEMPLATES + "wt-actor-sheet-limited.hbs";
 
 export class WTMinionSheet extends WTActorSheet {
   /** @override */
@@ -19,7 +21,11 @@ export class WTMinionSheet extends WTActorSheet {
 
   /** @override */
   get template() {
-    return SHEET_HTML;
+    if (this.actor.limited && !game.user.isGM) {
+      return SHEET_HTML_LIMITED;
+    } else {
+      return SHEET_HTML;
+    }
   }
 
   /** @override */
@@ -77,7 +83,8 @@ export class WTMinionSheet extends WTActorSheet {
 
     html.find(".roll-command").click(async (event) => {
       event.preventDefault();
-      return showOrRoll(this.actor, 
+      return showOrRoll(
+        this.actor,
         event,
         this.actor.system.groupSize + "d",
         game.i18n.localize("WT.Dialog.RollCommand"),
@@ -99,7 +106,8 @@ export class WTMinionSheet extends WTActorSheet {
 
     html.find(".roll-skill").click(async (event) => {
       event.preventDefault();
-      return showOrRoll(this.actor, 
+      return showOrRoll(
+        this.actor,
         event,
         this.actor.system.groupSize + "d",
         game.i18n.localize("WT.Dialog.RollSkill"),
@@ -121,7 +129,8 @@ export class WTMinionSheet extends WTActorSheet {
 
     html.find(".roll-demoralization").click(async (event) => {
       event.preventDefault();
-      return showOrRoll(this.actor, 
+      return showOrRoll(
+        this.actor,
         event,
         this.actor.system.groupSize + "d",
         game.i18n.localize("WT.Dialog.RollDemoralization"),
@@ -147,7 +156,8 @@ export class WTMinionSheet extends WTActorSheet {
       const masteryInstance = this.actor.system.masteries[index];
       const skill = lookup(masteryInstance.id);
 
-      return showOrRoll(this.actor, 
+      return showOrRoll(
+        this.actor,
         event,
         this.actor.system.masteryDice,
         skill.name +

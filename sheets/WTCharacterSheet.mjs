@@ -7,7 +7,9 @@ import {
   showOrRoll,
 } from "./sheets.mjs";
 
-const SHEET_HTML = "systems/wildtalents/templates/wt-character-sheet.hbs";
+const TEMPLATES = "systems/wildtalents/templates/";
+const SHEET_HTML = TEMPLATES + "wt-character-sheet.hbs";
+const SHEET_HTML_LIMITED = TEMPLATES + "wt-actor-sheet-limited.hbs";
 
 export class WTCharacterSheet extends WTActorSheet {
   /** @override */
@@ -27,7 +29,11 @@ export class WTCharacterSheet extends WTActorSheet {
 
   /** @override */
   get template() {
-    return SHEET_HTML;
+    if (this.actor.limited && !game.user.isGM) {
+      return SHEET_HTML_LIMITED;
+    } else {
+      return SHEET_HTML;
+    }
   }
 
   get health() {
@@ -390,7 +396,8 @@ export class WTCharacterSheet extends WTActorSheet {
     html.find(".roll-stat").click(async (event) => {
       event.preventDefault();
       const field = event.currentTarget.getAttribute("stat");
-      return showOrRoll(this.actor, 
+      return showOrRoll(
+        this.actor,
         event,
         this.actor.system.stats[field],
         game.i18n.localize(STATS.find((s) => s.field == field).name)
@@ -412,7 +419,8 @@ export class WTCharacterSheet extends WTActorSheet {
     const rollSkill = async (event, skillInstance, stat) => {
       const skill = lookup(skillInstance.id);
       const statDice = this.actor.system.stats[STATS[stat].field];
-      return showOrRoll(this.actor, 
+      return showOrRoll(
+        this.actor,
         event,
         statDice + " + " + skillInstance.dice,
         game.i18n.localize(STATS[stat].name) +
@@ -469,7 +477,8 @@ export class WTCharacterSheet extends WTActorSheet {
       const powerInstance = this.actor.system.hyperstats[i];
       const power = lookup(powerInstance.id);
       const quality = power.system.qualities[j];
-      return showOrRoll(this.actor, 
+      return showOrRoll(
+        this.actor,
         event,
         powerInstance.dice,
         "[" +
@@ -528,7 +537,8 @@ export class WTCharacterSheet extends WTActorSheet {
 
     const rollHyperskill = async (event, powerInstance, quality, stat) => {
       const power = lookup(powerInstance.id);
-      return showOrRoll(this.actor, 
+      return showOrRoll(
+        this.actor,
         event,
         this.actor.system.stats[STATS[stat].field] + " + " + powerInstance.dice,
         game.i18n.localize(STATS[stat].name) +
@@ -600,7 +610,8 @@ export class WTCharacterSheet extends WTActorSheet {
       const powerInstance = this.actor.system.miracles[i];
       const power = lookup(powerInstance.id);
       const quality = power.system.qualities[j];
-      return showOrRoll(this.actor, 
+      return showOrRoll(
+        this.actor,
         event,
         powerInstance.dice,
         "[" +

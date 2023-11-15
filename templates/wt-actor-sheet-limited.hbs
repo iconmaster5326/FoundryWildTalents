@@ -1,0 +1,10 @@
+<div class="{{cssClass}}">
+  <header>
+    <h1 class="hbox">
+      <img class="nogrow profile-img vgap8" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="50" width="50" />
+      <input class="grow hgap16 vgap8" type="text" value="{{data.name}}" placeholder="{{localize "WT.Label.Name"}}" disabled />
+    </h1>
+  </header>
+
+  {{editor (enrich system.appearence) target="system.appearence" button=true owner=owner editable=editable}}
+</div>
