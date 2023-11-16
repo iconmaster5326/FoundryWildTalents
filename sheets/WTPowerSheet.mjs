@@ -138,8 +138,7 @@ export class WTPowerSheet extends WTItemSheet {
   /** @override */
   async _onDropItem(event, itemInfo) {
     if (!this.isEditable) return;
-    const itemID = itemInfo.uuid.slice("Item.".length);
-    const item = Item.get(itemID);
+    const item = await fromUuid(itemInfo.uuid);
     if (!item) return;
     if (item.type == "skill" && this.item.system.powerType == 1) {
       this.item.update({ "system.skill.id": itemID });

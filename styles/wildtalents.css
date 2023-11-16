@@ -93,7 +93,7 @@
 
 .wildtalents .editor {
   min-height: 20%;
-  max-height: fit-content;
+  max-height: max-content;
 }
 
 .wildtalents .slot {

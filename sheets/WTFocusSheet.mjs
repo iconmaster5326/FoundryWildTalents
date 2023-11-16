@@ -103,8 +103,7 @@ export class WTFocusSheet extends WTItemSheet {
     if (!this.isEditable) return;
 
     if (itemInfo.type == "Item") {
-      const itemID = itemInfo.uuid.slice("Item.".length);
-      const item = Item.get(itemID);
+      const item = await fromUuid(itemInfo.uuid);
       if (!item) return;
 
       const addRefListDropHandler = generateAddRefListDropHandler(this, item);
