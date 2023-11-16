@@ -54,7 +54,9 @@ export class WTArchetypeData extends foundry.abstract.DataModel {
 
   get pointCost() {
     return (
-      this.sources.reduce((a, v) => a + Item.get(v.id).system.pointCost, 0) +
+      this.sources
+        .slice(1)
+        .reduce((a, v) => a + Item.get(v.id).system.pointCost, 0) +
       this.permissions.reduce(
         (a, v) => a + Item.get(v.id).system.pointCost,
         0
