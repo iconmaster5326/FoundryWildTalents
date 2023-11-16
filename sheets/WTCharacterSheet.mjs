@@ -1,4 +1,9 @@
-import { DEFAULT_SILHOUETTE, QUALITY_TYPES, STATS } from "../util.mjs";
+import {
+  DEFAULT_SILHOUETTE,
+  QUALITY_TYPES,
+  STATS,
+  lookupItem,
+} from "../util.mjs";
 import { ORERollDialog } from "./ORERollDialog.mjs";
 import {
   WTActorSheet,
@@ -99,8 +104,7 @@ export class WTCharacterSheet extends WTActorSheet {
   activateListeners(html) {
     super.activateListeners(html);
 
-    const lookup = (id) =>
-      Item.get(id) || this.actor.getEmbeddedDocument("Item", id);
+    const lookup = async (id) => lookupItem(this.actor, id);
 
     if (!this.isEditable) return;
 
@@ -247,7 +251,7 @@ export class WTCharacterSheet extends WTActorSheet {
       const index = Number(event.currentTarget.getAttribute("index"));
       const instance = this.actor.system.archetypes[index];
       if (instance) {
-        lookup(instance).sheet.render(true);
+        (await lookup(instance)).sheet.render(true);
       }
     });
     ContextMenu.create(this, html, ".archetypeslot", [
@@ -341,7 +345,7 @@ export class WTCharacterSheet extends WTActorSheet {
       const instance = this.actor.system.foci[index];
       if (instance) {
         // open existing
-        lookup(instance).sheet.render(true);
+        (await lookup(instance)).sheet.render(true);
       } else {
         // create new
         const newItem = await getDocumentClass("Item").create(
@@ -417,7 +421,7 @@ export class WTCharacterSheet extends WTActorSheet {
     });
 
     const rollSkill = async (event, skillInstance, stat) => {
-      const skill = lookup(skillInstance.id);
+      const skill = await lookup(skillInstance.id);
       const statDice = this.actor.system.stats[STATS[stat].field];
       return showOrRoll(
         this.actor,
@@ -436,7 +440,7 @@ export class WTCharacterSheet extends WTActorSheet {
       return rollSkill(
         event,
         skillInstance,
-        lookup(skillInstance.id).system.primaryStat
+        (await lookup(skillInstance.id)).system.primaryStat
       );
     });
     const rollSkillMenu = [];
@@ -475,7 +479,7 @@ export class WTCharacterSheet extends WTActorSheet {
       const i = Number(event.currentTarget.getAttribute("index1"));
       const j = Number(event.currentTarget.getAttribute("index2"));
       const powerInstance = this.actor.system.hyperstats[i];
-      const power = lookup(powerInstance.id);
+      const power = await lookup(powerInstance.id);
       const quality = power.system.qualities[j];
       return showOrRoll(
         this.actor,
@@ -500,7 +504,7 @@ export class WTCharacterSheet extends WTActorSheet {
           const i = Number(jq.attr("index1"));
           const j = Number(jq.attr("index2"));
           const powerInstance = this.actor.system.hyperstats[i];
-          const power = lookup(powerInstance.id);
+          const power = await lookup(powerInstance.id);
           const quality = power.system.qualities[j];
           return ORERollDialog.showAndChat(
             this.actor.system.stats[STATS[power.system.stat].field] +
@@ -536,7 +540,7 @@ export class WTCharacterSheet extends WTActorSheet {
     });
 
     const rollHyperskill = async (event, powerInstance, quality, stat) => {
-      const power = lookup(powerInstance.id);
+      const power = await lookup(powerInstance.id);
       return showOrRoll(
         this.actor,
         event,
@@ -557,12 +561,12 @@ export class WTCharacterSheet extends WTActorSheet {
       const i = Number(event.currentTarget.getAttribute("index1"));
       const j = Number(event.currentTarget.getAttribute("index2"));
       const powerInstance = this.actor.system.hyperskills[i];
-      const power = lookup(powerInstance.id);
+      const power = await lookup(powerInstance.id);
       rollHyperskill(
         event,
         powerInstance,
         power.system.qualities[j],
-        lookup(power.system.skill.id).system.primaryStat
+        (await lookup(power.system.skill.id)).system.primaryStat
       );
     });
     const hyperskillMenu = [];
@@ -581,7 +585,7 @@ export class WTCharacterSheet extends WTActorSheet {
           rollHyperskill(
             {},
             powerInstance,
-            lookup(powerInstance.id).system.qualities[j],
+            (await lookup(powerInstance.id)).system.qualities[j],
             i_
           );
         },
@@ -608,7 +612,7 @@ export class WTCharacterSheet extends WTActorSheet {
       const i = Number(event.currentTarget.getAttribute("index1"));
       const j = Number(event.currentTarget.getAttribute("index2"));
       const powerInstance = this.actor.system.miracles[i];
-      const power = lookup(powerInstance.id);
+      const power = await lookup(powerInstance.id);
       const quality = power.system.qualities[j];
       return showOrRoll(
         this.actor,

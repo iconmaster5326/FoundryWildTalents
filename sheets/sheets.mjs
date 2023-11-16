@@ -1,11 +1,11 @@
 import { OREDice } from "../rolls/OREDice.mjs";
+import { lookupItem } from "../util.mjs";
 import { ORERollDialog } from "./ORERollDialog.mjs";
 
 export function generateAddRefSheetListener(sheet, html) {
   const actorOrItem = sheet.actor ?? sheet.item;
 
-  const lookupItem = (id) =>
-    Item.get(id) || actorOrItem.getEmbeddedDocument("Item", id);
+  const lookup = async (id) => lookupItem(actorOrItem, id);
 
   return function (name, itemTypeName, propertyName, getProp, options = {}) {
     html.find(".add-" + name).click((event) => {
@@ -41,7 +41,7 @@ export function generateAddRefSheetListener(sheet, html) {
       const instance = getProp()[index];
       if (instance.id) {
         // open up existing
-        lookupItem(instance.id).sheet.render(true);
+        await lookup(instance.id).sheet.render(true);
       } else if (options.creatable) {
         // create new embedded
         const newItem = await getDocumentClass("Item").create(

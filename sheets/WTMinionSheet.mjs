@@ -1,4 +1,4 @@
-import { DAMAGE_TYPES, MINION_RATINGS } from "../util.mjs";
+import { DAMAGE_TYPES, MINION_RATINGS, lookupItem } from "../util.mjs";
 import {
   WTActorSheet,
   generateAddRefListDropHandler,
@@ -47,8 +47,7 @@ export class WTMinionSheet extends WTActorSheet {
   activateListeners(html) {
     super.activateListeners(html);
 
-    const lookup = (id) =>
-      Item.get(id) || this.actor.getEmbeddedDocument("Item", id);
+    const lookup = async (id) => lookupItem(this.actor, id);
 
     if (!this.isEditable) return;
 
@@ -154,7 +153,7 @@ export class WTMinionSheet extends WTActorSheet {
       event.preventDefault();
       const index = Number(event.currentTarget.getAttribute("index"));
       const masteryInstance = this.actor.system.masteries[index];
-      const skill = lookup(masteryInstance.id);
+      const skill = await lookup(masteryInstance.id);
 
       return showOrRoll(
         this.actor,

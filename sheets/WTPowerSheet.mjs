@@ -1,4 +1,10 @@
-import { CAPACITY_TYPES, POWER_TYPES, QUALITY_TYPES, STATS } from "../util.mjs";
+import {
+  CAPACITY_TYPES,
+  POWER_TYPES,
+  QUALITY_TYPES,
+  STATS,
+  lookupItem,
+} from "../util.mjs";
 import { WTItemSheet } from "./sheets.mjs";
 
 const SHEET_HTML = "systems/wildtalents/templates/wt-power-sheet.hbs";
@@ -65,7 +71,7 @@ export class WTPowerSheet extends WTItemSheet {
 
     html.find(".skillslot").dblclick(async (event) => {
       event.preventDefault();
-      Item.get(this.item.system.skill.id).sheet.render(true);
+      (await lookupItem(this.item.system.skill.id)).sheet.render(true);
     });
     ContextMenu.create(this, html, ".skillslot", [
       {
@@ -108,7 +114,9 @@ export class WTPowerSheet extends WTItemSheet {
       event.preventDefault();
       const i = Number(event.currentTarget.getAttribute("index1"));
       const j = Number(event.currentTarget.getAttribute("index2"));
-      Item.get(this.item.system.qualities[i].extras[j].id).sheet.render(true);
+      (
+        await lookupItem(this.item.system.qualities[i].extras[j].id)
+      ).sheet.render(true);
     });
     ContextMenu.create(this, html, ".extraslot", [
       {

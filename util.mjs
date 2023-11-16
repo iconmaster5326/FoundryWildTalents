@@ -96,3 +96,26 @@ export function extraPointsPerDie(extraInstance) {
     Item.get(extraInstance.id).system.pointCost * extraInstance.multibuyAmount
   );
 }
+
+export async function lookupItem(actor, id) {
+  const item = Item.get(id);
+  if (item) {
+    return item;
+  }
+  if (actor) {
+    try {
+      const doc = actor.getEmbeddedDocument("Item", id);
+      if (doc) return doc;
+    } catch (_) {
+      // do nothing
+    }
+  }
+  try {
+    return (await game.packs.getDocuments())
+      .map((p) => p.getEmbeddedDocument("Item", id))
+      .find((d) => d);
+  } catch (_) {
+    // do nothing
+  }
+  return null;
+}

@@ -52,7 +52,7 @@ export class WTArchetypeData extends foundry.abstract.DataModel {
     };
   }
 
-  async pointCost() {
+  get pointCost() {
     return (
       this.sources
         .slice(1)
