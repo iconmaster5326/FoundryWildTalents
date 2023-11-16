@@ -92,10 +92,8 @@ export function qualityPointsPerDie(quality) {
 }
 
 export function extraPointsPerDie(extraInstance) {
-  return (
-    lookupItemSync(null, extraInstance.id).system.pointCost *
-    extraInstance.multibuyAmount
-  );
+  const extra = lookupItemSync(null, extraInstance.id);
+  return extra ? extra.system.pointCost * extraInstance.multibuyAmount : 0;
 }
 
 export async function lookupItem(actor, id) {
