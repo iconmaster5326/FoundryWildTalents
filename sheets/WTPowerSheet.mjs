@@ -151,7 +151,7 @@ export class WTPowerSheet extends WTItemSheet {
     const item = await fromUuid(itemInfo.uuid);
     if (!item) return;
     if (item.type == "skill" && this.item.system.powerType == 1) {
-      this.item.update({ "system.skill.id": itemID });
+      this.item.update({ "system.skill.id": item.id });
     } else if (item.type == "extra") {
       if (item.system.fociOnly) return;
       const slots = document
@@ -174,7 +174,7 @@ export class WTPowerSheet extends WTItemSheet {
       } else if (qualities.length) {
         const i = Number(qualities[0].getAttribute("index"));
         const newArray = this.item.system.qualities.slice();
-        newArray[i].extras = newArray[i].extras.concat([{ id: itemID }]);
+        newArray[i].extras = newArray[i].extras.concat([{ id: item.id }]);
         this.item.update({
           "system.qualities": newArray,
         });

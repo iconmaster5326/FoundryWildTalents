@@ -748,7 +748,7 @@ export class WTCharacterSheet extends WTActorSheet {
         if (slots.length) {
           const index = Number(slots[0].getAttribute("index"));
           const newArray = this.actor.system.archetypes.slice();
-          newArray[index] = itemID;
+          newArray[index] = item.id;
           this.actor.update({
             "system.archetypes": newArray,
           });
@@ -760,7 +760,7 @@ export class WTCharacterSheet extends WTActorSheet {
         } else {
           const tab = this._tabs[0].active;
           if (tab == "archetype") {
-            const newArray = this.actor.system.archetypes.concat([itemID]);
+            const newArray = this.actor.system.archetypes.concat([item.id]);
             this.actor.update({
               "system.archetypes": newArray,
             });
@@ -787,7 +787,7 @@ export class WTCharacterSheet extends WTActorSheet {
             await embedded.delete();
           }
           const newArray = this.actor.system.foci.slice();
-          newArray[index] = itemID;
+          newArray[index] = item.id;
           this.actor.update({
             "system.foci": newArray,
           });
@@ -799,7 +799,7 @@ export class WTCharacterSheet extends WTActorSheet {
         } else {
           const tab = this._tabs[0].active;
           if (tab == "powers") {
-            const newArray = this.actor.system.foci.concat([itemID]);
+            const newArray = this.actor.system.foci.concat([item.id]);
             this.actor.update({
               "system.foci": newArray,
             });
