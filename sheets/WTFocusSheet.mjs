@@ -1,4 +1,4 @@
-import { CAPACITY_TYPES } from "../util.mjs";
+import { CAPACITY_TYPES, lookupItemSync } from "../util.mjs";
 import {
   WTItemSheet,
   generateAddRefListDropHandler,
@@ -27,16 +27,16 @@ export class WTFocusSheet extends WTItemSheet {
 
     context.documents = {};
     for (const extra of context.system.extras) {
-      context.documents[extra.id] = Item.get(extra.id);
+      context.documents[extra.id] = lookupItemSync(this.item, extra.id);
     }
     for (const power of context.system.hyperstats) {
-      context.documents[power.id] = Item.get(power.id);
+      context.documents[power.id] = lookupItemSync(this.item, power.id);
     }
     for (const power of context.system.hyperskills) {
-      context.documents[power.id] = Item.get(power.id);
+      context.documents[power.id] = lookupItemSync(this.item, power.id);
     }
     for (const power of context.system.miracles) {
-      context.documents[power.id] = Item.get(power.id);
+      context.documents[power.id] = lookupItemSync(this.item, power.id);
     }
 
     context.CAPACITY_TYPES = CAPACITY_TYPES;

@@ -1,4 +1,4 @@
-import { DEFAULT_SILHOUETTE } from "../util.mjs";
+import { DEFAULT_SILHOUETTE, lookupItemSync } from "../util.mjs";
 import {
   WTItemSheet,
   generateAddRefListDropHandler,
@@ -34,22 +34,22 @@ export class WTArchetypeSheet extends WTItemSheet {
 
     context.documents = {};
     for (const mq of context.system.sources) {
-      context.documents[mq.id] = Item.get(mq.id);
+      context.documents[mq.id] = lookupItemSync(this.item, mq.id);
     }
     for (const mq of context.system.permissions) {
-      context.documents[mq.id] = Item.get(mq.id);
+      context.documents[mq.id] = lookupItemSync(this.item, mq.id);
     }
     for (const mq of context.system.intrinsics) {
-      context.documents[mq.id] = Item.get(mq.id);
+      context.documents[mq.id] = lookupItemSync(this.item, mq.id);
     }
     for (const power of context.system.hyperstats) {
-      context.documents[power.id] = Item.get(power.id);
+      context.documents[power.id] = lookupItemSync(this.item, power.id);
     }
     for (const power of context.system.hyperskills) {
-      context.documents[power.id] = Item.get(power.id);
+      context.documents[power.id] = lookupItemSync(this.item, power.id);
     }
     for (const power of context.system.miracles) {
-      context.documents[power.id] = Item.get(power.id);
+      context.documents[power.id] = lookupItemSync(this.item, power.id);
     }
 
     return context;

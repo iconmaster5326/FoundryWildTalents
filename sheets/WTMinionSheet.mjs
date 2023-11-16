@@ -1,4 +1,9 @@
-import { DAMAGE_TYPES, MINION_RATINGS, lookupItem } from "../util.mjs";
+import {
+  DAMAGE_TYPES,
+  MINION_RATINGS,
+  lookupItem,
+  lookupItemSync,
+} from "../util.mjs";
 import {
   WTActorSheet,
   generateAddRefListDropHandler,
@@ -30,8 +35,7 @@ export class WTMinionSheet extends WTActorSheet {
 
   /** @override */
   getData() {
-    const lookup = (id) =>
-      Item.get(id) || this.actor.getEmbeddedDocument("Item", id);
+    const lookup = (id) => lookupItemSync(this.actor, id);
 
     const context = super.getData();
     context.documents = {};

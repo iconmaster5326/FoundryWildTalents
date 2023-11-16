@@ -2,6 +2,7 @@ import { OREDice } from "../rolls/OREDice.mjs";
 import {
   POWER_TYPES,
   extraPointsPerDie,
+  lookupItemSync,
   qualityPointsPerDie,
 } from "../util.mjs";
 import { extraInstanceField, rollField } from "./data.mjs";
@@ -66,7 +67,7 @@ export class WTFocusData extends foundry.abstract.DataModel {
   }
 
   powerPointsPerDie(item, powerInstance) {
-    const power = Item.get(powerInstance.id);
+    const power = lookupItemSync(item, powerInstance.id);
     return (
       POWER_TYPES[power.system.powerType].cost +
       power.system.qualities.reduce(

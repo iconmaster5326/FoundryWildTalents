@@ -1,5 +1,5 @@
 import { OREDice } from "../rolls/OREDice.mjs";
-import { DEFAULT_SILHOUETTE, STATS } from "../util.mjs";
+import { DEFAULT_SILHOUETTE, STATS, lookupItemSync } from "../util.mjs";
 import { bodyPartField, rollField } from "./data.mjs";
 
 export class WTCharacterData extends foundry.abstract.DataModel {
@@ -114,9 +114,11 @@ export class WTCharacterData extends foundry.abstract.DataModel {
   updateProvidedAbilities(actor, systemArchetypes, systemFoci) {
     console.log("Updating provided abilities for " + actor.id);
     const archetypes = systemArchetypes
-      .map((id) => Item.get(id))
+      .map((id) => lookupItemSync(actor, id))
       .filter((x) => x);
-    const foci = systemFoci.map((id) => Item.get(id)).filter((x) => x);
+    const foci = systemFoci
+      .map((id) => lookupItemSync(actor, id))
+      .filter((x) => x);
     // gather data for provided abilities
     const existingData = {};
     for (const x of this.sources
@@ -253,14 +255,11 @@ export class WTCharacterData extends foundry.abstract.DataModel {
   }
 
   powerPointsPerDie(actor, powerInstance) {
-    const lookup = (id) =>
-      Item.get(id) || actor.getEmbeddedDocument("Item", id);
-
     if (powerInstance.providedBy) {
-      const item = lookup(powerInstance.providedBy);
+      const item = lookupItemSync(actor, powerInstance.providedBy);
       return item.system.powerPointsPerDie(item, powerInstance);
     } else {
-      return lookup(powerInstance.id).system.pointsPerDie;
+      return lookupItemSync(actor, powerInstance.id).system.pointsPerDie;
     }
   }
 }

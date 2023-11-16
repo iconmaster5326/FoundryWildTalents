@@ -1,3 +1,4 @@
+import { lookupItemSync } from "../util.mjs";
 import { rollField, bodyPartField } from "./data.mjs";
 
 export class WTArchetypeData extends foundry.abstract.DataModel {
@@ -56,16 +57,19 @@ export class WTArchetypeData extends foundry.abstract.DataModel {
     return (
       this.sources
         .slice(1)
-        .reduce((a, v) => a + Item.get(v.id).system.pointCost, 0) +
+        .reduce((a, v) => a + lookupItemSync(null, v.id).system.pointCost, 0) +
       this.permissions.reduce(
-        (a, v) => a + Item.get(v.id).system.pointCost,
+        (a, v) => a + lookupItemSync(null, v.id).system.pointCost,
         0
       ) +
-      this.intrinsics.reduce((a, v) => a + Item.get(v.id).system.pointCost, 0)
+      this.intrinsics.reduce(
+        (a, v) => a + lookupItemSync(null, v.id).system.pointCost,
+        0
+      )
     );
   }
 
   powerPointsPerDie(item, powerInstance) {
-    return Item.get(powerInstance.id).system.pointsPerDie;
+    return lookupItemSync(item, powerInstance.id).system.pointsPerDie;
   }
 }

@@ -3,6 +3,7 @@ import {
   QUALITY_TYPES,
   STATS,
   lookupItem,
+  lookupItemSync,
 } from "../util.mjs";
 import { ORERollDialog } from "./ORERollDialog.mjs";
 import {
@@ -61,8 +62,7 @@ export class WTCharacterSheet extends WTActorSheet {
 
   /** @override */
   getData() {
-    const lookup = (id) =>
-      Item.get(id) || this.actor.getEmbeddedDocument("Item", id);
+    const lookup = (id) => lookupItemSync(this.actor, id);
 
     const context = super.getData();
 
@@ -284,14 +284,14 @@ export class WTCharacterSheet extends WTActorSheet {
           var index = Number(slot.attr("index"));
           const id = this.actor.system.archetypes[index];
           if (!id) return false;
-          const archetype = Item.get(id);
+          const archetype = lookupItemSync(this.actor, id);
           if (!archetype) return false;
           return archetype.system.customSilhouette;
         },
         callback: async (slot) => {
           var index = Number(slot.attr("index"));
           const id = this.actor.system.archetypes[index];
-          const archetype = Item.get(id);
+          const archetype = lookupItemSync(this.actor, id);
           this.actor.update({
             "system.silhouette": archetype.system.silhouette,
           });

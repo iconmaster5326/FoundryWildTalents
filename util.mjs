@@ -93,7 +93,8 @@ export function qualityPointsPerDie(quality) {
 
 export function extraPointsPerDie(extraInstance) {
   return (
-    Item.get(extraInstance.id).system.pointCost * extraInstance.multibuyAmount
+    lookupItemSync(null, extraInstance.id).system.pointCost *
+    extraInstance.multibuyAmount
   );
 }
 
@@ -102,20 +103,52 @@ export async function lookupItem(actor, id) {
   if (item) {
     return item;
   }
-  if (actor) {
-    try {
-      const doc = actor.getEmbeddedDocument("Item", id);
-      if (doc) return doc;
-    } catch (_) {
-      // do nothing
-    }
-  }
   try {
-    return (await game.packs.getDocuments())
-      .map((p) => p.getEmbeddedDocument("Item", id))
-      .find((d) => d);
+    const doc = actor.getEmbeddedDocument("Item", id);
+    if (doc) return doc;
   } catch (_) {
     // do nothing
+  }
+  outer: for (const directory of game.packs) {
+    for (const itemHeader of directory.index) {
+      if (itemHeader._id == id) {
+        const doc = directory.get(id);
+        if (doc) return doc;
+        break outer;
+      }
+    }
+  }
+  return null;
+}
+
+// This is a very bad, no good kludge.
+// It increases client memory usage a lot and isn't sensitive to updates.
+// But what else can we do when half of Foundry can't use async/await?
+const compendiumItemCache = {};
+
+export async function updateCompendiumItemCache() {
+  console.log("in updateCompendiumItemCache");
+  for (const directory of game.packs) {
+    for (const itemHeader of directory.index) {
+      const item = await fromUuid(itemHeader.uuid);
+      compendiumItemCache[item.id] = item;
+    }
+  }
+}
+
+export function lookupItemSync(actor, id) {
+  const item = Item.get(id);
+  if (item) {
+    return item;
+  }
+  try {
+    const doc = actor.getEmbeddedDocument("Item", id);
+    if (doc) return doc;
+  } catch (_) {
+    // do nothing
+  }
+  if (compendiumItemCache[id]) {
+    return compendiumItemCache[id];
   }
   return null;
 }

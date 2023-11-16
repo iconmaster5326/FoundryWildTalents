@@ -4,6 +4,7 @@ import {
   QUALITY_TYPES,
   STATS,
   lookupItem,
+  lookupItemSync,
 } from "../util.mjs";
 import { WTItemSheet } from "./sheets.mjs";
 
@@ -29,13 +30,14 @@ export class WTPowerSheet extends WTItemSheet {
 
     context.documents = {};
     if (context.system.skill.id) {
-      context.documents[context.system.skill.id] = Item.get(
+      context.documents[context.system.skill.id] = lookupItemSync(
+        this.item,
         context.system.skill.id
       );
     }
     for (const quality of context.system.qualities) {
       for (const extra of quality.extras) {
-        context.documents[extra.id] = Item.get(extra.id);
+        context.documents[extra.id] = lookupItemSync(this.item, extra.id);
       }
     }
 

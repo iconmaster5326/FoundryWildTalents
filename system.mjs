@@ -26,7 +26,9 @@ import {
   QUALITY_TYPES,
   STATS,
   extraPointsPerDie,
+  lookupItemSync,
   qualityPointsPerDie,
+  updateCompendiumItemCache,
 } from "./util.mjs";
 import { WTMinionSheet } from "./sheets/WTMinionSheet.mjs";
 import { WTMinionData } from "./data/WTMinion.mjs";
@@ -217,8 +219,8 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
     const isMessageOurs = (dieJQ) => {
       return (
         game.user.isGM ||
-        game.messages.get(dieJQ.parents(".message").data("messageId"))
-          .user.id == game.user.id
+        game.messages.get(dieJQ.parents(".message").data("messageId")).user
+          .id == game.user.id
       );
     };
 
@@ -386,10 +388,6 @@ Hooks.on("renderChatMessage", async function (message, html, data) {
   }
 });
 
-function actorLookupItem(actor, id) {
-  return Item.get(id) || actor.getEmbeddedDocument("Item", id);
-}
-
 Game.prototype.wildtalents = {
   roll: ORERollDialog.showAndChat,
   quickRoll: async (dice, options = {}) => {
@@ -400,6 +398,8 @@ Game.prototype.wildtalents = {
 };
 
 Hooks.once("ready", async () => {
+  updateCompendiumItemCache();
+
   Hooks.on("hotbarDrop", async (bar, data, slot) => {
     async function onActorDrop(
       dataType,
@@ -463,13 +463,13 @@ Hooks.once("ready", async () => {
           game.i18n
             .localize("WT.Macro.Skill")
             .replace("@ACTOR@", actor.name)
-            .replace("@SKILL@", actorLookupItem(actor, data.skill.id).name)
+            .replace("@SKILL@", lookupItemSync(actor, data.skill.id).name)
             .replace(
               "@SPECIALTY@",
               data.skill.specialty ? " (" + data.skill.specialty + ")" : ""
             ),
         (data, actor) => {
-          const skill = actorLookupItem(actor, data.skill.id);
+          const skill = lookupItemSync(actor, data.skill.id);
           return `Actor.get("${actor.id}").system.stats.${
             STATS[skill.system.primaryStat].field
           } + " + " + Actor.get("${
@@ -479,7 +479,7 @@ Hooks.once("ready", async () => {
           }" && s.specialty == "${data.skill.specialty}").dice`;
         },
         (data, actor) => {
-          const skill = actorLookupItem(actor, data.skill.id);
+          const skill = lookupItemSync(actor, data.skill.id);
           return (
             game.i18n.localize(STATS[skill.system.primaryStat].name) +
             " + " +
@@ -494,7 +494,7 @@ Hooks.once("ready", async () => {
       (await onActorDrop(
         "WTQuality",
         (data, actor) => {
-          const power = actorLookupItem(actor, data.power.id);
+          const power = lookupItemSync(actor, data.power.id);
           return game.i18n
             .localize("WT.Macro.Power")
             .replace("@ACTOR@", actor.name)
@@ -507,7 +507,7 @@ Hooks.once("ready", async () => {
             );
         },
         (data, actor) => {
-          const power = actorLookupItem(actor, data.power.id);
+          const power = lookupItemSync(actor, data.power.id);
           const field = ["hyperstats", "hyperskills", "miracles"][
             power.system.powerType
           ];
@@ -526,7 +526,7 @@ Hooks.once("ready", async () => {
           );
         },
         (data, actor) => {
-          const power = actorLookupItem(actor, data.power.id);
+          const power = lookupItemSync(actor, data.power.id);
           const quality = power.system.qualities[data.quality];
 
           var prefix = "";
@@ -609,14 +609,14 @@ Hooks.once("ready", async () => {
           game.i18n
             .localize("WT.Macro.MinionMastery")
             .replace("@ACTOR@", actor.name)
-            .replace("@SKILL@", actorLookupItem(actor, data.mastery.id).name)
+            .replace("@SKILL@", lookupItemSync(actor, data.mastery.id).name)
             .replace(
               "@SPECIALTY@",
               data.mastery.specialty ? " (" + data.mastery.specialty + ")" : ""
             ),
         (data, actor) => `Actor.get("${actor.id}").system.masteryDice`,
         (data, actor) => {
-          const skill = actorLookupItem(actor, data.mastery.id);
+          const skill = lookupItemSync(actor, data.mastery.id);
           return (
             skill.name +
             (data.mastery.specialty ? " (" + data.mastery.specialty + ")" : "")
