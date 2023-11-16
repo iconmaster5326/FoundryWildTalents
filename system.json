@@ -16,7 +16,129 @@
   ],
   "esmodules": ["system.mjs"],
   "styles": ["styles/wildtalents.css"],
-  "packs": [],
+  "packs": [
+    {
+      "system": "wildtalents",
+      "name": "readme",
+      "label": "(README)",
+      "type": "JournalEntry",
+      "path": "packs/readme",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "system": "wildtalents",
+      "name": "skills",
+      "label": "WT:EE Skills",
+      "type": "Item",
+      "path": "packs/skills",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "system": "wildtalents",
+      "name": "archetypes",
+      "label": "WT:EE Archetypes",
+      "type": "Item",
+      "path": "packs/archetypes",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "system": "wildtalents",
+      "name": "sources",
+      "label": "WT:EE Sources",
+      "type": "Item",
+      "path": "packs/sources",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "system": "wildtalents",
+      "name": "permissions",
+      "label": "WT:EE Permissions",
+      "type": "Item",
+      "path": "packs/permissions",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "system": "wildtalents",
+      "name": "intrinsics",
+      "label": "WT:EE Intrinsics",
+      "type": "Item",
+      "path": "packs/intrinsics",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "system": "wildtalents",
+      "name": "extras",
+      "label": "WT:EE Extras",
+      "type": "Item",
+      "path": "packs/extras",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "system": "wildtalents",
+      "name": "flaws",
+      "label": "WT:EE Flaws",
+      "type": "Item",
+      "path": "packs/flaws",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "system": "wildtalents",
+      "name": "focusextras",
+      "label": "WT:EE Focus Extras",
+      "type": "Item",
+      "path": "packs/focusextras",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "system": "wildtalents",
+      "name": "focusflaws",
+      "label": "WT:EE Focus Flaws",
+      "type": "Item",
+      "path": "packs/focusflaws",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "system": "wildtalents",
+      "name": "powers",
+      "label": "WT:EE Miracle Cafeteria",
+      "type": "Item",
+      "path": "packs/powers",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ],
   "languages": [
     {
       "lang": "en",

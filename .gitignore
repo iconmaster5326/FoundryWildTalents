@@ -6,3 +6,9 @@ npm-debug.log
 *.lock
 jsconfig.json
 foundry
+packs/**/*.log
+# packs/**/*.ldb
+# packs/**/CURRENT
+packs/**/LOCK
+packs/**/LOG*
+# packs/**/MANIFEST-*

@@ -9,7 +9,7 @@ export class WTSkillData extends foundry.abstract.DataModel {
       primaryStat: statField(),
       pointsPerDie: new fields.NumberField({
         required: true,
-        initial: 1,
+        initial: 2,
         min: 0,
       }),
     };
