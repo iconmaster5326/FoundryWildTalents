@@ -62,7 +62,7 @@ export class WTFocusData extends foundry.abstract.DataModel {
   }
 
   get pointsPerDieModifier() {
-    return this.extras.reduce((a, v) => a + extraPointsPerDie(v), 0);
+    return this.extras.reduce((a, v) => a + extraPointsPerDie(v), -1);
   }
 
   powerPointsPerDie(item, powerInstance) {
