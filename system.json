@@ -2,7 +2,7 @@
   "id": "wildtalents",
   "title": "Wild Talents",
   "description": "Wild Talents (or other ORE game) support for Foundry.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "compatibility": {
     "minimum": "11",
     "verified": "11"
