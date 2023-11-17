@@ -7,11 +7,23 @@ rules, such as [The Kerberos Club](https://preview.drivethrurpg.com/en/product/6
 
 This system includes features for:
 
-- keeping track of Wild Talents characters, including support for custom silhouettes, custom powers, custom skills, and more
-- automatically keeping track of point cost for things like archetypes and powers
-- rolling dice in the ORE fashion, including interactive dice regrouping and use of alternate hard dice
-- GM content creation, letting them make new extras and meta-qualities, change the default skillset, and keep track of minion groups
+- keeping track of Wild Talents characters, including support for custom
+  silhouettes, custom powers, custom skills, and more
+- automatically keeping track of point cost for things like archetypes and
+  powers
+- rolling dice in the ORE fashion, including interactive dice regrouping and use
+  of alternate hard dice
+- GM content creation, letting them make new extras and meta-qualities, change
+  the default skillset, and keep track of minion groups
 - initiative, ordering by Sense in the declare phase
+
+## Installation
+
+Just copy this repository to your Foundry `Data/systems` directory; it's all
+ready to go.
+
+Alternatively, paste in the following manifest URL in Foundry's
+"Add System" dialog: `https://raw.githubusercontent.com/iconmaster5326/FoundryWildTalents/main/system.json`
 
 ## Known Issues
 
@@ -21,6 +33,9 @@ This system includes features for:
 
 ## Special Thanks
 
+- [Arc Dream Publishing](https://arcdream.com/), for the free
+  [Essential Edition](https://preview.drivethrurpg.com/en/product/57975/Wild-Talents-Essential-Edition)
+  rules
 - The official Foundry discord, for considerable assistance
 - [The one-roll-engine plugin](https://github.com/shemetz/one-roll-engine), for
   d10 sprites
