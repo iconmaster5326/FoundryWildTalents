@@ -65,9 +65,11 @@ export const DEFAULT_SILHOUETTE = [
   { hitLocations: "10", name: "Head", boxes: 4, brainBoxes: 4 },
 ];
 
-function firstOneIsFree(caplist) {
+function firstOneIsFree(type, caplist) {
   const result = { ...caplist };
-  for (const ct of CAPACITY_TYPES) {
+  const capTypes =
+    type == 1 ? CAPACITY_TYPES.slice().reverse() : CAPACITY_TYPES;
+  for (const ct of capTypes) {
     if (result[ct.field]) {
       result[ct.field] = false;
       return result;
@@ -77,7 +79,7 @@ function firstOneIsFree(caplist) {
 }
 
 export function qualityPointsPerDie(quality) {
-  const caplist = firstOneIsFree(quality.capacities);
+  const caplist = firstOneIsFree(quality.qualityType, quality.capacities);
   return Math.max(
     1,
     2 +
