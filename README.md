@@ -33,7 +33,7 @@ Alternatively, paste in the following manifest URL in Foundry's
 
 ## Special Thanks
 
-- [Arc Dream Publishing](https://arcdream.com/), for the free
+- [Arc Dream Publishing](https://arcdream.com/), for the
   [Essential Edition](https://preview.drivethrurpg.com/en/product/57975/Wild-Talents-Essential-Edition)
   rules
 - The official Foundry discord, for considerable assistance
