@@ -42,6 +42,10 @@ Alternatively, paste in the following manifest URL in Foundry's
 
 ## Changelog
 
+### Version 1.0.2 (upcoming)
+
+* Fixed bug with double-clicking on slots.
+
 ### Version 1.0.1
 
 Added compendium support for dragging and dropping Wild Talents items.

@@ -41,7 +41,7 @@ export function generateAddRefSheetListener(sheet, html) {
       const instance = getProp()[index];
       if (instance.id) {
         // open up existing
-        await lookup(instance.id).sheet.render(true);
+        (await lookup(instance.id)).sheet.render(true);
       } else if (options.creatable) {
         // create new embedded
         const newItem = await getDocumentClass("Item").create(
