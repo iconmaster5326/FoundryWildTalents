@@ -21,7 +21,7 @@ import {
   ORE_DIE_TYPE_NORMAL,
   ORE_DIE_TYPE_WIGGLE,
 } from "./rolls/ORERoll.mjs";
-import { ORESetFaceDialog } from "./sheets/ORESetFaceDIalog.mjs";
+import { ORESetFaceDialog } from "./sheets/ORESetFaceDialog.mjs";
 import {
   QUALITY_TYPES,
   STATS,
