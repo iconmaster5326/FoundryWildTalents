@@ -42,9 +42,10 @@ Alternatively, paste in the following manifest URL in Foundry's
 
 ## Changelog
 
-### Version 1.0.2 (upcoming)
+### Version 1.0.2
 
 * Fixed bug with double-clicking on slots.
+* Fixed bug where the Set Die Face dialog would refuse to work on some OSes.
 
 ### Version 1.0.1
 
