@@ -129,7 +129,7 @@ export class ORERoll {
   async rerenderChatMessage(chatMessage, options = {}) {
     chatMessage.update({
       content: await this.renderChatMessageContent(options),
-      roll: await this.asRollFlavor.evaluate(),
+      rolls: [await this.asRollFlavor.evaluate()],
     });
   }
 
