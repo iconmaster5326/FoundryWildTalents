@@ -148,7 +148,7 @@ export function generateAddRefListDropHandler(sheet, item) {
 export class WTItemSheet extends ItemSheet {
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       width: 600,
       height: 600,
       dragDrop: [{ dropSelector: null }],
@@ -190,7 +190,7 @@ export class WTItemSheet extends ItemSheet {
 export class WTActorSheet extends ActorSheet {
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       width: 600,
       height: 600,
     });

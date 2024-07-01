@@ -10,7 +10,7 @@ const SHEET_HTML = "systems/wildtalents/templates/wt-archetype-sheet.hbs";
 export class WTArchetypeSheet extends WTItemSheet {
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       template: SHEET_HTML,
       classes: ["wildtalents", "archetype"],
       tabs: [

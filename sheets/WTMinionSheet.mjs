@@ -18,7 +18,7 @@ const SHEET_HTML_LIMITED = TEMPLATES + "wt-actor-sheet-limited.hbs";
 export class WTMinionSheet extends WTActorSheet {
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       template: SHEET_HTML,
       classes: ["wildtalents", "minion"],
     });

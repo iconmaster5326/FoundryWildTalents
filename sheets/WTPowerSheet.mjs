@@ -13,7 +13,7 @@ const SHEET_HTML = "systems/wildtalents/templates/wt-power-sheet.hbs";
 export class WTPowerSheet extends WTItemSheet {
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       template: SHEET_HTML,
       classes: ["wildtalents", "power"],
     });

@@ -6,7 +6,7 @@ const SHEET_HTML = "systems/wildtalents/templates/wt-metaquality-sheet.hbs";
 export class WTMetaQualitySheet extends WTItemSheet {
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       template: SHEET_HTML,
       classes: ["wildtalents", "metaquality"],
     });

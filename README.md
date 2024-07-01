@@ -42,6 +42,10 @@ Alternatively, paste in the following manifest URL in Foundry's
 
 ## Changelog
 
+### Version 1.0.3
+
+* Updated to Foundry 12.
+
 ### Version 1.0.2
 
 * Fixed bug with double-clicking on slots.
