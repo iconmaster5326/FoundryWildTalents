@@ -100,7 +100,7 @@ export class ORERoll {
 
   get asRollFlavor() {
     const roll = new Roll("0");
-    roll.terms[0] = new NumericTerm({
+    roll.terms[0] = new foundry.dice.terms.NumericTerm({
       number: 0,
       options: { flavor: JSON.stringify(this.asJSON) },
     });
@@ -118,12 +118,11 @@ export class ORERoll {
     return ChatMessage.create({
       ...options,
       content: await this.renderChatMessageContent(options),
-      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-      roll: await this.asRollFlavor.evaluate(),
       flags: {
         ...(options.flags ?? {}),
         core: { ...(options?.flags?.core ?? {}), canPopout: true },
       },
+      rolls: [await this.asRollFlavor.evaluate()],
     });
   }
 
