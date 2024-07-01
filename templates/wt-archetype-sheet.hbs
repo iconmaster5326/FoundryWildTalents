@@ -33,7 +33,7 @@
         <input class="grow" type="number" value="{{item.system.pointCost}}" disabled>
       </div>
       <h2>{{localize "WT.Label.Notes"}}</h2>
-      {{editor (enrich system.notes) target="system.notes" button=true owner=owner editable=editable}}
+      {{editor @root.notesEnriched target="system.notes" button=true owner=owner editable=editable}}
     </div>
     <div class="tab metaqualities" data-group="primary" data-tab="metaqualities">
       <h2 class="hbox">

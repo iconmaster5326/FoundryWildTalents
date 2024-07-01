@@ -156,8 +156,8 @@ export class WTItemSheet extends ItemSheet {
   }
 
   /** @override */
-  getData() {
-    const context = super.getData();
+  async getData() {
+    const context = await super.getData();
     const actorData = this.item.toObject(false);
     context.system = actorData.system;
     context.flags = actorData.flags;
@@ -172,6 +172,8 @@ export class WTItemSheet extends ItemSheet {
     for (var i = 0; i < STATS.length; i++) {
       context.STATS_SELECT_OPTIONS[i] = STATS[i].name;
     }
+
+    context.notesEnriched = await TextEditor.enrichHTML(actorData.system.notes);
 
     return context;
   }
@@ -208,12 +210,16 @@ export class WTActorSheet extends ActorSheet {
   }
 
   /** @override */
-  getData() {
-    const context = super.getData();
+  async getData() {
+    const context = await super.getData();
     const actorData = this.actor.toObject(false);
     context.system = actorData.system;
     context.flags = actorData.flags;
     context.rollData = context.actor.getRollData();
+
+    context.appearenceEnriched = await TextEditor.enrichHTML(actorData.system.appearence);
+    context.notesEnriched = await TextEditor.enrichHTML(actorData.system.notes);
+
     return context;
   }
 }

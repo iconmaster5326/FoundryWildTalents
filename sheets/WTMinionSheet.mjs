@@ -34,10 +34,10 @@ export class WTMinionSheet extends WTActorSheet {
   }
 
   /** @override */
-  getData() {
+  async getData() {
     const lookup = (id) => lookupItemSync(this.actor, id);
 
-    const context = super.getData();
+    const context = await super.getData();
     context.documents = {};
     for (const mastery of context.system.masteries) {
       context.documents[mastery.id] = lookup(mastery.id);

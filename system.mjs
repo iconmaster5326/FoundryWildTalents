@@ -96,9 +96,6 @@ Hooks.once("init", async function () {
   Handlebars.registerHelper("ne", function (a, b) {
     return a != b;
   });
-  Handlebars.registerHelper("enrich", function (t) {
-    return TextEditor.enrichHTML(t, { async: false });
-  });
   Handlebars.registerHelper("dieTypeLetter", function (t) {
     return game.i18n.localize(ORE_DIE_TYPES[t].name + "Letter");
   });

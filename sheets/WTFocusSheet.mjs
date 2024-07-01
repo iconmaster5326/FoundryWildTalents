@@ -22,8 +22,8 @@ export class WTFocusSheet extends WTItemSheet {
   }
 
   /** @override */
-  getData() {
-    const context = super.getData();
+  async getData() {
+    const context = await super.getData();
 
     context.documents = {};
     for (const extra of context.system.extras) {

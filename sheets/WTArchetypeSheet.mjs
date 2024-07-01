@@ -29,8 +29,8 @@ export class WTArchetypeSheet extends WTItemSheet {
   }
 
   /** @override */
-  getData() {
-    const context = super.getData();
+  async getData() {
+    const context = await super.getData();
 
     context.documents = {};
     for (const mq of context.system.sources) {

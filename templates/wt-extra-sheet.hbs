@@ -45,5 +45,5 @@
   </div>
 
   <h2>{{localize "WT.Label.Notes"}}</h2>
-  {{editor (enrich system.notes) target="system.notes" button=true owner=owner editable=editable}}
+  {{editor @root.notesEnriched target="system.notes" button=true owner=owner editable=editable}}
 </form>

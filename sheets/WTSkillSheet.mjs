@@ -18,8 +18,8 @@ export class WTSkillSheet extends WTItemSheet {
   }
 
   /** @override */
-  getData() {
-    const context = super.getData();
+  async getData() {
+    const context = await super.getData();
     return context;
   }
 }

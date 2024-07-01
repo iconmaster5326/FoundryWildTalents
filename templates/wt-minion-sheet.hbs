@@ -86,7 +86,7 @@
   </ul>
 
   <h2>{{localize "WT.Label.PublicNotes"}}</h2>
-  {{editor (enrich system.appearence) target="system.appearence" button=true owner=owner editable=editable}}
+  {{editor @root.appearenceEnriched target="system.appearence" button=true owner=owner editable=editable}}
   <h2>{{localize "WT.Label.PrivateNotes"}}</h2>
-  {{editor (enrich system.notes) target="system.notes" button=true owner=owner editable=editable}}
+  {{editor @root.notesEnriched target="system.notes" button=true owner=owner editable=editable}}
 </form>
