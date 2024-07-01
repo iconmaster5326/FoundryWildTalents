@@ -22,11 +22,7 @@
   <div class="hbox vgap8">
     <label class="grow">{{localize "WT.Label.MetaQualityType"}}: </label>
     <select class="grow2x" name="system.metaQualityType">
-      {{#select system.metaQualityType}}
-        {{#each META_QUALITY_TYPES as |mqt i|}}
-          <option value="{{i}}" {{#if (eq system.metaQualityType i)}}selected{{/if}}>{{localize mqt.name}}</option>
-        {{/each}}
-      {{/select}}
+      {{selectOptions @root.MQ_TYPES_SELECT_OPTIONS selected=system.metaQualityType localize=true}}
     </select>
   </div>
   <div class="hbox vgap8">

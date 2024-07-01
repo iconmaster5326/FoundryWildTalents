@@ -39,7 +39,6 @@ export class WTFocusSheet extends WTItemSheet {
       context.documents[power.id] = lookupItemSync(this.item, power.id);
     }
 
-    context.CAPACITY_TYPES = CAPACITY_TYPES;
     return context;
   }
 

@@ -27,11 +27,7 @@
   <div class="hbox vgap8">
     <label class="grow">{{localize "WT.Label.PowerType"}}: </label>
     <select class="grow2x" name="system.powerType">
-      {{#select system.powerType}}
-        {{#each POWER_TYPES as |pt i|}}
-          <option value="{{i}}" {{#if (eq system.powerType i)}}selected{{/if}}>{{localize pt.name}}</option>
-        {{/each}}
-      {{/select}}
+      {{selectOptions @root.POWERTYPES_SELECT_OPTIONS selected=system.powerType localize=true}}
     </select>
   </div>
 
@@ -39,11 +35,7 @@
     <div class="hbox vgap8">
       <label class="grow">{{localize "WT.Label.Stat"}}: </label>
       <select class="grow2x" name="system.stat">
-        {{#select system.stat}}
-          {{#each STATS as |stat i|}}
-            <option value="{{i}}" {{#if (eq system.stat i)}}selected{{/if}}>{{localize stat.name}}</option>
-          {{/each}}
-        {{/select}}
+        {{selectOptions @root.STATS_SELECT_OPTIONS selected=system.stat localize=true}}
       </select>
     </div>
   {{else}}
@@ -91,11 +83,7 @@
             <input class="grow2x" type="text" name="system.qualities.{{i}}.name" value="{{quality.name}}" placeholder="{{localize "WT.Label.Name"}}">
             <div class="nowrap">: </div>
             <select class="grow" name="system.qualities.{{i}}.qualityType">
-              {{#select quality.qualityType}}
-                {{#each @root.QUALITY_TYPES as |qt j|}}
-                  <option value="{{j}}" {{#if (eq quality.qualityType j)}}selected{{/if}}>{{localize qt.name}}</option>
-                {{/each}}
-              {{/select}}
+              {{selectOptions @root.QTYTYPES_SELECT_OPTIONS selected=quality.qualityType localize=true}}
             </select>
             <div class="nowrap">+</div>
             <input class="grow" type="number" name="system.qualities.{{i}}.level" value="{{quality.level}}">
@@ -150,11 +138,7 @@
                       {{#if item.system.requiresCapacity}}
                         <div class="nowrap"> (</div>
                         <select class="grow2x" name="system.qualities.{{i}}.extras.{{j}}.capacity">
-                          {{#select extra.capacity}}
-                            {{#each @root.CAPACITY_TYPES as |pc k|}}
-                              <option value="{{k}}" {{#if (eq extra.capacity k)}}selected{{/if}}>{{localize pc.name}}</option>
-                            {{/each}}
-                          {{/select}}
+                          {{selectOptions @root.CAPACITY_TYPES_SELECT_OPTIONS selected=extra.capacity localize=true}}
                         </select>
                         <div class="nowrap">) </div>
                       {{else}}

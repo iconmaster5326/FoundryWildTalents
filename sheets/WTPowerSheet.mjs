@@ -41,10 +41,15 @@ export class WTPowerSheet extends WTItemSheet {
       }
     }
 
-    context.STATS = STATS;
-    context.POWER_TYPES = POWER_TYPES;
-    context.QUALITY_TYPES = QUALITY_TYPES;
-    context.CAPACITY_TYPES = CAPACITY_TYPES;
+    context.POWERTYPES_SELECT_OPTIONS = {};
+    for (var i = 0; i < POWER_TYPES.length; i++) {
+      context.POWERTYPES_SELECT_OPTIONS[i] = POWER_TYPES[i].name;
+    }
+    context.QTYTYPES_SELECT_OPTIONS = {};
+    for (var i = 0; i < QUALITY_TYPES.length; i++) {
+      context.QTYTYPES_SELECT_OPTIONS[i] = QUALITY_TYPES[i].name;
+    }
+
     return context;
   }
 

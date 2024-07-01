@@ -65,11 +65,7 @@
             {{#if item.system.requiresCapacity}}
               <div class="nowrap"> (</div>
               <select class="grow2x" name="system.extras.{{i}}.capacity">
-                {{#select extra.capacity}}
-                  {{#each @root.CAPACITY_TYPES as |pc i|}}
-                    <option value="{{i}}" {{#if (eq extra.capacity i)}}selected{{/if}}>{{localize pc.name}}</option>
-                  {{/each}}
-                {{/select}}
+                {{selectOptions @root.CAPACITY_TYPES_SELECT_OPTIONS selected=extra.capacity localize=true}}
               </select>
               <div class="nowrap">) </div>
             {{else}}

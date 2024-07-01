@@ -16,11 +16,7 @@
     <button class="nogrow hide"><i class="fa-solid fa-dice"></i></button>
     <div class="nowrap grow">{{localize "WT.Label.MinionRating"}}: </div>
     <select class="grow2x" name="system.minionRating">
-      {{#select system.minionRating}}
-        {{#each MINION_RATINGS as |mr i|}}
-          <option value="{{i}}" {{#if (eq system.minionRating i)}}selected{{/if}}>{{localize mr.name}}</option>
-        {{/each}}
-      {{/select}}
+      {{selectOptions @root.MRATINGS_SELECT_OPTIONS selected=system.minionRating localize=true}}
     </select>
   </div>
 
@@ -46,11 +42,7 @@
     <button class="nogrow hide"><i class="fa-solid fa-dice"></i></button>
     <div class="nowrap grow">{{localize "WT.Label.DamageType"}}: </div>
     <select class="grow2x" name="system.damageType">
-      {{#select system.damageType}}
-        {{#each DAMAGE_TYPES as |dt i|}}
-          <option value="{{i}}" {{#if (eq system.damageType i)}}selected{{/if}}>{{localize dt.name}}</option>
-        {{/each}}
-      {{/select}}
+      {{selectOptions @root.DTYPES_SELECT_OPTIONS selected=system.damageType localize=true}}
     </select>
   </div>
 

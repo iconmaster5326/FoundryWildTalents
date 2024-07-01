@@ -1,5 +1,5 @@
 import { OREDice } from "../rolls/OREDice.mjs";
-import { lookupItem } from "../util.mjs";
+import { CAPACITY_TYPES, STATS, lookupItem } from "../util.mjs";
 import { ORERollDialog } from "./ORERollDialog.mjs";
 
 export function generateAddRefSheetListener(sheet, html) {
@@ -162,6 +162,17 @@ export class WTItemSheet extends ItemSheet {
     context.system = actorData.system;
     context.flags = actorData.flags;
     context.rollData = context.item.getRollData();
+
+    context.CAPACITY_TYPES_SELECT_OPTIONS = {};
+    for (var i = 0; i < CAPACITY_TYPES.length; i++) {
+      context.CAPACITY_TYPES_SELECT_OPTIONS[i] = CAPACITY_TYPES[i].name;
+    }
+
+    context.STATS_SELECT_OPTIONS = {};
+    for (var i = 0; i < STATS.length; i++) {
+      context.STATS_SELECT_OPTIONS[i] = STATS[i].name;
+    }
+
     return context;
   }
 

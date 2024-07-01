@@ -9,11 +9,7 @@
   <div class="hbox vgap8">
     <label class="grow">{{localize "WT.Label.PrimaryStat"}}: </label>
     <select class="grow2x" name="system.primaryStat">
-      {{#select system.primaryStat}}
-        {{#each STATS as |stat i|}}
-          <option value="{{i}}" {{#if (eq system.primaryStat i)}}selected{{/if}}>{{localize stat.name}}</option>
-        {{/each}}
-      {{/select}}
+      {{selectOptions @root.STATS_SELECT_OPTIONS selected=system.primaryStat localize=true}}
     </select>
   </div>
   <div class="hbox vgap8">

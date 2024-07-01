@@ -20,7 +20,12 @@ export class WTMetaQualitySheet extends WTItemSheet {
   /** @override */
   getData() {
     const context = super.getData();
-    context.META_QUALITY_TYPES = META_QUALITY_TYPES;
+
+    context.MQ_TYPES_SELECT_OPTIONS = {};
+    for (var i = 0; i < META_QUALITY_TYPES.length; i++) {
+      context.MQ_TYPES_SELECT_OPTIONS[i] = META_QUALITY_TYPES[i].name;
+    }
+
     return context;
   }
 }

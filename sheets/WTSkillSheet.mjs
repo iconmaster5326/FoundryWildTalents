@@ -20,7 +20,6 @@ export class WTSkillSheet extends WTItemSheet {
   /** @override */
   getData() {
     const context = super.getData();
-    context.STATS = STATS;
     return context;
   }
 }

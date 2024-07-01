@@ -42,8 +42,16 @@ export class WTMinionSheet extends WTActorSheet {
     for (const mastery of context.system.masteries) {
       context.documents[mastery.id] = lookup(mastery.id);
     }
-    context.MINION_RATINGS = MINION_RATINGS;
-    context.DAMAGE_TYPES = DAMAGE_TYPES;
+
+    context.MRATINGS_SELECT_OPTIONS = {};
+    for (var i = 0; i < MINION_RATINGS.length; i++) {
+      context.MRATINGS_SELECT_OPTIONS[i] = MINION_RATINGS[i].name;
+    }
+    context.DTYPES_SELECT_OPTIONS = {};
+    for (var i = 0; i < DAMAGE_TYPES.length; i++) {
+      context.DTYPES_SELECT_OPTIONS[i] = DAMAGE_TYPES[i].name;
+    }
+
     return context;
   }
 
