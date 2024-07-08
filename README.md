@@ -42,6 +42,10 @@ Alternatively, paste in the following manifest URL in Foundry's
 
 ## Changelog
 
+### Version 1.0.4
+
+* Fix bug with creating new actors in v12.
+
 ### Version 1.0.3
 
 * Updated to Foundry 12.

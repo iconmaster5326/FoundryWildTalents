@@ -52,7 +52,7 @@ export const DAMAGE_TYPES = [
 ];
 
 export const DEFAULT_SILHOUETTE = [
-  { hitLocations: "1", name: "Left Leg", boxes: 5 },
+  { hitLocations: "1", name: "Left Leg", boxes: 5, },
   { hitLocations: "2", name: "Right Leg", boxes: 5 },
   { hitLocations: "3,4", name: "Left Arm", boxes: 5 },
   { hitLocations: "5,6", name: "Right Arm", boxes: 5 },
@@ -64,6 +64,21 @@ export const DEFAULT_SILHOUETTE = [
   },
   { hitLocations: "10", name: "Head", boxes: 4, brainBoxes: 4 },
 ];
+
+for (const bodyPart of DEFAULT_SILHOUETTE) {
+  if (bodyPart.important === undefined) {
+    bodyPart.important = false;
+  }
+  if (bodyPart.brainBoxes === undefined) {
+    bodyPart.brainBoxes = 0;
+  }
+  if (bodyPart.shockDamage === undefined) {
+    bodyPart.shockDamage = 0;
+  }
+  if (bodyPart.killingDamage === undefined) {
+    bodyPart.killingDamage = 0;
+  }
+}
 
 function firstOneIsFree(type, caplist) {
   const result = { ...caplist };
